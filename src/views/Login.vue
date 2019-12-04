@@ -3,7 +3,7 @@
     <div class="content">
       <div class="banner-parent">
         <div class="banner-img">
-          <!-- img src="../assets/images/login_banner_bg.png" alt=""> -->
+          <img src="@/assets/images/login_banner_bg.png" alt="">
         </div>
       </div>
 
@@ -103,7 +103,7 @@
             <el-button type="text" @click="handleResetPassword">忘记密码</el-button>
           </p>
 
-          <!-- <img style="margin-bottom: 20px" src="../assets/images/login_line.png" alt=""> -->
+          <img style="margin-bottom: 20px" src="@/assets/images/login_line.png" alt="">
           <!--注册开始-->
           <p class="no-account">还没账号？</p>
           <el-button
@@ -303,6 +303,7 @@ export default {
     padding: 28px 30px 30px;
     background: #fff;
     z-index: 2;
+    box-sizing: content-box;
   }
 
   .right_form .right_form_tab {
