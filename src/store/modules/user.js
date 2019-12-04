@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout/*, getInfo*/ } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
@@ -7,7 +7,8 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  userInfo: null
 }
 
 const mutations = {
@@ -25,6 +26,12 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_USER_INFO: (state, data) => {
+    state.userInfo = data
+  },
+  CLEAR_USER_INFO: state => {
+    state.userInfo = null
   }
 }
 
@@ -47,7 +54,9 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      commit('SET_ROLES', ['admin'])
+      resolve({ roles: ['admin'] })
+      /* getInfo(state.token).then(response => {
         const { data } = response
 
         if (!data) {
@@ -68,7 +77,7 @@ const actions = {
         resolve(data)
       }).catch(error => {
         reject(error)
-      })
+      })*/
     })
   },
 

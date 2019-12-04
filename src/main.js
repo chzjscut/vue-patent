@@ -1,5 +1,5 @@
 import Vue from 'vue'
-
+import $ from 'jquery'
 import Cookies from 'js-cookie'
 
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
@@ -12,7 +12,7 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
-import $ from 'jquery'
+
 import './icons' // icon
 import './permission' // permission control
 import './utils/error-log' // error log
@@ -28,17 +28,17 @@ import * as filters from './filters' // global filters
  * please remove it before going online! ! !
  */
 
-import { mockXHR } from '../mock'
+/* import { mockXHR } from '../mock'
 if (process.env.NODE_ENV === 'production') {
   mockXHR()
-}
+}*/
+
+window.$ = window.jQuery = window.jquery = $
+Vue.prototype.$ = Vue.prototype.jQuery = Vue.prototype.jquery = $
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
-
-window.$ = window.jQuery = window.jquery = $
-Vue.prototype.$ = Vue.prototype.jQuery = Vue.prototype.jquery = $
 
 // register global utility filters
 Object.keys(filters).forEach(key => {

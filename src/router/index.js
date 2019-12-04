@@ -39,50 +39,150 @@ import Layout from '@/layout'
  * all roles can be accessed
  */
 export const constantRoutes = [
+  {
+    path: '/',
+    name: 'home',
+    meta: { showFooter: true, headerFull: true, title: '费查查' },
+    component: () => import('@/views/Home.vue'),
+    hidden: true
+  },
+  {
+    path: '/login',
+    name: 'login',
+    // meta : { showFooter : true , headerFull : false , title : '登录' } ,
+    component: () => import('@/views/Login.vue'),
+    hidden: true
+  },
+  {
+    path: '/register',
+    name: 'register',
+    meta: { showFooter: true, headerFull: false, title: '注册' },
+    component: () => import('@/views/Register.vue'),
+    hidden: true
+  },
+  {
+    path: '/reset-password',
+    name: 'resetPassword',
+    meta: { showFooter: true, headerFull: false, title: '忘记密码' },
+    component: () => import('@/views/ResetPassword.vue'),
+    hidden: true
+  },
+  {
+    path: '/help-center',
+    name: 'helpCenter',
+    meta: { showFooter: true, headerFull: true, title: '帮助中心' },
+    component: () => import('@/views/HelpCenter.vue'),
+    hidden: true
+  },
+  {
+    path: '/vip',
+    name: 'vip',
+    meta: { showFooter: true, headerFull: true, title: '企业VIP' },
+    component: () => import('@/views/vip.vue'),
+    hidden: true
+  },
+  // 专利年费
+  {
+    path: '/patentAnnual',
+    component: Layout,
+    redirect: '/patentAnnual/annualQuery',
+    name: 'patentAnnual',
+    meta: {
+      title: '专利年费',
+      icon: 'example'
+    },
+    children: [
+      // 年费批量查询
+      {
+        path: 'annualQuery',
+        component: () => import('@/views/patent_annual/AnnualQuery.vue'),
+        name: 'consoleAnnualQuery',
+        meta: { title: '年费批量查询', icon: 'edit' }
+      },
+      // 年费监控
+      {
+        path: 'annualMonitor',
+        component: () => import('@/views/patent_annual/AnnualMonitor.vue'),
+        name: 'consoleAnnualMonitor',
+        meta: { title: '年费监控', icon: 'edit' }
+      }
+    ]
+  },
+  // 专利批量下载
+  {
+    path: '/patentDownload',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/patent_download/index'),
+        name: 'patentDownload',
+        meta: { title: '专利批量下载', icon: 'documentation', affix: true }
+      },
+      // 专利详情
+      {
+        path: 'console-fee-detail',
+        component: () => import('@/views/console/detail.vue'),
+        name: 'consoleFeeDetail',
+        meta: { title: '专利详情', noCache: true, activeMenu: '/patentDownload/index' },
+        hidden: true
+      }
+    ]
+  },
+  // 目录导出
+  {
+    path: '/catalogExport',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/catalog_export/index'),
+        name: 'catalogExport',
+        meta: { title: '目录导出', icon: 'documentation', affix: true }
+      }
+    ]
+  },
+  // 免费工具
+  {
+    path: '/freeTool',
+    component: Layout,
+    redirect: '/freeTool/zws',
+    name: 'freeTool',
+    meta: {
+      title: '免费工具',
+      icon: 'example'
+    },
+    children: [
+      // 转五书
+      {
+        path: 'zws',
+        component: () => import('@/views/free_tool/zws.vue'),
+        name: 'zws',
+        meta: { title: '转五书', icon: 'edit' }
+      },
+      // 审查通知书下载
+      {
+        path: 'exameNoticeDownload',
+        component: () => import('@/views/free_tool/exameNoticeDownload.vue'),
+        name: 'exameNoticeDownload',
+        meta: { title: '审查通知书下载', icon: 'edit' }
+      }
+    ]
+  },
+  // 可视化分析
+  {
+    path: '/visualAnalysis',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/visual_analysis/index'),
+        name: 'visualAnalysis',
+        meta: { title: '可视化分析', icon: 'documentation', affix: true }
+      }
+    ]
+  },
   /* {
-    path : '/' ,
-    name : 'home' ,
-    meta : { showFooter : true , headerFull : true , title : '费查查' } ,
-    component : () => import( './views/Home.vue' ) ,
-  } ,
-  {
-    path : '/login' ,
-    name : 'login' ,
-    meta : { showFooter : true , headerFull : false , title : '登录' } ,
-    component : () => import( './views/Login.vue' ) ,
-  } ,
-  {
-    path : '/register' ,
-    name : 'register' ,
-    meta : { showFooter : true , headerFull : false , title : '注册' } ,
-    component : () => import('./views/Register.vue' ) ,
-  } ,
-  {
-    path : '/reset-password' ,
-    name : 'resetPassword' ,
-    meta : { showFooter : true , headerFull : false , title : '忘记密码' } ,
-    component : () => import(  './views/ResetPassword.vue' ) ,
-  } ,
-  {
-    path : '/help-center' ,
-    name : 'helpCenter' ,
-    meta : { showFooter : true , headerFull : true , title : '帮助中心' } ,
-    component : () => import('./views/HelpCenter.vue' ) ,
-  } ,
-  {
-    path : '/vip' ,
-    name : 'vip' ,
-    meta : { showFooter : true , headerFull : true , title : '企业VIP' } ,
-    component : () => import( './views/vip.vue' ) ,
-  } ,
-  {
-    path : '/console-fee-detail' ,
-    name : 'consoleFeeDetail' ,
-    meta : { showFooter : true , headerFull : false , title : '专利详情' } ,
-    component : () => import( './views/console/detail.vue' ) ,
-  } ,*/
-
-  {
     path: '/console',
     component: Layout,
     redirect: '/console/annual-query',
@@ -92,24 +192,6 @@ export const constantRoutes = [
       icon: 'example'
     },
     children: [
-      {
-        path: 'annual-query',
-        component: () => import('@/views/console/AnnualQuery.vue'),
-        name: 'consoleAnnualQuery',
-        meta: { title: 'Create Article', icon: 'edit' }
-      },
-      {
-        path: 'annual-monitor',
-        component: () => import('@/views/console/AnnualMonitor.vue'),
-        name: 'consoleAnnualMonitor',
-        meta: { title: 'Create Article', icon: 'edit' }
-      },
-      {
-        path: 'batch-query',
-        component: () => import('@/views/console/BatchQuery.vue'),
-        name: 'consoleBatchQuery',
-        meta: { title: 'Create Article', icon: 'edit' }
-      },
       {
         path: 'patent-analysis',
         component: () => import('@/views/console/PatentAnalysis.vue'),
@@ -122,35 +204,7 @@ export const constantRoutes = [
         name: 'consoleUserCenter',
         meta: { title: 'Create Article', icon: 'edit' }
       }
-      /* {
-        path: 'annual-monitor',
-        component: () => import('@/views/console/AnnualMonitor.vue'),
-        name: 'consoleAnnualMonitor',
-        meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
-        hidden: true
-      },*/
     ]
-  },
-  /* {
-    path: '/redirect',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: '/redirect/:path*',
-        component: () => import('@/views/redirect/index')
-      }
-    ]
-  },
-  {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
-  },
-  {
-    path: '/auth-redirect',
-    component: () => import('@/views/login/auth-redirect'),
-    hidden: true
   },*/
   {
     path: '/404',
@@ -174,45 +228,6 @@ export const constantRoutes = [
         meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
       }
     ]
-  },
-  {
-    path: '/documentation',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: 'Documentation', icon: 'documentation', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/guide',
-    component: Layout,
-    redirect: '/guide/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/guide/index'),
-        name: 'Guide',
-        meta: { title: 'Guide', icon: 'guide', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/profile',
-    component: Layout,
-    redirect: '/profile/index',
-    hidden: true,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: { title: 'Profile', icon: 'user', noCache: true }
-      }
-    ]
   }*/
 ]
 
@@ -221,259 +236,6 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-  /* {
-    path: '/permission',
-    component: Layout,
-    redirect: '/permission/page',
-    alwaysShow: true, // will always show the root menu
-    name: 'Permission',
-    meta: {
-      title: 'Permission',
-      icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
-    },
-    children: [
-      {
-        path: 'page',
-        component: () => import('@/views/permission/page'),
-        name: 'PagePermission',
-        meta: {
-          title: 'Page Permission',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
-        name: 'DirectivePermission',
-        meta: {
-          title: 'Directive Permission'
-          // if do not set roles, means: this page does not require permission
-        }
-      },
-      {
-        path: 'role',
-        component: () => import('@/views/permission/role'),
-        name: 'RolePermission',
-        meta: {
-          title: 'Role Permission',
-          roles: ['admin']
-        }
-      }
-    ]
-  },
-
-  {
-    path: '/icon',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/icons/index'),
-        name: 'Icons',
-        meta: { title: 'Icons', icon: 'icon', noCache: true }
-      }
-    ]
-  },*/
-
-  /** when your routing map is too long, you can split it into small modules **/
-  // componentsRouter,
-  // chartsRouter,
-  // nestedRouter,
-  // tableRouter,
-
-  /* {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/list',
-    name: 'Example',
-    meta: {
-      title: 'Example',
-      icon: 'example'
-    },
-    children: [
-      {
-        path: 'create',
-        component: () => import('@/views/example/create'),
-        name: 'CreateArticle',
-        meta: { title: 'Create Article', icon: 'edit' }
-      },
-      {
-        path: 'edit/:id(\\d+)',
-        component: () => import('@/views/example/edit'),
-        name: 'EditArticle',
-        meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
-        hidden: true
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/example/list'),
-        name: 'ArticleList',
-        meta: { title: 'Article List', icon: 'list' }
-      }
-    ]
-  },
-
-  {
-    path: '/tab',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/tab/index'),
-        name: 'Tab',
-        meta: { title: 'Tab', icon: 'tab' }
-      }
-    ]
-  },
-
-  {
-    path: '/error',
-    component: Layout,
-    redirect: 'noRedirect',
-    name: 'ErrorPages',
-    meta: {
-      title: 'Error Pages',
-      icon: '404'
-    },
-    children: [
-      {
-        path: '401',
-        component: () => import('@/views/error-page/401'),
-        name: 'Page401',
-        meta: { title: '401', noCache: true }
-      },
-      {
-        path: '404',
-        component: () => import('@/views/error-page/404'),
-        name: 'Page404',
-        meta: { title: '404', noCache: true }
-      }
-    ]
-  },
-
-  {
-    path: '/error-log',
-    component: Layout,
-    children: [
-      {
-        path: 'log',
-        component: () => import('@/views/error-log/index'),
-        name: 'ErrorLog',
-        meta: { title: 'Error Log', icon: 'bug' }
-      }
-    ]
-  },
-
-  {
-    path: '/excel',
-    component: Layout,
-    redirect: '/excel/export-excel',
-    name: 'Excel',
-    meta: {
-      title: 'Excel',
-      icon: 'excel'
-    },
-    children: [
-      {
-        path: 'export-excel',
-        component: () => import('@/views/excel/export-excel'),
-        name: 'ExportExcel',
-        meta: { title: 'Export Excel' }
-      },
-      {
-        path: 'export-selected-excel',
-        component: () => import('@/views/excel/select-excel'),
-        name: 'SelectExcel',
-        meta: { title: 'Export Selected' }
-      },
-      {
-        path: 'export-merge-header',
-        component: () => import('@/views/excel/merge-header'),
-        name: 'MergeHeader',
-        meta: { title: 'Merge Header' }
-      },
-      {
-        path: 'upload-excel',
-        component: () => import('@/views/excel/upload-excel'),
-        name: 'UploadExcel',
-        meta: { title: 'Upload Excel' }
-      }
-    ]
-  },
-
-  {
-    path: '/zip',
-    component: Layout,
-    redirect: '/zip/download',
-    alwaysShow: true,
-    name: 'Zip',
-    meta: { title: 'Zip', icon: 'zip' },
-    children: [
-      {
-        path: 'download',
-        component: () => import('@/views/zip/index'),
-        name: 'ExportZip',
-        meta: { title: 'Export Zip' }
-      }
-    ]
-  },
-
-  {
-    path: '/pdf',
-    component: Layout,
-    redirect: '/pdf/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/pdf/index'),
-        name: 'PDF',
-        meta: { title: 'PDF', icon: 'pdf' }
-      }
-    ]
-  },
-  {
-    path: '/pdf/download',
-    component: () => import('@/views/pdf/download'),
-    hidden: true
-  },
-
-  {
-    path: '/theme',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/theme/index'),
-        name: 'Theme',
-        meta: { title: 'Theme', icon: 'theme' }
-      }
-    ]
-  },
-
-  {
-    path: '/clipboard',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/clipboard/index'),
-        name: 'ClipboardDemo',
-        meta: { title: 'Clipboard', icon: 'clipboard' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://github.com/PanJiaChen/vue-element-admin',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },*/
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

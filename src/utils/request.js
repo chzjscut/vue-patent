@@ -1,12 +1,15 @@
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import { /* MessageBox, */Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import { FETCH_HEADERS, SERVER_BASE_URL } from '@/utils/const'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL: SERVER_BASE_URL,
+  // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
+  headers: FETCH_HEADERS,
   timeout: 5000 // request timeout
 })
 
@@ -46,7 +49,7 @@ service.interceptors.response.use(
     const res = response.data
 
     // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 20000) {
+    /* if (res.code !== 20000) {
       Message({
         message: res.message || 'Error',
         type: 'error',
@@ -69,6 +72,19 @@ service.interceptors.response.use(
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
       return res
+    }*/
+
+    if (res && res.success) {
+      return res
+    } else {
+      if (res.code === '50000') {
+        Message({ type: 'error', message: '登录状态失效或未登录，请先登录', center: true, customClass: 'el-message-custom' })
+        setTimeout(() => {
+          location.replace('/login')
+        }, 500)
+      } else {
+        Message({ type: 'error', message: res.msg, center: true, customClass: 'el-message-custom' })
+      }
     }
   },
   error => {

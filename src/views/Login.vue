@@ -3,7 +3,7 @@
     <div class="content">
       <div class="banner-parent">
         <div class="banner-img">
-          <img src="../assets/images/login_banner_bg.png" alt="">
+          <!-- img src="../assets/images/login_banner_bg.png" alt=""> -->
         </div>
       </div>
 
@@ -103,7 +103,7 @@
             <el-button type="text" @click="handleResetPassword">忘记密码</el-button>
           </p>
 
-          <img style="margin-bottom: 20px" src="../assets/images/login_line.png" alt="">
+          <!-- <img style="margin-bottom: 20px" src="../assets/images/login_line.png" alt=""> -->
           <!--注册开始-->
           <p class="no-account">还没账号？</p>
           <el-button
@@ -121,6 +121,8 @@
 </template>
 <script>
 import { mapMutations } from 'vuex'
+import { PASSWORD_LOGIN, VERIFY_LOGIN, VERIFY_CODE } from '@/api/user'
+import { setToken } from '@/utils/auth'
 
 export default {
   data() {
@@ -175,29 +177,33 @@ export default {
 
     // 验证码登录
     async loginWithVerification() {
-      this.$api.VERIFY_LOGIN({ data: this.formVerification }).then(res => {
+      VERIFY_LOGIN(this.formVerification).then(res => {
         this.handleLoginSuccess(res.data)
       })
     },
     // 密码登录
     async loginWithPassword() {
-      this.$api.PASSWORD_LOGIN({ data: this.formPassword }).then(res => {
+      await PASSWORD_LOGIN(this.formPassword).then(res => {
+        console.log(res)
         this.handleLoginSuccess(res.data)
       })
     },
 
     // 登录成功处理逻辑
     handleLoginSuccess(userInfo) {
+      console.log(this.$store)
       // this.SET_USER_INFO(JSON.stringify(userInfo))
-      this.$store.commit('SET_USER_INFO', JSON.stringify(userInfo))
+      this.$store.commit('user/SET_USER_INFO', JSON.stringify(userInfo))
+      // this.$store.commit('user/SET_ROLES', ['admin'])
       localStorage.setItem('userInfo', JSON.stringify(userInfo))
+      setToken(userInfo.token)
       this.$message({
         type: 'success',
         message: '登录成功',
         customClass: 'el-message-custom'
       })
-      location.reload()
-      this.$router.push('/')
+      // location.reload()
+      this.$router.push('/patentAnnual')
     },
 
     // 获取验证码
@@ -210,7 +216,7 @@ export default {
     // 获取验证码接口
     async fetchVerification() {
       this.verificationInterval()
-      this.$api.VERIFY_CODE({ data: { phone: this.formVerification.account }, returnError: true })
+      VERIFY_CODE({ phone: this.formVerification.account })
         .then(() => {
           this.$message({
             type: 'success',

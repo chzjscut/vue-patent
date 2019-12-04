@@ -259,11 +259,11 @@ export default {
 
     // window绑定页面尺寸变化事件
     windowBindResize() {
-      // $(window).bind('resize', this.handlePageSizeChange())
+      $(window).bind('resize', this.handlePageSizeChange())
     },
     // window解绑页面尺寸变化事件
     windowUnbindResize() {
-      // $(window).unbind('resize', this.handlePageSizeChange())
+      $(window).unbind('resize', this.handlePageSizeChange())
     },
 
     // 处理页面尺寸变化逻辑
