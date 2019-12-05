@@ -1,7 +1,20 @@
 <template>
   <div class="annual-query">
+    <el-button type="primary" size="small" @click="dialogShow">多专利查询</el-button>
+    <el-dropdown trigger="click" @command="queryChoose">
+      <el-button type="primary" size="small" style="width: 92px;height: 32px;">
+        表格查询<i class="el-icon-arrow-down el-icon--right" />
+      </el-button>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item command="1">excel导入</el-dropdown-item>
+        <el-dropdown-item command="2">模板下载</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
+    <el-button type="primary" size="small" @click="handleAttentionAll">一键提醒</el-button>
+
+    <!-- <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".xlsx, .xls" @change="handleClick"> -->
     <!-- 全局搜索 -->
-    <div class="search-global">
+    <!-- <div class="search-global">
       <i class="el-icon-info" style="margin-right: 10px" />
       <el-input
         v-model="searchConditionKey"
@@ -17,10 +30,10 @@
         @click="searchCondition"
       >搜索
       </el-button>
-    </div>
+    </div> -->
 
     <!--查询条件-->
-    <div class="table-filter">
+    <!-- <div class="table-filter">
       <el-input v-model="searchData.zlNo" placeholder="请输入专利号" size="small" />
       <el-input v-model="searchData.applyPersonName" placeholder="请输入专利权人全称" size="small" />
       <el-input v-model="searchData.dailijgmc" placeholder="请输入代理机构全称" size="small" />
@@ -49,7 +62,28 @@
         </template>
         <el-button type="primary" size="small" @click="handleAttentionAll">一键提醒</el-button>
       </div>
-    </div>
+    </div> -->
+    <el-upload
+      :action="batchInsertAction"
+      :show-file-list="false"
+      :on-err="handleUploadError"
+      :on-success="handleUploadSuccess"
+      :before-upload="handleBeforeUpload"
+      accept=".xlsx, .xls"
+      :headers="uploadHeaders"
+      style="display: none;margin: 0 10px"
+    >
+      <el-button
+        id="uploadExcel"
+        ref="excelUpload"
+        class="filter-box"
+        type="primary"
+        size="small"
+      >导入
+      </el-button>
+    </el-upload>
+    <a id="downloadTmpl" ref="downloadTmpl" :href="excelTemplate" download="专利批量导入Excel模板.xlsx" class="download-template" style="display: none;">专利批量导入Excel模板下载</a>
+
     <table-com
       :list-loading="listLoading"
       :page="page"
@@ -61,16 +95,32 @@
       @currPageChange="handleCurrPageChange"
       @multipleSelectChange="handleMultipleSelectChange"
     />
+
+    <!-- 专利查询弹窗 -->
+    <el-dialog title="专利批量查询" :visible.sync="isDialogVisible">
+      <el-form label-position="top">
+        <el-form-item label="专利号:" label-width="100px">
+          <el-input v-model="patentStr" type="textarea" :rows="5" placeholder="请输入专利号，多个专利号之间用逗号隔开" auto-complete="off" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="doBatchSearch();isDialogVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
 import TableCom from './table'
 import { EXCEL_TEMPLATE, FETCH_HEADERS, UPLOAD_ACTION } from '@/utils/const'
+import { GLOBAL_SEARCH, BASE_LIST, ATTENTION_PATENT } from '@/api/console'
 
 export default {
   components: { TableCom },
   data() {
     return {
+      isDialogVisible: false, // 控制弹窗显示
+      patentStr: '', // 多个专利号的字符串，用于专利批量查询
       batchInsertAction: UPLOAD_ACTION,
       batchImportBtnTxt: '专利批量导入',
       batchImportDisabled: false,
@@ -102,11 +152,26 @@ export default {
   methods: {
     async init() {
       await this.initGlobalKey()
-      if (this.searchConditionKey) {
+      this.getSearchList()
+      /* if (this.searchConditionKey) {
         this.searchCondition()
+      }*/
+    },
+
+    // 选择表格查询方式
+    queryChoose(e) {
+      const uploadBtn = document.getElementById('uploadExcel')
+      const downloadUrl = document.getElementById('downloadTmpl')
+      if (e === '1') {
+        this.$refs['excelUpload'].$el.click()
+      } else if (e === '2') {
+        downloadUrl.click()
       }
     },
 
+    dialogShow() {
+      this.isDialogVisible = true
+    },
     // 初始化全局搜索关键词
     initGlobalKey() {
       const query = this.$route.query
@@ -127,7 +192,7 @@ export default {
       this.searchData.zlNo = ''
       this.searchData.applyPersonName = ''
       this.listLoading = true
-      this.$api.GLOBAL_SEARCH({ data: { searchCondition: this.searchConditionKey }, returnError: true })
+      GLOBAL_SEARCH({ searchCondition: this.searchConditionKey })
         .then(res => {
           this.tableData = res.data
           this.total = res.total || 0
@@ -155,11 +220,27 @@ export default {
       this.fetchList()
     },
 
+    cancel() {
+      this.patentStr = ''
+      this.isDialogVisible = false
+    },
+
+    // 根据输入的专利号进行批量查询
+    doBatchSearch() {
+      console.log(this.patentStr)
+      if (this.patentStr) {
+        this.resetPagination()
+        this.importZlIds = this.patentStr.split(',')
+        this.patentStr = ''
+        this.fetchImportList()
+      }
+    },
+
     // 列表查询
     async fetchList() {
       this.listLoading = true
       const param = { ...this.searchData, pageNo: this.page, pageSize: this.size }
-      this.$api.BASE_LIST({ data: param, returnError: true })
+      BASE_LIST(param)
         .then(res => {
           this.tableData = res.data
           this.total = res.total || 0
@@ -180,11 +261,8 @@ export default {
       this.listLoading = true
       // 计算查询ids数组
       const paramZlNos = this.importZlIds.slice((this.page - 1) * this.size, this.page * this.size)
-      this.$api.BASE_LIST({
-        timeout: 0,
-        returnError: true,
-        data: { zlNos: paramZlNos.join() }
-      })
+      console.log(paramZlNos, this.page)
+      BASE_LIST({ zlNos: paramZlNos.join() })
         .then(res => {
           this.tableData = res.data
           this.listLoading = false
@@ -201,6 +279,7 @@ export default {
 
     // 获取查询列表
     getSearchList() {
+      console.log(this.importZlIds.length)
       if (this.importZlIds.length) {
         this.fetchImportList()
       } else {
@@ -211,7 +290,7 @@ export default {
     // 单个关注
     async handleSwitchChange(val) {
       this.listLoading = true
-      this.$api.ATTENTION_PATENT({ data: val, returnError: true })
+      ATTENTION_PATENT(val)
         .then(() => {
           this.getSearchList()
           this.$message({
@@ -239,7 +318,7 @@ export default {
           return item.zlNo
         }).join()
 
-        this.$api.ATTENTION_PATENT({ data: { selectedIds, attentionState: 1 }, returnError: true })
+        ATTENTION_PATENT({ selectedIds, attentionState: 1 })
           .then(() => {
             this.getSearchList()
             this.$message({
@@ -270,7 +349,8 @@ export default {
       this.batchImportDisabled = true
       this.batchImportBtnTxt = '批量导入中...'
     },
-    // 上传成功
+
+    // excel上传成功回调
     handleUploadSuccess(response) {
       this.batchImportDisabled = false
       this.batchImportBtnTxt = '专利批量导入'
@@ -279,9 +359,12 @@ export default {
         type: response.success ? 'success' : 'error',
         customClass: 'el-message-custom'
       })
-      this.total = response.data.length || 0
-      this.importZlIds = response.data
-      this.fetchImportList()
+      if (response.success) {
+        this.resetPagination()
+        this.total = response.data.length || 0
+        this.importZlIds = response.data
+        this.fetchImportList()
+      }
     },
     // 上传失败
     handleUploadError(err) {

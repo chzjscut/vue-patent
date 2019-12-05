@@ -98,6 +98,7 @@
 </template>
 <script>
 import TableCom from './table'
+import { ATTENTION_LIST } from '@/api/console'
 // import { download } from '../../plugins/axios.download'
 
 export default {
@@ -171,7 +172,7 @@ export default {
       this.listLoading = true
       const param = { ...this.searchFilter, pageNo: this.page, pageSize: this.size }
 
-      this.$api.ATTENTION_LIST({ data: param, returnError: true })
+      ATTENTION_LIST(param)
         .then(res => {
           this.tableData = res.data
           this.total = res.total

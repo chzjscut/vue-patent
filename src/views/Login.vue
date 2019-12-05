@@ -122,7 +122,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import { PASSWORD_LOGIN, VERIFY_LOGIN, VERIFY_CODE } from '@/api/user'
-import { setToken } from '@/utils/auth'
+import { setToken, setSalt } from '@/utils/auth'
 
 export default {
   data() {
@@ -197,6 +197,7 @@ export default {
       // this.$store.commit('user/SET_ROLES', ['admin'])
       localStorage.setItem('userInfo', JSON.stringify(userInfo))
       setToken(userInfo.token)
+      setSalt(userInfo.salt)
       this.$message({
         type: 'success',
         message: '登录成功',

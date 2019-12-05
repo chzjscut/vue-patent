@@ -89,22 +89,22 @@ export const constantRoutes = [
     name: 'patentAnnual',
     meta: {
       title: '专利年费',
-      icon: 'example'
+      icon: 'list'
     },
     children: [
-      // 年费批量查询
+      // 批量查询
       {
         path: 'annualQuery',
         component: () => import('@/views/patent_annual/AnnualQuery.vue'),
         name: 'consoleAnnualQuery',
-        meta: { title: '年费批量查询', icon: 'edit' }
+        meta: { title: '批量查询', icon: 'search' }
       },
       // 年费监控
       {
         path: 'annualMonitor',
         component: () => import('@/views/patent_annual/AnnualMonitor.vue'),
         name: 'consoleAnnualMonitor',
-        meta: { title: '年费监控', icon: 'edit' }
+        meta: { title: '年费监控', icon: 'eye-open' }
       }
     ]
   },
@@ -117,7 +117,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/patent_download/index'),
         name: 'patentDownload',
-        meta: { title: '专利批量下载', icon: 'documentation', affix: true }
+        meta: { title: '专利批量下载', icon: 'documentation' }
       },
       // 专利详情
       {
@@ -129,7 +129,7 @@ export const constantRoutes = [
       }
     ]
   },
-  // 目录导出
+  // 著目录导出
   {
     path: '/catalogExport',
     component: Layout,
@@ -138,7 +138,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/catalog_export/index'),
         name: 'catalogExport',
-        meta: { title: '目录导出', icon: 'documentation', affix: true }
+        meta: { title: '著目录导出', icon: 'documentation' }
       }
     ]
   },
@@ -150,7 +150,7 @@ export const constantRoutes = [
     name: 'freeTool',
     meta: {
       title: '免费工具',
-      icon: 'example'
+      icon: 'list'
     },
     children: [
       // 转五书
@@ -178,7 +178,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/visual_analysis/index'),
         name: 'visualAnalysis',
-        meta: { title: '可视化分析', icon: 'documentation', affix: true }
+        meta: { title: '可视化分析', icon: 'documentation' }
       }
     ]
   },
