@@ -105,6 +105,14 @@ export const constantRoutes = [
         component: () => import('@/views/patent_annual/AnnualMonitor.vue'),
         name: 'consoleAnnualMonitor',
         meta: { title: '年费监控', icon: 'eye-open' }
+      },
+      // 年费详情
+      {
+        path: 'annualDetail',
+        component: () => import('@/views/patent_annual/annualDetail.vue'),
+        name: 'annualDetail',
+        meta: { title: '年费详情', icon: 'eye-open' },
+        hidden: true
       }
     ]
   },
@@ -121,9 +129,9 @@ export const constantRoutes = [
       },
       // 专利详情
       {
-        path: 'console-fee-detail',
-        component: () => import('@/views/console/detail.vue'),
-        name: 'consoleFeeDetail',
+        path: 'patentDetail',
+        component: () => import('@/views/patent_download/patentDetail.vue'),
+        name: 'patentDetail',
         meta: { title: '专利详情', noCache: true, activeMenu: '/patentDownload/index' },
         hidden: true
       }

@@ -83,14 +83,14 @@
           />
         </template>
       </el-table-column>
-      <template v-if="$route.name === 'consoleAnnualMonitor'">
+      <template><!--  v-if="$route.name === 'consoleAnnualMonitor'" -->
         <el-table-column label="详情" show-tooltip-when-overflow>
           <template slot-scope="scope">
             <router-link
               target="_blank"
               tag="a"
               style="color: #409EFF"
-              :to="{name: 'consoleFeeDetail', query: {zlNo: scope.row.zlNo}}"
+              :to="{name: 'annualDetail', query: {zlNo: scope.row.zlNo}}"
             >费用信息
             </router-link>
           </template>

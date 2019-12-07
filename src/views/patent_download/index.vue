@@ -1,22 +1,54 @@
 <template>
-  <div class="content">
+  <div class="main">
+    <!-- 头部操作行 -->
     <div class="operations-list">
-      <a class="switch_on type_l  " data-type="l">
-        <span class="barIcon" />列表模式<i class="iconfont" style="font-size: 12px;"></i>
+      <a class="switch_on" :class="[displayList[displayType].iconClass]" @click="isSelectBoxVisible=!isSelectBoxVisible">
+        <span class="barIcon" />{{ displayList[displayType].label }}<i class="iconfont el-icon-caret-bottom" style="font-size: 12px;" />
       </a>
-      <div class="fn-hide type_switch" style="display: none;">
-        <a class="active Js_type type_l" data-type="l"><span class="barIcon" />列表模式</a>
-        <a class="Js_type type_s" data-type="s"><span class="barIcon" />图文模式</a>
+      <div v-show="isSelectBoxVisible" class="type_switch">
+        <a v-for="(item, index) in displayList" :key="index" class="Js_type type_l" :class="[item.iconClass, {active: displayType===index}]" @click="selectDisplayType(index)"><span class="barIcon" />{{ item.label }}</a>
       </div>
 
       <a class="Js_export"><span class="barIcon" />著录项导出</a>
       <a class="Js_multi_export"><span class="barIcon" />批量下载</a>
       <a id="Js_patentFee_dropdown" class="Js_patentFee" style="position: relative;"><span class="barIcon" />专利年费</a>
     </div>
+
+    <!-- 内容展示区域 -->
+    <div class="content">
+      <!-- 列表模式 -->
+      <table-display v-if="displayType===0" />
+      <!-- 图文模式 -->
+      <list-display v-else />
+    </div>
   </div>
 </template>
 <script>
+import tableDisplay from './table'
+import listDisplay from './list'
 
+export default {
+  components: { tableDisplay, listDisplay },
+  data() {
+    return {
+      isSelectBoxVisible: false, // 列表模式下拉框是否显示
+      displayType: 0, // 内容展示方式：0 - 列表模式 ，1 - 图文模式
+      displayList: [{
+        iconClass: 'type_l',
+        label: '列表模式'
+      }, {
+        iconClass: 'type_s',
+        label: '图文模式'
+      }]
+    }
+  },
+  methods: {
+    selectDisplayType(index) {
+      this.displayType = index
+      this.isSelectBoxVisible = false
+    }
+  }
+}
 </script>
 <style scoped>
 	.operations-list{
@@ -35,13 +67,11 @@
     	line-height: 40px;
 	}
 	.switch_on{
-	    margin-left: 0;
+	    margin-left: 20px;
+	    position: relative;
 	}
 	.type_l{
-    	position: relative;
-	}
-	.switch_on.type_l{
-		margin-left: 20px;
+
 	}
 	.barIcon{
 		width: 22px;
@@ -69,5 +99,50 @@
 	    font-size: 12px;
 	    font-style: normal;
 	    font-weight: bold;
+	}
+	.type_switch {
+	    width: 88px;
+	    position: absolute;
+	    top: 38px;
+	    left: 20px;
+	    z-index: 100;
+	    border: 1px solid #ccc;
+	    box-sizing: content-box;
+	}
+	.type_switch a{
+	    border: 0;
+	    font-size: 12px;
+	    color: #000;
+	    width: 88px;
+	    padding: 0;
+	    margin: 0;
+	    cursor: pointer;
+	    float: left;
+	    height: 30px;
+	    line-height: 30px;
+	    background-color: #fff;
+	    display: flex;
+	    display: -webkit-flex;
+	    display: -ms-flex;
+	    display: -moz-flex;
+	    flex-direction: row;
+	    -ms-flex-direction: row;
+	    -webkit-flex-direction: row;
+	    -moz-flex-direction: row;
+	}
+	.type_switch a .barIcon{
+		margin: 7px 0 0 6px;
+	}
+	.type_switch .type_l .barIcon{
+		background-position: -10px -40px;
+	}
+	.type_switch .type_s .barIcon{
+		background-position: -10px -15px;
+	}
+	.type_switch a:hover{
+		background-color: #F0F0F0;
+	}
+	.type_switch a.active{
+		background-color: #F0F0F0;
 	}
 </style>
