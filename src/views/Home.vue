@@ -1,394 +1,265 @@
 <template>
-  <div class="main">
-    <div id="home" class="index-banner">
-      <div class="cover" />
-      <div class="s wp">
-        <h2><span class="mc">查年费，就上费查查</span></h2>
-        <el-row style="width: 800px; padding-top: 100px;margin: 0 auto">
-          <el-col :span="20">
-            <el-input
-              v-model="searchKey"
-              style="border-bottom-left-radius: 0;border-top-left-radius: 0"
-              placeholder="请输入申请人全称、专利号关键字，如20182021488655"
-              @keyup.enter.native="handleSearch()"
-            />
-          </el-col>
-          <el-col :span="4">
-            <el-button
-              type="primary"
-              size="large"
-              style="width: 100%;border-bottom-left-radius: 0;border-top-left-radius: 0"
-              @click="handleSearch"
-            >查一下
-            </el-button>
-          </el-col>
-        </el-row>
-        <h6>本系统采用精准查询，查询条件中的申请号、申请人二者必须填一个。输入的申请号/专利号必须为9位或13位，不需输入字母“ZL”，并且不能包含“.”</h6>
-      </div>
-      <div class="index-slogan">
-        <div class=" wp cl">
-          <div
-            v-for="item in sloganList"
-            :key="item.sub"
-            class="service-subject cl"
-          >
-            <div class="m">
-              <img :src="item.icon" width="48" height="48" :alt="item.sub"></div>
-            <div class="title-sub">{{ item.sub }}</div>
-            <p class="des" v-html="item.desc" />
-          </div>
+  <div class="frame">
+    <!-- header -->
+    <div class="header">
+      <div class="clear" style="height:60px;line-height:60px;">
+        <img class="logo" height="35px" src="~@/assets/images/logo_1.png">
+        <div id="top-search" class="top-search">
+          <input id="top-input" type="text" placeholder="请输入专利号码或任意文字搜索专利..." name="">
+          <i id="floatsearch" class="search-icon" />
+        </div>
+        <div class="log fr clear">
+          <a target="_blank" class="btn-login" href="https://www.patentics.com/searchcn.htm">登录</a>
+          <a href="#mytext" class="btn-trial">试用</a>
+        </div>
+        <div class="nav-wrap fr">
+          <ul class="nav-menu clear">
+            <li class="nav-li nav_a li_o">
+              <a href="index.html">首页</a>
+            </li>
+            <li class="nav-li nav_a li_o">
+              <a href="product.html">产品</a>
+            </li>
+            <li class="nav-li"><a href="solution.html">典型应用</a></li>
+            <li class="nav-li">
+              <a href="article.html">文档与帮助</a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
 
-    <!--服务项目-->
-    <div id="service" class="index-service ">
-      <div class="index-title">
-        <div class="title">服务项目</div>
-        <div class="title-line" />
-        <p class="tips">用我们的专业和诚信赢得您的信赖，从标准化到定制化均有您想要的服务！</p>
+    <!-- banner -->
+    <div class="banner" style="width: 1071px;height: 921px;">
+      <div class="video-box">
+        <video id="myvideo" muted="" autoplay="autoplay" loop="loop" src="~@/assets/video/cc.mp4" />
       </div>
-      <div class="wp">
-        <div class="s wps cl">
-          <template v-for="(s,i) in serviceList">
-            <div :key="i" class="sub" @mouseenter="serviceIndex = i" @mouseleave="serviceIndex = -1">
-              <dl>
-                <dt>{{ s.title }}</dt>
-                <dd class="m">
-                  <img :src="s.img" width="80" height="80" :alt="s.title">
-                </dd>
-                <dd class="des" v-html="s.desc" />
-              </dl>
-              <ul v-show="i === serviceIndex" class="on">
-                <div class="ul-s">
-                  <h6>{{ s.layer.title }}</h6>
-                  <li v-for="item in s.layer.descList" :key="item" v-html="item" />
-                </div>
-              </ul>
-            </div>
-          </template>
+      <div id="searchdiv" class="search-wrap">
+        <div class="logo-wrap">
+          <img height="132px" style="margin-left:-25px;" src="~@/assets/images/logo100.png">
         </div>
+        <div class="slogan">
+          专利智能检索分析平台
+        </div>
+        <div class="search-box">
+          <i class="search-logo fa el-icon-search" />
+          <textarea id="textarea" placeholder="请输入关键词,公开号或者一段话..." type="text" name="" />
+          <i id="textclear" class="clear-icon fa el-icon-circle-close" />
+          <div id="search-btn" class="search_btn">Search</div>
+        </div>
+      </div>
+      <div id="tip-bottom" class="tip-bottom">
+        智&nbsp; ·&nbsp; 能&nbsp; ·&nbsp; 创&nbsp; ·&nbsp; 造&nbsp; ·&nbsp; 价&nbsp; ·&nbsp; 值
+      </div>
+
+      <div id="tototo" class="godown-wrap">
+        <img id="downimg" class="godown" src="~@/assets/images/godown.png" alt="">
       </div>
     </div>
 
-    <!--案例作品-->
-    <div id="case" class="index-case">
-      <div class="index-title">
-        <div class="title">客户案例</div>
-        <div class="title-line" />
-        <p class="tips">用技术与专注，将作品通过艺术和技术的结合，打造精品案例。</p>
-      </div>
-      <div class="wp">
-        <ul class="s cl">
-          <li v-for="item in caseList" :key="item.name">
-            <div>
-              <div class="m">
-                <img
-                  width="300"
-                  height="200"
-                  :src="item.img"
-                  class="attachment-post-thumbnail wp-post-image"
-                  :alt="item.name"
-                >
+    <!-- 内容主体 -->
+    <div class="main">
+      <div class="transfer">
+        <div class="container">
+          <div class="ibox ibox-hover clearfix">
+            <div class="ibox-info fl">
+              <br>
+              <h1 class="row-tit wow fadeInUp animated" data-wow-delay="0.3s" data-wow-duration="0.8s" style="visibility: visible; animation-duration: 0.8s; animation-delay: 0.3s; animation-name: fadeInUp;">全球传输加速 天涯皆如比邻</h1>
+              <i class="tit-hr  wow fadeInUp animated" data-wow-delay="0.3s" data-wow-duration="1.2s" style="visibility: visible; animation-duration: 1.2s; animation-delay: 0.3s; animation-name: fadeInUp;" />
+              <p class="row-info-item  wow fadeInUp animated" data-wow-delay="0.3s" data-wow-duration="1.5s" style="visibility: visible; animation-duration: 1.5s; animation-delay: 0.3s; animation-name: fadeInUp;">
+                联想独有的全球数据中心，文件同步分钟可达<br>
+                文件传输速度数倍提升，跨国协作亦如面对面<br>
+                断点续传，差量传输，传输效率与质量齐头并进</p>
+              <div class="row-btngroup  wow fadeInUp  animated" data-wow-delay="0.3s" data-wow-duration="2s" style="visibility: visible; animation-duration: 2s; animation-delay: 0.3s; animation-name: fadeInUp;">
+                <a id="link-15" class=" btn btn-getmore" alt="link-all" href="solution/07.html"><span>了解更多</span></a>
               </div>
-              <p><span v-html="item.name" /></p>
+              <div class="row-icon  wow fadeInUp  animated" data-wow-delay="0.3s" data-wow-duration="2.2s" style="visibility: visible; animation-duration: 2.2s; animation-delay: 0.3s; animation-name: fadeInUp;">
+                <div class="row-icon-1">
+                  <i />
+                  <span>5大洲25个数据中心</span>
+                </div>
+                <div class="row-icon-2">
+                  <i />
+                  <span>分钟级的全球同步技术</span>
+                </div>
+                <div class="row-icon-3">
+                  <i />
+                  <span>差量秒传提速30%</span>
+                </div>
+              </div>
             </div>
-          </li>
-        </ul>
+            <div id="gif1" class="ibox-pic fr wow fadeInUp animated" data-wow-duration="2.2s" style="visibility: visible; animation-duration: 2.2s; animation-name: fadeInUp;"><img src="~@/assets/images/gif1.gif"></div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- 结果 -->
-    <div class="index-customer index-f">
-      <div class="index-title">
-        <div class="title">对于结果，您所熟悉的他们这样说</div>
-        <div class="title-line" />
-        <p class="tips">费查查感恩众多知名伙伴对费查查的信赖与认可</p>
-      </div>
-      <div class="s wp">
-        <div class="customer-box">
-          <div class="bd">
-            <div class="tempWrap">
-              <el-carousel
-                height="130px"
-                :autoplay="false"
-                arrow="never"
-                indicator-position="outside"
-              >
-                <el-carousel-item v-for="(item,i) in customer" :key="i">
-                  <div class="cl clone">
-                    <div class="m">
-                      <img :src="item.img" :alt="item.title">
-                    </div>
-                    <div class="big-title">{{ item.title }}</div>
-                    <p v-html="item.desc" />
-                    <div class="s-title" v-html="item.subTitle" />
-                  </div>
-                </el-carousel-item>
-              </el-carousel>
+      <div class="cooperation">
+        <div class="container">
+          <div class="ibox ibox-hover clearfix">
+            <div id="gif2" class="ibox-pic fl wow fadeInUp animated" data-wow-duration="2.2s" style="visibility: visible; animation-duration: 2.2s; animation-name: fadeInUp;"><img src="~@/assets/images/gif2.gif"></div>
+            <div class="ibox-space-left ibox-info fr">
+              <br>
+              <h1 class="row-tit wow fadeInUp animated" data-wow-duration="0.8s" style="visibility: visible; animation-duration: 0.8s; animation-name: fadeInUp;">随时随地协作共享 办公如此轻松</h1>
+              <i class="tit-hr wow fadeInUp animated" data-wow-duration="1.2s" style="visibility: visible; animation-duration: 1.2s; animation-name: fadeInUp;" />
+              <p class="row-info-item wow fadeInUp animated" data-wow-duration="1.5s" style="visibility: visible; animation-duration: 1.5s; animation-name: fadeInUp;">跨部门多团队文件共享，灵活权限管控，高效团队协作<br>全终端覆盖，移动办公，即时消息通知，简单易用
+              </p>
+              <div class="row-btngroup wow fadeInUp animated" data-wow-duration="2s" style="visibility: visible; animation-duration: 2s; animation-name: fadeInUp;">
+                <a id="link-1" class="btn btn-getmore btn-getmore-blue" alt="link-all" href="/product/public.html"><span>了解更多</span></a>
+              </div>
+              <div class="row-icon  wow fadeInUp  animated" data-wow-delay="0.3s" data-wow-duration="2.2s" style="visibility: visible; animation-duration: 2.2s; animation-delay: 0.3s; animation-name: fadeInUp;">
+                <div class="row-icon-4">
+                  <i />
+                  <span>150种权限</span>
+                </div>
+                <div class="row-icon-5">
+                  <i />
+                  <span>多种同步方式</span>
+                </div>
+                <div class="row-icon-6">
+                  <i />
+                  <span>全终端覆盖</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- 知名客户 -->
-    <div class="index-partner index-f">
-      <div class="index-title">
-        <div class="title">知名客户</div>
-        <div class="title-line" />
-        <p class="tips">虽然不都是500强，但我可以给您讲我们与任何一个伙伴的故事</p>
-      </div>
-      <div class="wp s">
-        <ul class="cl">
-          <li v-for="(partner,i) in partnerList" :key="i">
-            <a href="JavaScript:" :style="{backgroundImage: 'url('+partner+')'}" /></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- 立即联系 -->
-    <div class="index-contact">
-      <div class=" wp">
-        <div class="s">
-          <h6>现在，非常期待与您的又一次邂逅</h6>
-          <p>费查查努力让每一次邂逅总能超越期待</p>
-          <div class="btn"><a
-            href="https://wpa.qq.com/msgrd?v=3&amp;uin=235566458&amp;site=qq&amp;menu=yes"
-            target="_blank"
-            class="btn-a"
-          ><em /><span>立即联系</span></a></div>
+      <div class="deploy">
+        <div class="container">
+          <div class="ibox ibox-hover clearfix">
+            <div class="fl ibox-info">
+              <h1 class="row-tit wow fadeInUp animated" data-wow-duration="0.8s" style="visibility: visible; animation-duration: 0.8s; animation-name: fadeInUp;">云端Office 开启协同编辑新时代</h1>
+              <i class="tit-hr  wow fadeInUp animated" data-wow-duration="1.2s" style="visibility: visible; animation-duration: 1.2s; animation-name: fadeInUp;" />
+              <p class="row-info-item  wow fadeInUp animated" data-wow-duration="1.5s" style="visibility: visible; animation-duration: 1.5s; animation-name: fadeInUp;">
+                Lenovo Docs多人实时在线编辑office文档，让工作效率提升<br>
+                多种格式在线预览，本地云端文件自动同步备份，安全稳定<br>
+              </p>
+              <div class="row-btngroup wow fadeInUp animated" data-wow-duration="2s" style="visibility: visible; animation-duration: 2s; animation-name: fadeInUp;">
+                <a id="link-4" class="btn btn-getmore" alt="link-all" href="/product/lenovo-docs.html"><span>了解更多</span></a>
+              </div>
+              <div class="row-icon  wow fadeInUp  animated" data-wow-delay="0.3s" data-wow-duration="2.2s" style="visibility: visible; animation-duration: 2.2s; animation-delay: 0.3s; animation-name: fadeInUp;">
+                <div class="row-icon-7">
+                  <i />
+                  <span>多人实时在线编辑</span>
+                </div>
+                <div class="row-icon-8">
+                  <i />
+                  <span>兼容各格式office文档</span>
+                </div>
+                <div class="row-icon-9">
+                  <i />
+                  <span>实时评论</span>
+                </div>
+              </div>
+            </div>
+            <div id="gif3" class="fr ibox-pic wow fadeInUp animated" data-wow-duration="2.2s" style="visibility: visible; animation-duration: 2.2s; animation-name: fadeInUp;"><img src="~@/assets/images/gif3.gif"></div>
+          </div>
         </div>
       </div>
-      <div class="cover" />
-    </div>
 
-    <!-- 流程 -->
-    <div id="flow" class="index-process">
-      <div class="index-title">
-        <div class="title">费查查定制化服务流程</div>
-        <div class="title-line" />
-        <p class="tips">丰富互联网信息化项目服务经验，让我们对项目实施的规范化、标准化有更多的理解</p>
+      <div class="scheme">
+        <h1 class="row-tit wow fadeInUp animated" data-wow-duration="0.8s" style="visibility: visible; animation-duration: 0.8s; animation-name: fadeInUp;">丰富灵活的产品方案，满足不同的用户需求</h1>
+        <div class="scheme-list">
+          <a href="/product/public.html" class="scheme-list-1  wow fadeInUp animated" data-wow-delay="0.5s" data-wow-duration="1.2s" style="visibility: visible; animation-duration: 1.2s; animation-delay: 0.5s; animation-name: fadeInUp;">
+            <img src="~@/assets/images/commonality-yun-1.png" alt="">
+            <h2 class="scheme-list-h2-1">公有云</h2>
+            <div class="scheme-list-div-1">
+              <p>满足客户多样的业务需要</p>
+
+              <p>按需开通、按量计费的灵活高效</p>
+
+              <p>服务模式，为客户提供安全高效的</p>
+
+              <p>文件存储、共享协作平台</p>
+            </div>
+            <span class="know-more">
+              <img src="~@/assets/images/arrowhead-1.png" alt="">
+              <span>了解详情</span>
+            </span>
+          </a>
+          <a href="/product/hybrid.html" class="scheme-list-2 wow fadeInUp animated" data-wow-delay="0.3s" data-wow-duration="1.2s" style="visibility: visible; animation-duration: 1.2s; animation-delay: 0.3s; animation-name: fadeInUp;">
+            <img src="~@/assets/images/blend-yun-2.png" alt="">
+            <h2 class="scheme-list-h2-2">融合云</h2>
+            <div class="scheme-list-div-2">
+              <p>更弹性的创新架构同时满足企业内部</p>
+
+              <p>文件管理以及外部文件共享分</p>
+
+              <p>发的需求，保证企业数据安全性</p>
+
+              <p>同时增强系统灵活性</p>
+            </div>
+            <span class="know-more">
+              <img src="~@/assets/images/arrowhead-1.png" alt="">
+              <span>了解详情</span>
+            </span>
+          </a>
+          <a href="/product/on-premise.html" class="scheme-list-3 wow fadeInUp animated" data-wow-delay="0.5s" data-wow-duration="1.2s" style="visibility: visible; animation-duration: 1.2s; animation-delay: 0.5s; animation-name: fadeInUp;">
+            <img src="~@/assets/images/privately-yun-1.png" alt="">
+            <h2 class="scheme-list-h2-3">私有云</h2>
+            <div class="scheme-list-div-3">
+              <p>满足企业数据管理的IT建设需要，</p>
+
+              <p>为客户提供统一的数据存储</p>
+
+              <p>管理平台，实现内网加速访问，</p>
+
+              <p>安全可控的私有云解决方案</p>
+            </div>
+            <span class="know-more">
+              <img src="~@/assets/images/arrowhead-1.png" alt="">
+              <span>了解详情</span>
+            </span>
+          </a>
+        </div>
       </div>
-      <div class="s wp">
-        <ul class="cl">
-          <li v-for="item in processList" :key="item.title" class="no">
-            <a href="JavaScript:">
-              <img :src="item.icon" width="50" height="50" alt="">
-              <p>{{ item.title }}</p>
-            </a></li>
-        </ul>
-        <p style="padding: 10px 0 0 72px; line-height: 24px; font-size: 13px; color: #aaa;">
-          *注：以上只是简洁的流程，实际项目中流程会有更多细节，请悉知</p>
+
+      <div class="vipservice">
+        <div class="container">
+          <h1 class="vip-header wow fadeInUp animated" data-wow-duration="0.8s" style="visibility: visible; animation-duration: 0.8s; animation-name: fadeInUp;"><span>7×24小时 我们永远在线为您服务</span>
+          </h1>
+          <div class="vip-info">
+            <p class="vip-info-item wow fadeInUp animated" data-wow-duration="1.2s" style="visibility: visible; animation-duration: 1.2s; animation-name: fadeInUp;">
+              专属售后经理，7x24小时随时解决您使用过程中的疑问</p>
+            <p class="vip-info-item wow fadeInUp animated" data-wow-duration="1.5s" style="visibility: visible; animation-duration: 1.5s; animation-name: fadeInUp;">服务50类行业，千锤百炼打造极致用户体验</p>
+            <p class="vip-info-item wow fadeInUp animated" data-wow-duration="1.5s" style="visibility: visible; animation-duration: 1.5s; animation-name: fadeInUp;">
+              10年专业云服务运营，我们做到对您始终如一</p>
+            <div class="vipservice-pic wow fadeInUp animated" data-wow-delay="0.2s" data-wow-duration="1.5s" style="visibility: visible; animation-duration: 1.5s; animation-delay: 0.2s; animation-name: fadeInUp;">
+              <img src="~@/assets/images/pic-vip.png?v=20180122">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="register">
+        <div class="table-cell">
+          <div class="container">
+            <h1 class="reg-header">免费注册</h1>
+
+            <form class="reg-form">
+              <div class="form-group">
+                <input id="transfer_signup_ph" class="form-control" type="text" placeholder="手机号">
+              </div>
+              <p class="help-block">点击注册即表明您同意本<a class="agree-link" href="/agreement.html" target="_blank">服务条款</a>和<a class="agree-link" href="http://appserver.lenovo.com.cn/Public/public_bottom/privacy.shtml" target="_blank">隐私条款</a>。</p>
+
+              <div class="form-group">
+                <a id="transfer_signup" class="btn btn-regsubmit" type="submit" href="https://console.box.lenovo.com/user/reg?fr=banner1&amp;sts_from=index"><span>立即注册</span></a>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-// 标语
-import sloganIcon1 from '../assets/images/slogan-1.png'
-import sloganIcon2 from '../assets/images/slogan-2.png'
-import sloganIcon3 from '../assets/images/slogan-3.png'
-import sloganIcon4 from '../assets/images/slogan-4.png'
-// 服务
-import serviceImg1 from '../assets/images/service1.png'
-import serviceImg2 from '../assets/images/service2.png'
-import serviceImg3 from '../assets/images/service3.png'
-import serviceImg4 from '../assets/images/service4.png'
-// 案例
-import case1 from '../assets/images/case1.png'
-import case2 from '../assets/images/case2.png'
-import case3 from '../assets/images/case3.png'
-import case4 from '../assets/images/case4.png'
-// 结果
-import customer1 from '../assets/images/customer1.png'
-import customer2 from '../assets/images/customer2.png'
-import customer3 from '../assets/images/customer3.png'
-import customer4 from '../assets/images/customer4.png'
-import customer5 from '../assets/images/customer5.png'
-
-// 知名客户
-import partner1 from '../assets/images/partner1.png'
-import partner2 from '../assets/images/partner2.png'
-import partner3 from '../assets/images/partner3.png'
-import partner4 from '../assets/images/partner4.png'
-import partner5 from '../assets/images/partner5.png'
-import partner6 from '../assets/images/partner6.png'
-import partner7 from '../assets/images/partner7.png'
-import partner8 from '../assets/images/partner8.png'
-import partner9 from '../assets/images/partner9.png'
-import partner10 from '../assets/images/partner10.png'
-import partner11 from '../assets/images/partner11.png'
-import partner12 from '../assets/images/partner12.png'
-import partner13 from '../assets/images/partner13.png'
-import partner14 from '../assets/images/partner14.png'
-import partner15 from '../assets/images/partner15.png'
-
-// 流程
-import process1 from '../assets/images/process1.png'
-import process2 from '../assets/images/process2.png'
-import process3 from '../assets/images/process3.png'
-import process4 from '../assets/images/process4.png'
-import process5 from '../assets/images/process5.png'
-import process6 from '../assets/images/process6.png'
-import process7 from '../assets/images/process7.png'
-import process8 from '../assets/images/process8.png'
 
 export default {
   data() {
     return {
-      searchKey: '',
-      sloganList: [
-        {
-          sub: '专注',
-          icon: sloganIcon1,
-          desc: '团队始于2013年，专注专利行业服务超过6年时间'
-        },
-        {
-          sub: '原创',
-          icon: sloganIcon2,
-          desc: '拥有自主软件著作版权，坚持项目定制开发。'
-        },
-        {
-          sub: '专业',
-          icon: sloganIcon3,
-          desc: '团队成员平均从业经验超过8年，都是互联网"老司机"'
-        },
-        {
-          sub: '效率',
-          icon: sloganIcon4,
-          desc: '高效服务过包括华为、中国中冶在内的数百个合作伙伴。'
-        }
-      ],
-      serviceIndex: -1,
-      serviceList: [
-        {
-          title: '年费查询',
-          img: serviceImg1,
-          desc: '用数据创造价值，致力于为客户提供快速、准确、全面的专利年费数据服务',
-          layer: {
-            title: '全自动',
-            descList: ['无需人工操作', '一键查询所有相关数据', '数据每周定期更新，避免失效风险']
-          }
-        },
-        {
-          title: '批量导出',
-          img: serviceImg2,
-          desc: '提供专利年费获取，并生成Excel表格形式导出，维护更简单',
-          layer: {
-            title: 'Excel导出',
-            descList: ['一键导出关注案件', '支持无没有任何数量限制', '详细、多维度，再也不会遗漏']
-          }
-        },
-        {
-          title: '年费监控',
-          img: serviceImg3,
-          desc: '提供中国有效专利的年费监控服务，增加缴费提醒功能',
-          layer: {
-            title: '专利监控服务',
-            descList: ['基于AI智能技术，又不止于AI', '一目了然显示当月需要缴费的专利', '准确、及时的专利管理监控平台，稳定安全']
-          }
-        },
-        {
-          title: '可视化分析',
-          img: serviceImg4,
-          desc: '多维度可视化报表，轻松告别传统人工查询和维护',
-          layer: {
-            title: '利用折线图、柱状图展示案件',
-            descList: ['即时企业案件年费信息', '掌握专利总量，监控区域专利法律状态', ' 及时跟踪影响企业专利法律状态变化因素']
-          }
-        }
-      ],
-      caseList: [
-        {
-          img: case1,
-          name: '北京华智则铭知识产权代理有限公司'
-        },
-        {
-          img: case2,
-          name: '温州市品创专利商标代理事务所'
-        },
-        {
-          img: case3,
-          name: '中国铁建股份有限公司'
-        },
-        {
-          img: case4,
-          name: '中国通信建设集团有限公司'
-        }
-      ],
-      customer: [
-        {
-          img: customer1,
-          title: '新华三集团',
-          desc:
-              'H3C新华三是一家致力于IT基础架构产品及方案的研究、开发、生产、销售及服务的公司，有路由器、以太网交换机、无线、网络安全、服务器、存储、IT管理系统、云管理平台等产品，这些...',
-          subTitle: '通信领域最具影响力的企业之一'
-        },
-        {
-          img: customer2,
-          title: '江苏鸿信系统集成有限公司',
-          desc:
-              '作为中国电信投资组建具有独立法人资格的全资子公司，最近几年加大自主创新投入，特别是知识产权，费查查帮助其解放了人力，现在只需要一个人来做专利流程...',
-          subTitle: '国内最大系统集成企业之一'
-        },
-        {
-          img: customer3,
-          title: '温州市品创专利商标代理事务所',
-          desc: '随着业务的发展特别是专利数量日益剧增，费用每个月都要缴，需要非常准确且不能出错。在使用了费查查系统后，可以自动和官方费用及时同步，不用手动输入，大大提升了准确性...',
-          subTitle: '温州最具影响力的代理所之一'
-        },
-        {
-          img: customer4,
-          title: '扬州大学',
-          desc: ' 扬州大学是江苏省人民政府和教育部共建高校、江苏省属重点综合性大学，每年申请专利案件达上千件，需要维护案件量之大。通过费查查监控系统能及时获得案件最新状态，操作简单便捷...',
-          subTitle: '全国首批博士学位授予单位'
-        },
-        {
-          img: customer5,
-          title: '华菱星马汽车（集团）股份有限公司',
-          desc: '全国重要的重型卡车、重型专用车及核心零部件生产研发基地，国家重点支持企业；偶然的机会接触到费查查，发现他们不仅在专利年费查询方面，方便便捷而且还能报警功能，让企业免受专利失效...',
-          subTitle: '首批“国家汽车整车出口基地企业'
-        }
-      ],
-      partnerList: [partner1, partner2, partner3, partner4, partner5, partner6, partner7, partner8,
-        partner9, partner10, partner11, partner12, partner13, partner14, partner15],
-      processList: [
-        {
-          title: '沟通需求',
-          icon: process1
-        },
-        {
-          title: '签订合同',
-          icon: process2
-        },
-        {
-          title: 'UE原型设计',
-          icon: process3
-        },
-        {
-          title: '需求确认',
-          icon: process4
-        },
-        {
-          title: 'UI设计',
-          icon: process5
-        },
-        {
-          title: '开发编码',
-          icon: process6
-        },
-        {
-          title: '测试验收',
-          icon: process7
-        },
-        {
-          title: '交付培训售后',
-          icon: process8
-        }
-      ]
+      searchKey: ''
     }
   },
   mounted() {
@@ -412,490 +283,759 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
   /* 来自方融信息科技有限公司 */
+  img, input {
+      border: 0;
+      display: inline-block;
+      outline: none;
+  }
+  [type="submit"] {
+    -webkit-appearance: none;
+}
+a {
+    color: inherit;
+    text-decoration: none;
+    background: transparent;
+}
   body {
     background: #fff;
   }
-
-  .s-header, .header:hover {
-    background: #090b1a;
+  .frame{
+    height: 100%;
   }
-
-  /*index-banner*/
-  .index-banner {
-    min-width: 1200px;
-  }
-
-  .index-banner .el-input__inner {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  .index-banner {
-    background: url(../assets/images/banner_bg.jpg) no-repeat bottom center;
+  .fr {
+    float: right;
     position: relative;
   }
-
-  .index-banner .s {
-    padding: 138px 0 150px;
-    position: relative;
-    z-index: 100;
-    text-align: center;
-  }
-
-  .index-banner h2 {
-    font-size: 45px;
-    line-height: 50px;
-  }
-
-  .index-banner .mc {
-    color: #0595c7;
-    margin-left: 20px;
-  }
-
-  .index-banner h6 {
-    padding-top: 20px;
-    line-height: 30px;
-    font-size: 16px;
-    color: #0595c7;
-  }
-
-  .index-slogan {
-    position: relative;
-    z-index: 100;
-    padding: 20px 0;
-    background: rgba(0, 0, 0, 0.3);
-  }
-
-  .index-slogan .service-subject {
-    float: left;
-    width: 23%;
-    padding: 0 1%;
-  }
-
-  .index-slogan .m {
-    float: left;
-    width: 50px;
-    padding: 11px 0;
-    margin-right: 12px;
-  }
-
-  .index-slogan .m img {
-    vertical-align: middle;
-  }
-
-  .index-slogan .title-sub {
-    line-height: 36px;
-    font-size: 18px;
-    color: #eee;
-  }
-
-  .index-slogan .des {
-    font-size: 13px;
-    color: #93979f;
-    line-height: 18px;
-    height: 36px;
-    overflow: hidden;
-  }
-
-  /*index-title*/
-  .index-title {
-    text-align: center;
-  }
-
-  .index-title .title {
-    font-size: 30px;
-    line-height: 30px;
-    color: #333;
-  }
-
-  .index-title .tips {
-    font-size: 15px;
-    line-height: 15px;
-    color: #888;
-  }
-
-  .index-title .title-line {
-    height: 20px;
-  }
-
-  /*index-service*/
-  .index-service {
-    padding: 100px 0;
-    zoom: 1;
-    min-width: 1200px;
-  }
-
-  .index-service .s {
-    padding-top: 50px;
-  }
-
-  .index-service .sub {
-    float: left;
-    width: 25%;
-    height: 220px;
-    background: #fff;
-    position: relative;
-    /*transition: 0.3;*/
-  }
-
-  .index-service dl {
-    padding: 15px;
-  }
-
-  .index-service dt {
-    font-size: 20px;
-    font-weight: 300;
-    text-align: center;
-  }
-
-  .index-service dt {
-    text-align: center;
-    font-size: 20px;
-    font-weight: 300;
-    color: #555;
-  }
-
-  .index-service .des {
-    height: 40px;
-    line-height: 20px;
-    padding: 0 15px;
-    overflow: hidden;
-    font-size: 13px;
-    color: #646A75;
-    text-align: center;
-  }
-
-  .index-service .m {
-    padding: 20px 0;
-    text-align: center;
-  }
-
-  .index-service .m img {
-    height: 80px;
-  }
-
-  .index-service ul {
-    position: absolute;
+  .header{
+    position: fixed;
     left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background: #0595C7;
-    color: #fff;
-    text-align: center;
-  }
-
-  .index-service .ul-s {
-    padding: 15px;
-  }
-
-  .index-service ul h6 {
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 30px;
-    margin-bottom: 10px;
-    color: #fff;
-  }
-
-  .index-service ul li {
-    font-size: 13px;
-    line-height: 24px;
-    color: #fff;
-  }
-
-  .index-service .index2n {
-    margin-top: 20px;
-    height: 36px;
-  }
-
-  .index-service .index2n a {
-    color: #fff;
-    padding: 6px 25px;
-    line-height: 36px;
-    border-radius: 1px;
-    border: 1px #FFF solid;
-  }
-
-  .index-service .index2n a:hover span {
-    color: #0595c7;
-  }
-
-  /*index-case*/
-  .index-case {
+    top: 0px;
+    height: 60px;
+    line-height: 60px;
+    background-color: rgba(0,0,0,.7);
     min-width: 1200px;
-    padding: 80px 0;
-    text-align: center;
-    zoom: 1;
-    background: #f8f8f8 url(../assets/images/case-bg.jpg) no-repeat center center;
+    width: 100%;
+    z-index: 10;
   }
-
-  .index-case .title {
-    color: #eee;
+  .header .logo{
+    float:left;
+    margin-top:9px;
+    margin-left:9.5%;
+    cursor:pointer;
   }
-
-  .index-case ul {
-    padding: 40px 10px;
-  }
-
-  .index-case li {
+  .top-search{
+    width: 181.24px;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 15px;
+    background-color: white;
     float: left;
-    width: 25%;
+    margin-left: 50px;
+    border-radius: 4px;
+    min-width: 310px;
+    max-width: 1000px;
+    display: none;
   }
-
-  .index-case li div {
-    margin: 2px;
-    background: #fff;
+  .top-search input{
+    float:left;
+    margin-left:8px;
+    height:30px;
+    line-height:30px;
+    width:70%;
+    font-family:"Microsoft Yahei";
+  }
+  .top-search .search-icon{
+    float:right;
+    margin-right:8px;
+    margin-top:6px;
+    color:#ccc;
+    font-size:18px;
+    cursor: pointer;
+  }
+  .log{
+    height:30px;
+    line-height:30px;
+    margin-right:0.5%;
+    padding:0;
+    margin-top: 15px;
+  }
+  .log a{
+    display: block;
+    float: left;
+    width:60px;
+    height:30px;
+    line-height:30px;
+    margin:0;
+    padding:0;
+    background-color:#fff;
+    text-align: center;
+    border-radius:15px;
+    margin-right:4px;
+  }
+  .header .log a:hover {
+    filter: alpha(opacity=90);
+    -moz-opacity: 0.9;
+    opacity: 0.9;
+}
+  .log .btn-login{
+    color:white;
+    background-color: #15af40;
+  }
+  .clear:after{
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+    zoom: 1;
+  }
+  .header .nav-wrap{
+    height:60px;
+    line-height:60px;
+    float:right;
+    margin-right:4%;
+  }
+  .nav-menu{
+    height:60px;
+    line-height:60px;
+  }
+  .nav-menu .nav-li{
+    font-size: 14px;
+    float: left;
+    margin: 0 5px;
     position: relative;
-    overflow: hidden;
+    height:30px;
+    line-height:30px;
+    width:100px;
+    text-align:center;
+    background-color:;
+    margin-top:15px;
+    border-radius:15px;
+    list-style: none;
   }
-
-  .index-case li img {
-    width: 100%;
-    height: 192px;
-    transition: 1s;
-    -moz-transition: 1s;
-    -webkit-transition: 1s;
-    -o-transition: 1s;
-    vertical-align: middle;
-  }
-
-  .index-case li img:hover {
-    transform: scale(1.1);
-    -moz-transform: scale(1.1);
-    -o-transform: scale(1.1);
-    -webkit-transform: scale(1.1);
-  }
-
-  .index-case li p {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    line-height: 32px;
-    height: 32px;
-    overflow: hidden;
-    background: url(../assets/images/case_name_bg.png);
-  }
-
-  .index-case li span {
+  .nav-li a{
+    display: block;
+    height:30px;
+    line-height:30px;
     color: #fff;
-    padding: 0 15px;
     text-decoration: none;
   }
-
-  .index-case .more {
-    display: block;
-    margin: 0 auto;
-    width: 130px;
-    height: 36px;
-    line-height: 36px;
-    font-size: 16px;
-    color: #0595C7;
-    border: 1px #0595C7 solid;
-    border-radius: 3px;
+  .nav-li a:hover{
+    color:rgb(0, 255 ,51);
+  }
+  .nav-li a.active{
+    color:rgb(0, 255 ,51);
   }
 
-  .index-case .more span {
-    color: #0595C7;
-  }
-
-  .index-case .more em {
-    background: #0595C7;
-  }
-
-  .index-case .more:hover span {
-    color: #fff;
-  }
-
-  /*index-customer*/
-  .index-customer {
-    min-width: 1200px;
-    padding-top: 80px;
-    background: #fff;
-  }
-
-  .customer-box {
-    padding: 50px 150px 30px;
-  }
-
-  .customer-box .m {
-    float: left;
-    width: 130px;
-    border-radius: 50%;
-    margin-right: 20px;
-  }
-
-  .customer-box .m img {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-  }
-
-  .customer-box .big-title {
-    height: 20px;
-    line-height: 20px;
-    font-size: 18px;
-    color: #333;
-  }
-
-  .customer-box p {
-    padding: 15px 0 10px;
-    line-height: 22px;
-    font-size: 14px;
-    color: #777;
-    max-height: 66px;
+  /* banner */
+  .banner{
+    background: #198ede;
     overflow: hidden;
-  }
-
-  .customer-box .s-title {
-    height: 20px;
-    line-height: 20px;
-    font-size: 14px;
-    color: #999;
-  }
-
-  /*index-partner*/
-  .index-partner {
-    min-width: 1200px;
-    padding: 100px 0;
-    background: #fff;
-  }
-
-  .index-partner .s {
-    padding: 50px 0 0;
-  }
-
-  .index-partner ul {
-    padding: 0 10px;
-  }
-
-  .index-partner li {
-    float: left;
-    width: 20%;
-  }
-
-  .index-partner a {
-    display: block;
-    margin: 10px;
-    height: 80px;
-    border: 1px #ededed solid;
-    background-repeat: no-repeat;
-    background-position: center;
-    -webkit-filter: grayscale(100%);
-    -moz-filter: grayscale(100%);
-    -ms-filter: grayscale(100%);
-    -o-filter: grayscale(100%);
-    filter: grayscale(100%);
-    filter: gray;
-    transition: 0.5s;
-  }
-
-  .index-partner a:hover {
-    border-color: #dcdcdc;
-    -webkit-filter: grayscale(0);
-    -moz-filter: grayscale(0);
-    -ms-filter: grayscale(0);
-    -o-filter: grayscale(0);
-    filter: grayscale(0);
-    filter: none;
-  }
-
-  /*index-contact*/
-  .index-contact {
-    min-width: 1200px;
-    padding: 45px 0;
-    background-image: url(../assets/images/contact-bg.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center top;
     position: relative;
   }
-
-  .index-contact .cover {
+  .video-box{
+    width:100%;
+    height:100%;
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.5);
+    left:0px;
+    top:0px;
+    right:0px;
+    bottom:0px;
+    overflow: hidden;
     z-index: 1;
   }
-
-  .index-contact .s {
-    position: relative;
-    padding: 0 120px;
-    z-index: 100;
+  .video-box video{
+    min-width:2080px;
+    width: 100%;
+    height: auto;
+    margin-top: 0px;
   }
-
-  .index-contact h6 {
-    font-size: 30px;
-    color: #fff;
-    line-height: 40px;
-  }
-
-  .index-contact p {
-    line-height: 50px;
-    font-size: 18px;
-    color: #eee;
-  }
-
-  .index-contact .btn {
+  .search-wrap{
+    width: 780px;
+    height: 300px;
     position: absolute;
-    top: 50%;
-    right: 120px;
-    display: block;
-    width: 200px;
-    margin-top: -25px;
-    border: 1px #fff solid;
-    text-align: center;
-    border-radius: 3px;
+    left: 136px;
+    top: 247.895px;
+    z-index: 2;
   }
-
-  .index-contact .btn a {
-    display: block;
-    height: 48px;
-    line-height: 48px;
+  .logo-wrap{
+    width:100%;
+    height:120px;
+    line-height:120px;
+    font-size:80px;
+    text-align: center;
+    color:white;
+    font-weight: bold;
+    margin-top:0px;
+  }
+  .slogan{
+    width:102.5%;
+    text-align:center;
+    height:30px;
+    line-height: 30px;
+    color:white;
+    margin-top:16px;
+    font-size:17px;
+    font-weight: 200;
+    letter-spacing: 11px;
+    font-family: 'Microsoft Yahei';
+  }
+  .search-box{
+    width:100%;
+    height:60px;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1;
+    background-color: white;
+    margin-top:60px;
+    position:relative;
+  }
+  .fa {
+      display: inline-block;
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+  }
+  .search-logo{
+    float:left;
+    margin-left:15px;
+    margin-top:20px;
+    color:#e4e4e4;
+    font-size:20px;
+    font-weight: bold;
+  }
+  .search-box textarea{
+    width:610px;
+    height:20px;
+    margin-left:15px;
+    font-size:16px;
+    float:left;
+    margin-top:20px;
+    color:#666666;
+    border:none;
+    outline:none;
+    resize:none;
+    line-height:20px;
+    font-family: Microsoft Yahei;
+  }
+  .clear-icon{
+    float:left;
+    margin-top:22px;
+    margin-left:6px;
+    margin-top:20px;
+    color:#7c7c7c;
+    font-size:20px;
+    cursor:pointer;
+    display: none;
+  }
+  .search_btn{
+    width:80px;
+    height:40px;
+    line-height:40px;
+    margin-top:10px;
+    margin-right:10px;
+    border-radius:4px;
+    font-size:14px;
+    float:right;
+    text-align:center;
+    cursor:pointer;
+    color:white;
+    background-color: #0069ff;
+  }
+  .search_btn:hover {
+      background-color: rgb(0,81,226);
+      color: white;
+  }
+  .tip-bottom{
+    width: 780px;
+    height: 20px;
+    line-height: 20px;
+    position: absolute;
+    left: 50%;
+    margin-left: -390px;
+    bottom: 50px;
+    z-index: 2;
     font-size: 18px;
-    color: #fff;
-  }
-
-  /*index-process*/
-  .index-process {
-    min-width: 1200px;
-    background: #fff;
-    padding: 80px 0;
-  }
-
-  .index-process ul {
-    padding: 40px 40px 0;
-  }
-
-  .index-process li {
-    float: left;
-    width: 12.5%;
-  }
-
-  .index-process li a {
-    display: block;
-    border-left: 1px #ddd dotted;
     text-align: center;
-    color: #808080;
+    color: white;
   }
-
-  .index-process .no a {
-    border-left: 0;
-  }
-
-  .index-process li p {
-    font-size: 16px;
-    line-height: 40px;
-  }
-
-  .index-process li img {
+  .godown-wrap{
+    width: 1074px;
     height: 50px;
+    text-align: center;
+    overflow: hidden;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    z-index: 2;
+  }
+  .godown{
+    width: 36.5px;
+    height: 14.5px;
+    margin-top: 10px;
+    cursor: pointer;
+    animation: godown 2s ease infinite;
   }
 
+  /* 主体内容区域样式 */
+  .main img {
+    vertical-align: middle;
+    border: 0;
+}
+  .transfer {
+    padding: 65px 0;
+    padding-bottom: 30px;
+    background-color: #fff;
+    overflow: hidden;
+}
+.main .container {
+    width: 1260px;
+    margin: 0 auto;
+    padding: 0 30px 0 30px;
+}
+.container::before, .container::after, .clearfix::before, .clearfix::after {
+    content: '';
+    display: table;
+}
+.container::after, .clearfix::after {
+    clear: both;
+}
+.fl {
+    float: left;
+}
+.fadeInUp {
+    -webkit-animation-name: fadeInUp;
+    animation-name: fadeInUp;
+}
+/*.animated {
+    -webkit-animation-duration: 0.8s;
+    animation-duration: 0.8s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}*/
+.row-tit {
+    margin: 0;
+    margin-top: 7px;
+    font-size: 32px;
+    color: #327DDD;
+}
+.tit-hr {
+    margin-top: 18px;
+    margin-bottom: 11px;
+    display: block;
+    width: 50px;
+    height: 2px;
+    background-color: #dadcdf;
+}
+.row-info-item {
+    margin-bottom: 0;
+    font-size: 16px;
+    color: #565656;
+    line-height: 28px;
+}
+.row-btngroup {
+    margin-top: 30px;
+}
+.btn {
+    display: inline-block;
+    margin-bottom: 0;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    border: 1px solid;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: normal;
+    line-height: 1.43;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.btn-getmore {
+    position: relative;
+    display: inline-block;
+    width: 113px;
+    height: 38px;
+    padding: 0;
+    font-size: 15px;
+    color: #3389FF;
+    text-align: center;
+    border: 1px solid #3389FF;
+    border-radius: 2px;
+    overflow: hidden;
+    background: transparent;
+}
+.btn-getmore span {
+    position: relative;
+    z-index: 20;
+    display: block;
+    padding: 8px 12px;
+    width: 100%;
+    height: 100%;
+    color: #2980e9;
+    transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+}
+.ibox-hover:hover .btn-getmore {
+    border-color: #005FD5;
+}
+.ibox-hover:hover .btn-getmore span {
+    color: #fff;
+}
+.btn-getmore::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 0;
+    height: 43px;
+    display: block;
+    text-align: center;
+    transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+    background-color: #005FD5;
+    z-index: 10;
+}
+.ibox-hover:hover .btn-getmore::after {
+    width: 113px;
+}
+.row-icon {
+    color: #7B7B7B;
+    margin-top: 30px;
+}
+.row-icon > div {
+    float: left;
+    margin-right: 20px;
+}
+.row-icon > div> i {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    width: 36px;
+    height: 36px;
+    background: #ccc;
+}
+.row-icon > .row-icon-1 >i {
+    background: url(~@/assets/images/row-icon-1.png) no-repeat;
+}
+.row-icon > .row-icon-2 >i {
+    background: url(~@/assets/images/row-icon-2.png) no-repeat;
+}
+.row-icon > .row-icon-3 >i {
+    background: url(~@/assets/images/row-icon-3.png) no-repeat;
+}
+.ibox > .ibox-pic {
+    width: 760px;
+    /* height: 600px; */
+}
+.transfer .ibox-pic {
+    position: relative;
+    margin-top: -35px;
+}
+.ibox > .ibox-pic img {
+    width: 100%;
+    margin-top: -133px;
+}
+
+.cooperation {
+    padding-top: 110px;
+    /* padding-bottom: 83px; */
+    background-color: #005FD5;
+    color: #000;
+    overflow: hidden;
+}
+.ibox > .ibox-pic:nth-child(1) {
+    width: 752px;
+    margin-left: -127px;
+}
+.ibox > .ibox-pic img {
+    width: 100%;
+    margin-top: -133px;
+}
+.ibox-info {
+    padding-left: 15px;
+}
+.transfer .ibox-info {
+    padding-left: 0;
+}
+.cooperation .ibox-info {
+    margin-top: -20px;
+}
+.cooperation .row-tit {
+    color: #fff;
+}
+.cooperation .tit-hr {
+    background-color: #76aaea;
+}
+.cooperation .row-info-item {
+    color: #fff;
+}
+.btn-getmore.btn-getmore-blue {
+    border-color: #fff;
+}
+.btn-getmore.btn-getmore-blue span {
+    color: #fff;
+}
+.btn-getmore.btn-getmore-blue::after {
+    background-color: #fff;
+}
+.cooperation .row-icon {
+    color: #fff;
+}
+.row-icon > .row-icon-4 {
+    margin-right: 80px;
+}
+.row-icon > .row-icon-5 {
+    margin-right: 80px;
+}
+.row-icon > .row-icon-7 {
+    margin-right: 40px;
+}
+.row-icon > .row-icon-8 {
+    margin-right: 50px;
+}
+.row-icon > .row-icon-4 >i {
+    background: url(~@/assets/images/row-icon-4.png) no-repeat;
+}
+.row-icon > .row-icon-5 >i {
+    background: url(~@/assets/images/row-icon-5.png) no-repeat;
+}
+.row-icon > .row-icon-6 >i {
+    background: url(~@/assets/images/row-icon-6.png) no-repeat;
+}
+.row-icon > .row-icon-7 >i {
+    background: url(~@/assets/images/row-icon-7.png) no-repeat;
+}
+.row-icon > .row-icon-8 >i {
+    background: url(~@/assets/images/row-icon-7.png) no-repeat;
+}
+.row-icon > .row-icon-9 >i {
+    background: url(~@/assets/images/row-icon-7.png) no-repeat;
+}
+.deploy {
+    padding-top: 74px;
+    padding-bottom: 29px;
+    background-color: #fff;
+    overflow: hidden;
+}
+.deploy .ibox-info {
+    /* padding-left: 55px; */
+    padding-top: 50px;
+}
+.deploy .ibox > .ibox-pic {
+    width: 730px;
+    margin-right: -60px;
+}
+
+.scheme {
+    padding-top: 70px;
+    padding-bottom: 70px;
+    text-align: center;
+    color: #151515;
+}
+.scheme .row-tit {
+    color: #141414;
+    font-size: 26px;
+}
+.scheme-list {
+    margin: 0 auto;
+    text-align: center;
+    width: 950px;
+    overflow: hidden;
+    margin-top: 30px;
+}
+.scheme-list > a {
+    text-align: center;
+    width: 30%;
+    display: block;
+    float: left;
+    padding: 40px 10px 5px 10px;
+    color: #070707;
+    border: 2px solid #ccc;
+    height: 400px;
+    position: relative;
+    border-radius: 8px;
+    margin-top: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 20px;
+    -webkit-transition: box-shadow 0.2s linear,color 0.2s linear ,border-color 0.2s linear;
+    -moz-transition: box-shadow 0.2s linear,color 0.2s linear ,border-color 0.2s linear;
+    -ms-transition: box-shadow 0.2s linear,color 0.2s linear ,border-color 0.2s linear;
+    -o-transition: box-shadow 0.2s linear,color 0.2s linear ,border-color 0.2s linear;
+    transition: box-shadow 0.2s linear,color 0.2s linear ,border-color 0.2s linear;
+}
+.scheme-list > a:hover {
+    -webkit-box-shadow: 0 0 30px #ccc;
+    -moz-box-shadow: 0 0 30px #ccc;
+    box-shadow: 0 0 30px #ccc;
+    cursor: pointer;
+    /* border: 2px solid #2073DA; */
+}
+.scheme-list > .scheme-list-2 {
+    border: 2px solid #2073DA;
+}
+.scheme-list > a > h2 {
+    margin-bottom: 20px;
+    font-weight: normal;
+    font-size: 24px;
+    /* -webkit-transition: color 0.2s linear; */
+    /* -moz-transition: color 0.2s linear; */
+    /* -ms-transition: color 0.2s linear; */
+    /* -o-transition: color 0.2s linear; */
+    /* transition: color 0.2s linear; */
+}
+.scheme-list > a >.scheme-list-div-1, .scheme-list > a >.scheme-list-div-2, .scheme-list > a >.scheme-list-div-3 {
+    color: #939496;
+    line-height: 28px;
+}
+.scheme-list > a p {
+    /* margin-top: 6px; */
+    font-size: 16px;
+    color: #5C5F63;
+    -webkit-transition: color 0.2s linear;
+    -moz-transition: color 0.2s linear;
+    -ms-transition: color 0.2s linear;
+    -o-transition: color 0.2s linear;
+    transition: color 0.2s linear;
+}
+.know-more {
+    color: #3375E9;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+.scheme-list > a > .scheme-list-h2-2 {
+    color: #2B7FE8;
+}
+.scheme-list > a >.scheme-list-div-2 {
+    color: #2B7FE8;
+}
+.scheme-list-2 > .scheme-list-div-2 >p {
+    color: #2460D8;
+}
+
+.vipservice {
+    padding-top: 1px;
+    background: #f6f6f6;
+}
+.vip-header {
+    margin-top: 50px;
+    font-size: 32px;
+    color: #1A74E6;
+    text-align: center;
+}
+.vip-header span {
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
+    /* border-bottom: 1px solid #1A74E6; */
+}
+.vip-info {
+    margin-top: 20px;
+    line-height: 28px;
+}
+.vip-info-item {
+    /* margin: 5px 0; */
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+}
+.vipservice-pic {
+    margin: 30px auto 0;
+    /* width: 1022px; */
+    text-align: center;
+}
+
+.register {
+    padding: 25px 0;
+    background-color: #2573e3;
+}
+.reg-header {
+    padding-top: 25px;
+    font-size: 24px;
+    color: #fff;
+    text-align: center;
+}
+.reg-form {
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 357px;
+}
+.reg-form .form-group {
+    margin-bottom: 15px;
+}
+.form-control {
+    display: block;
+    width: 100%;
+    height: 41px;
+    padding: 6px 12px;
+    font-size: 16px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    outline: none;
+}
+.help-block {
+    font-size: 14px;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.register .help-block {
+    color: rgba(255, 255, 255, .5);
+}
+.agree-link {
+    text-decoration: underline;
+}
+.btn-regsubmit {
+    position: relative;
+    width: 100%;
+    background: transparent;
+    overflow: hidden;
+    border: none;
+    color: #484848;
+}
+.btn-regsubmit span {
+    position: relative;
+    z-index: 100;
+    display: block;
+    padding: 10px 12px;
+    color: #fff;
+    border: 1px solid #fff;
+    background: transparent;
+    transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+}
+
+  /* 动画 */
+  @keyframes godown{
+    0%   {margin-top: 10px;}
+    25% {margin-top: 30px;}
+    50% {margin-top: 10px;}
+    100% {margin-top: 10px;}
+  }
+
+  @keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(20px);
+        -ms-transform: translateY(20px);
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        -ms-transform: translateY(0);
+        transform: translateY(0);
+    }
+  }
 </style>

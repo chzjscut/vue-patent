@@ -113,12 +113,15 @@
 <script>
 import TableCom from './table'
 import { EXCEL_TEMPLATE, FETCH_HEADERS, UPLOAD_ACTION } from '@/utils/const'
-import { GLOBAL_SEARCH, BASE_LIST, ATTENTION_PATENT } from '@/api/console'
+import { GLOBAL_SEARCH, BASE_LIST, ATTENTION_PATENT, doSearch_feeinfo } from '@/api/console'
 
 export default {
   components: { TableCom },
   data() {
     return {
+      searchParam: {
+        zlh: ['2016201445312']
+      },
       isDialogVisible: false, // 控制弹窗显示
       patentStr: '', // 多个专利号的字符串，用于专利批量查询
       batchInsertAction: UPLOAD_ACTION,
@@ -151,8 +154,9 @@ export default {
 
   methods: {
     async init() {
-      await this.initGlobalKey()
-      this.getSearchList()
+      this.doSearch_feeinfo()
+      // await this.initGlobalKey()
+      // this.getSearchList()
       /* if (this.searchConditionKey) {
         this.searchCondition()
       }*/
@@ -183,6 +187,15 @@ export default {
           this.searchData.applyPersonName = query.kw
         }
       }
+    },
+
+    // 根据专利号查询专利年费信息
+    async doSearch_feeinfo() {
+      doSearch_feeinfo(this.searchParam).then(res => {
+
+      }).catch(({ msg }) => {
+
+      })
     },
 
     // 全局搜索

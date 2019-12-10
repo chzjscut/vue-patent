@@ -74,3 +74,14 @@ export function PATENT_ANALYSIS_EXPIRE(data) {
     data
   })
 }
+
+// //////////////////////////////////////////////////
+
+// 根据专利号查询专利年费相关信息
+export function doSearch_feeinfo(data) {
+  console.log(data)
+  return request.post({
+    url: '/feeinfo/',
+    data
+  })
+}

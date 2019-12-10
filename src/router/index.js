@@ -42,7 +42,15 @@ export const constantRoutes = [
   {
     path: '/',
     name: 'home',
-    meta: { showFooter: true, headerFull: true, title: '费查查' },
+    redirect: '/home',
+    // meta: { showFooter: true, headerFull: true, title: '费查查' },
+    // component: () => import('@/views/Home.vue'),
+    hidden: true
+  },
+  {
+    path: '/home',
+    name: 'home',
+    // meta: { showFooter: true, headerFull: true, title: '费查查' },
     component: () => import('@/views/Home.vue'),
     hidden: true
   },

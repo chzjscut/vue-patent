@@ -10,9 +10,10 @@ const service = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   headers: {
-    'Content-Type': 'application/json;charset=UTF-8',
-    'token': getToken(),
-    'fr-Agent': getSalt()
+    // 'Content-Type': 'application/json;charset=UTF-8',
+    'Content-Type': 'application/x-www-form-urlencoded'
+    // 'token': getToken(),
+    // 'fr-Agent': getSalt()
   },
   timeout: 5000 // request timeout
 })

@@ -1,13 +1,15 @@
 import service from './request'
 import { getToken, getSalt } from '@/utils/auth'
+import { toParam } from '@/utils/CommonUtil'
+import qs from 'qs'
 
 const request = {
   get(options) {
     return new Promise((resolve, reject) => {
       const reqConfigs = {
         headers: {
-          'token': getToken(),
-          'fr-Agent': getSalt()
+          // 'token': getToken(),
+          // 'fr-Agent': getSalt()
         }
       }
       if (options.data) {
@@ -30,11 +32,12 @@ const request = {
     return new Promise((resolve, reject) => {
       const reqConfigs = {
         headers: {
-          'token': getToken(),
-          'fr-Agent': getSalt()
+          // 'token': getToken(),
+          // 'fr-Agent': getSalt()
         }
       }
-      service.post(options.url, options.data, reqConfigs).then(res => {
+      console.log(qs.stringify(options.data))
+      service.post(options.url, qs.stringify(options.data), reqConfigs).then(res => {
         resolve(res)
       }).catch(error => {
         console.log('请求异常信息' + error)
