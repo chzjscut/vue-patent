@@ -120,7 +120,7 @@ export default {
   data() {
     return {
       searchParam: {
-        zlh: ['2016201445312']
+        zlh: "{'2016201445312'}"
       },
       isDialogVisible: false, // 控制弹窗显示
       patentStr: '', // 多个专利号的字符串，用于专利批量查询

@@ -36,8 +36,7 @@ const request = {
           // 'fr-Agent': getSalt()
         }
       }
-      console.log(qs.stringify(options.data))
-      service.post(options.url, qs.stringify(options.data), reqConfigs).then(res => {
+      service.post(options.url, options.data, reqConfigs).then(res => {
         resolve(res)
       }).catch(error => {
         console.log('请求异常信息' + error)

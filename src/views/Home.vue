@@ -30,7 +30,7 @@
     </div>
 
     <!-- banner -->
-    <div class="banner" style="width: 1071px;height: 921px;">
+    <div class="banner" :style="{height: updateClientHeight}">
       <div class="video-box">
         <video id="myvideo" muted="" autoplay="autoplay" loop="loop" src="~@/assets/video/cc.mp4" />
       </div>
@@ -259,10 +259,24 @@
 export default {
   data() {
     return {
+      clientHeight: 0, // 浏览器可视区域高度
       searchKey: ''
     }
   },
+  computed: {
+    updateClientHeight() {
+      console.log(document.body.clientHeight)
+      return this.clientHeight
+    }
+  },
   mounted() {
+    this.clientHeight = document.body.clientHeight + 'px'
+    console.log(this.clientHeight)
+    window.addEventListener('resize', function() {
+      console.log(2)
+      this.clientHeight = document.body.clientHeight + 'px'
+      console.log(this.clientHeight)
+    })
     const hash = this.$route.query.hash
     hash && this.$nextTick(() => {
       window.location.hash = hash
