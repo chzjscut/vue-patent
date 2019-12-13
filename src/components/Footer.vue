@@ -52,9 +52,11 @@ export default {
 </script>
 <style scoped>
   .footer {
+    min-width: 768px;
     background-color: #222a37;
     border-top: 1px solid #eaedf4;
     color: #7a808f;
+    box-sizing: border-box;
   }
 
   .description {
@@ -66,7 +68,6 @@ export default {
   }
 
   .footer-link-box {
-    width: 1200px;
     margin: 0 auto;
     padding: 20px;
     border-bottom: 1px solid hsla(223, 9%, 52%, .49);

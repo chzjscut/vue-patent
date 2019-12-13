@@ -20,9 +20,9 @@
             <li class="nav-li nav_a li_o">
               <a href="product.html">产品</a>
             </li>
-            <li class="nav-li"><a href="solution.html">典型应用</a></li>
+            <li class="nav-li"><a href="solution.html">控制台</a></li>
             <li class="nav-li">
-              <a href="article.html">文档与帮助</a>
+              <a href="article.html">企业VIP</a>
             </li>
           </ul>
         </div>
@@ -30,7 +30,7 @@
     </div>
 
     <!-- banner -->
-    <div class="banner" :style="{height: updateClientHeight}">
+    <div id="banner" class="banner">
       <div class="video-box">
         <video id="myvideo" muted="" autoplay="autoplay" loop="loop" src="~@/assets/video/cc.mp4" />
       </div>
@@ -251,12 +251,16 @@
         </div>
       </div>
     </div>
+
+    <!-- footer -->
+    <footer-com />
   </div>
 </template>
 
 <script>
-
+import FooterCom from '@/components/Footer.vue'
 export default {
+  components: { FooterCom },
   data() {
     return {
       clientHeight: 0, // 浏览器可视区域高度
@@ -264,18 +268,28 @@ export default {
     }
   },
   computed: {
-    updateClientHeight() {
-      console.log(document.body.clientHeight)
-      return this.clientHeight
-    }
+
   },
   mounted() {
-    this.clientHeight = document.body.clientHeight + 'px'
+    var banner = document.getElementById('banner')
+    banner.style.height = document.body.clientHeight + 'px'
+
+    var ibox = document.getElementsByClassName('ibox')
     console.log(this.clientHeight)
     window.addEventListener('resize', function() {
-      console.log(2)
-      this.clientHeight = document.body.clientHeight + 'px'
-      console.log(this.clientHeight)
+      banner.style.height = document.body.clientHeight + 'px'
+
+      if (document.body.clientWidth < 1000) {
+        for (var i = 0; i < ibox.length; i++) {
+          if (i % 2 === 0) {
+            var iboxInfo = document.getElementsByClassName('ibox-info')[i]
+            var iboxPic = document.getElementsByClassName('ibox-pic')[i]
+            // console.log(iboxInfo, iboxPic)
+            ibox[i].appendChild(iboxInfo)
+            // ibox[i].removeChild(iboxInfo);
+          }
+        }
+      }
     })
     const hash = this.$route.query.hash
     hash && this.$nextTick(() => {
@@ -316,7 +330,9 @@ a {
     background: #fff;
   }
   .frame{
-    height: 100%;
+    min-width: 1200px;
+    overflow-x: auto;
+    box-sizing: border-box;
   }
   .fr {
     float: right;
@@ -471,7 +487,8 @@ a {
     width: 780px;
     height: 300px;
     position: absolute;
-    left: 136px;
+    left: 50%;
+    margin-left: -390px;
     top: 247.895px;
     z-index: 2;
   }
@@ -565,12 +582,12 @@ a {
       color: white;
   }
   .tip-bottom{
-    width: 780px;
+    width: 100%;
+    min-width: 768px;
     height: 20px;
     line-height: 20px;
     position: absolute;
-    left: 50%;
-    margin-left: -390px;
+    left: 0;
     bottom: 50px;
     z-index: 2;
     font-size: 18px;
@@ -578,7 +595,8 @@ a {
     color: white;
   }
   .godown-wrap{
-    width: 1074px;
+    width: 100%;
+    min-width: 768px;
     height: 50px;
     text-align: center;
     overflow: hidden;
@@ -607,9 +625,9 @@ a {
     overflow: hidden;
 }
 .main .container {
-    width: 1260px;
+    width: 1200px;
     margin: 0 auto;
-    padding: 0 30px 0 30px;
+    padding: 0 30px;
 }
 .container::before, .container::after, .clearfix::before, .clearfix::after {
     content: '';
@@ -718,6 +736,9 @@ a {
 .ibox-hover:hover .btn-getmore::after {
     width: 113px;
 }
+.ibox-hover:hover .btn-getmore.btn-getmore-blue span {
+    color: #005FD5;
+}
 .row-icon {
     color: #7B7B7B;
     margin-top: 30px;
@@ -744,12 +765,12 @@ a {
     background: url(~@/assets/images/row-icon-3.png) no-repeat;
 }
 .ibox > .ibox-pic {
-    width: 760px;
+    width: 700px;
     /* height: 600px; */
 }
 .transfer .ibox-pic {
     position: relative;
-    margin-top: -35px;
+    margin-top: -25px;
 }
 .ibox > .ibox-pic img {
     width: 100%;
@@ -1028,6 +1049,74 @@ a {
     border: 1px solid #fff;
     background: transparent;
     transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+}
+@media screen and (max-width: 1199px) {
+    .main .container{
+
+    }
+}
+@media screen and (max-width: 999px) {
+  .frame{
+    width: 100%;
+    min-width: 768px;
+  }
+  /*.register{
+    min-width: 768px;
+  }*/
+  .search-wrap{
+    width: 76%;
+    margin-left: -38%;
+  }
+  .main .container{
+    width: 100%;
+  }
+  .transfer, .cooperation, .deploy{
+    padding-top: 0;
+  }
+  .cooperation{
+    padding-bottom: 30px;
+  }
+  .ibox .fl, .ibox .fr{
+    float: none;
+  }
+  .ibox .ibox-info{
+    width: 100%;
+    text-align: center;
+  }
+  .ibox .tit-hr{
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .ibox-info .row-icon{
+    display: inline-block;
+  }
+  .ibox .ibox-pic{
+    width: 100%;
+    margin-top: 0;
+    overflow: hidden;
+    /*margin: 0 auto;*/
+  }
+  .ibox > .ibox-pic[data-v-fae5bece]:nth-child(1) {
+      width: 100%;
+      margin-left: 0;
+  }
+  .scheme-list{
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .scheme-list > a{
+    margin-left: 1.25%;
+    margin-right: 1.25%;
+  }
+  .scheme-list > a:first-child {
+    margin-left: 2.5%;
+  }
+  .scheme-list > a:last-child {
+    margin-right: 2.5%;
+  }
+  .vipservice-pic img{
+    width: 100%;
+  }
 }
 
   /* 动画 */

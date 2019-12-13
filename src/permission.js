@@ -33,7 +33,6 @@ router.beforeEach(async(to, from, next) => {
         next()
       } else {
         try {
-          console.log(1)
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
 

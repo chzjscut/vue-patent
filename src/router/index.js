@@ -50,7 +50,7 @@ export const constantRoutes = [
   {
     path: '/home',
     name: 'home',
-    // meta: { showFooter: true, headerFull: true, title: '费查查' },
+    meta: { showFooter: true, title: '费查查' },
     component: () => import('@/views/Home.vue'),
     hidden: true
   },
