@@ -1,18 +1,16 @@
 <template>
-  <div class="frame">
+  <div id="frame" class="frame">
     <!-- header -->
     <div class="header">
       <div class="clear" style="height:60px;line-height:60px;">
         <img class="logo" height="35px" src="~@/assets/images/logo_1.png">
-        <div id="top-search" class="top-search">
+        <div id="topSearch" class="top-search">
           <input id="top-input" type="text" placeholder="请输入专利号码或任意文字搜索专利..." name="">
-          <i id="floatsearch" class="search-icon" />
+          <i class="search-icon el-icon-search" />
         </div>
-        <div class="log fr clear">
-          <a target="_blank" class="btn-login" href="https://www.patentics.com/searchcn.htm">登录</a>
-          <a href="#mytext" class="btn-trial">试用</a>
-        </div>
-        <div class="nav-wrap fr">
+        <i class="switch el-icon-close" />
+        <svg-icon class="switch" icon-class="list" />
+        <div class="nav-wrap fr clear">
           <ul class="nav-menu clear">
             <li class="nav-li nav_a li_o">
               <a href="index.html">首页</a>
@@ -25,6 +23,8 @@
               <a href="article.html">企业VIP</a>
             </li>
           </ul>
+          <a href="#mytext" class="header-btn btn-trial">试用</a>
+          <a target="_blank" class="header-btn btn-login" href="https://www.patentics.com/searchcn.htm">登录</a>
         </div>
       </div>
     </div>
@@ -41,9 +41,9 @@
         <div class="slogan">
           专利智能检索分析平台
         </div>
-        <div class="search-box">
+        <div id="searchBox" class="search-box">
           <i class="search-logo fa el-icon-search" />
-          <textarea id="textarea" placeholder="请输入关键词,公开号或者一段话..." type="text" name="" />
+          <input id="textarea" placeholder="请输入关键词,公开号或者一段话..." type="text" name="">
           <i id="textclear" class="clear-icon fa el-icon-circle-close" />
           <div id="search-btn" class="search_btn">Search</div>
         </div>
@@ -271,32 +271,48 @@ export default {
 
   },
   mounted() {
-    var banner = document.getElementById('banner')
-    banner.style.height = document.body.clientHeight + 'px'
-
-    var ibox = document.getElementsByClassName('ibox')
-    console.log(this.clientHeight)
-    window.addEventListener('resize', function() {
-      banner.style.height = document.body.clientHeight + 'px'
-
-      if (document.body.clientWidth < 1000) {
-        for (var i = 0; i < ibox.length; i++) {
-          if (i % 2 === 0) {
-            var iboxInfo = document.getElementsByClassName('ibox-info')[i]
-            var iboxPic = document.getElementsByClassName('ibox-pic')[i]
-            // console.log(iboxInfo, iboxPic)
-            ibox[i].appendChild(iboxInfo)
-            // ibox[i].removeChild(iboxInfo);
-          }
-        }
-      }
-    })
+    this.scrollCtrl()
+    this.bannerResponsive()
     const hash = this.$route.query.hash
     hash && this.$nextTick(() => {
       window.location.hash = hash
     })
   },
   methods: {
+    // banner响应式控制
+    scrollCtrl() {
+      $(window).scroll(function() {
+        var criticalValue = $('#searchBox').offset().top + 60
+        if (criticalValue - $(window).scrollTop() <= 0) {
+          $('#topSearch').fadeIn()
+        } else {
+          $('#topSearch').fadeOut()
+        }
+      })
+    },
+    bannerResponsive() {
+      // banner
+      var banner = document.getElementById('banner')
+      banner.style.height = document.body.clientHeight + 'px'
+
+      var ibox = document.getElementsByClassName('ibox')
+      console.log(this.clientHeight)
+      window.addEventListener('resize', function() {
+        banner.style.height = document.body.clientHeight + 'px'
+
+        if (document.body.clientWidth < 1000) {
+          for (var i = 0; i < ibox.length; i++) {
+            if (i % 2 === 0) {
+              var iboxInfo = document.getElementsByClassName('ibox-info')[i]
+              var iboxPic = document.getElementsByClassName('ibox-pic')[i]
+              // console.log(iboxInfo, iboxPic)
+              ibox[i].appendChild(iboxInfo)
+              // ibox[i].removeChild(iboxInfo);
+            }
+          }
+        }
+      })
+    },
     handleSearch() {
       if (this.searchKey) {
         this.$router.push({ name: 'consoleAnnualQuery', query: { kw: this.searchKey }})
@@ -356,10 +372,12 @@ a {
     cursor:pointer;
   }
   .top-search{
-    width: 181.24px;
+    position: relative;
     height: 30px;
     line-height: 30px;
     margin-top: 15px;
+    padding-left: 8px;
+    padding-right: 35px;
     background-color: white;
     float: left;
     margin-left: 50px;
@@ -369,47 +387,58 @@ a {
     display: none;
   }
   .top-search input{
-    float:left;
-    margin-left:8px;
     height:30px;
     line-height:30px;
-    width:70%;
+    width:100%;
     font-family:"Microsoft Yahei";
   }
   .top-search .search-icon{
-    float:right;
-    margin-right:8px;
-    margin-top:6px;
+    position: absolute;
+    right: 8px;
+    top: 6px;
     color:#ccc;
     font-size:18px;
+    font-weight: bold;
     cursor: pointer;
   }
-  .log{
-    height:30px;
-    line-height:30px;
-    margin-right:0.5%;
-    padding:0;
-    margin-top: 15px;
+  .header .switch{
+    float: right;
+    width: 18px;
+    height: 18px;
+    margin: 16px 5.3% 0 0;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: none;
   }
-  .log a{
+  .header .switch.el-icon-close{
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    margin-top: 11px;
+  }
+  .nav-wrap a.header-btn{
     display: block;
-    float: left;
+    float: right;
     width:60px;
     height:30px;
     line-height:30px;
-    margin:0;
+    margin-top: 15px;
     padding:0;
     background-color:#fff;
     text-align: center;
     border-radius:15px;
     margin-right:4px;
   }
-  .header .log a:hover {
+  .nav-wrap a.header-btn:hover {
     filter: alpha(opacity=90);
     -moz-opacity: 0.9;
     opacity: 0.9;
-}
-  .log .btn-login{
+  }
+  .nav-wrap a.btn-trial{
+    margin-right: 1.5%;
+  }
+  .nav-wrap a.btn-login{
     color:white;
     background-color: #15af40;
   }
@@ -423,12 +452,14 @@ a {
     zoom: 1;
   }
   .header .nav-wrap{
+    min-width: 620px;
     height:60px;
     line-height:60px;
     float:right;
-    margin-right:4%;
   }
   .nav-menu{
+    float: left;
+    margin-right: 48px;
     height:60px;
     line-height:60px;
   }
@@ -439,7 +470,7 @@ a {
     position: relative;
     height:30px;
     line-height:30px;
-    width:100px;
+    width:95px;
     text-align:center;
     background-color:;
     margin-top:15px;
@@ -521,7 +552,10 @@ a {
     box-shadow: 0 0 0 1;
     background-color: white;
     margin-top:60px;
+    padding-left: 50px;
+    padding-right: 125px;
     position:relative;
+    box-sizing: border-box;
   }
   .fa {
       display: inline-block;
@@ -532,17 +566,16 @@ a {
       -moz-osx-font-smoothing: grayscale;
   }
   .search-logo{
-    float:left;
-    margin-left:15px;
-    margin-top:20px;
+    position: absolute;
+    top: 20px;
+    left: 15px;
     color:#e4e4e4;
     font-size:20px;
     font-weight: bold;
   }
-  .search-box textarea{
-    width:610px;
+  .search-box input{
+    width:100%;
     height:20px;
-    margin-left:15px;
     font-size:16px;
     float:left;
     margin-top:20px;
@@ -554,24 +587,23 @@ a {
     font-family: Microsoft Yahei;
   }
   .clear-icon{
-    float:left;
-    margin-top:22px;
-    margin-left:6px;
-    margin-top:20px;
+    position: absolute;
+    top: 20px;
+    right:  96px;
     color:#7c7c7c;
     font-size:20px;
     cursor:pointer;
     display: none;
   }
   .search_btn{
+    position: absolute;
+    right: 10px;
+    top: 10px;
     width:80px;
     height:40px;
     line-height:40px;
-    margin-top:10px;
-    margin-right:10px;
     border-radius:4px;
     font-size:14px;
-    float:right;
     text-align:center;
     cursor:pointer;
     color:white;
@@ -1054,11 +1086,78 @@ a {
     .main .container{
 
     }
+    .header{
+      min-width: 768px;
+    }
+    .header .logo{
+      margin-left: 15px;
+    }
+    .header .nav-wrap{
+      min-width: 500px;
+    }
+    .nav-menu{
+      margin-right: 10px;
+    }
+    .nav-menu .nav-li{
+      width: 75px;
+    }
 }
 @media screen and (max-width: 999px) {
   .frame{
     width: 100%;
     min-width: 768px;
+  }
+  .header .nav-wrap{
+    display: none;
+    width: 100%;
+    float: none;
+    position: fixed;
+    z-index: 999;
+    top: 50px;
+    left: 0;
+    padding-top: 15px;
+    padding-bottom: 32px;
+    margin: 0;
+    height: auto;
+    background: #0D1C3C;
+    opacity: 1;
+  }
+  .nav-menu{
+    width: 89%;
+    float: none;
+    margin: 0 auto;
+    background: #0D1C3C;
+    padding: 0 20px;
+    height: auto;
+  }
+  .nav-menu .nav-li{
+    position: relative;
+    float: none;
+    width: 100%;
+    margin: 0;
+    height: 38px;
+    text-align: left;
+    line-height: 38px;
+    font-size: 14px;
+    border-bottom: 1px solid #2F4981;
+    border-radius: 0;
+  }
+  .nav-wrap a.header-btn{
+    display: block;
+    float: none;
+    width: 89%;
+    height: 43px;
+    margin: 30px auto 15px;
+    text-align: center;
+    background: #3C8EFF;
+    line-height: 43px;
+    color: #FFF;
+    border-radius: 0;
+  }
+  .nav-wrap a.btn-login{
+    margin: 0 auto;
+    background: 0 0;
+    border: 1px solid #3C8EFF;
   }
   /*.register{
     min-width: 768px;
