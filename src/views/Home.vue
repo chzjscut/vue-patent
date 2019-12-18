@@ -264,6 +264,7 @@ export default {
   data() {
     return {
       clientHeight: 0, // 浏览器可视区域高度
+      isVisible: false, // 导航栏移动端布局显示
       searchKey: ''
     }
   },
