@@ -2,7 +2,7 @@
   <div>
     <!-- 表格展示 -->
     <el-table
-      v-loading="listLoading"
+      v-loading="tableLoading"
       :data="tableData"
       size="small"
       :max-height="681"
@@ -15,87 +15,57 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55" fixed />
-      <el-table-column show-tooltip-when-overflow label="专利信息" min-width="180">
-        <template slot-scope="scope">
-          <div class="zl-info">
-            <span
-              :data-type="scope.row.zlType === '发明专利'
-                ?'zl':scope.row.zlType === '实用新型'?'xx'
-                  :scope.row.zlType === '外观设计'?'wg':''"
-            >{{ scope.row.zlType }}</span>
-            <span class="number">{{ scope.row.zlNo }}</span>
-          </div>
-          <div class="zl-info">{{ scope.row.inventName }}</div>
-        </template>
-      </el-table-column>
       <el-table-column
-        label="申请日"
-        sortable
-        property="applyDate"
+        label="专利号"
+        property="zlh"
         min-width="150"
         show-tooltip-when-overflow
       />
       <el-table-column
-        label="专利权人"
-        property="applyPersonName"
-        min-width="200"
-        show-tooltip-when-overflow
-      />
-      <el-table-column
-        label="代理机构"
-        property="dailijgmc"
-        min-width="200"
-        show-tooltip-when-overflow
-      />
-      <el-table-column
-        label="缴费截止日"
-        sortable
-        property="jiaofeijzr"
+        label="专利名称"
+        property="title"
         min-width="150"
         show-tooltip-when-overflow
       />
-      <el-table-column label="年费状态" show-tooltip-when-overflow>
-        <template slot-scope="scope">
-          <div
-            :style="{color: scope.row.stateName === '正常'? '#008400'
-              :scope.row.stateName === '紧急'?'#FF6600'
-                :scope.row.stateName === '滞纳'?'#FF6600': '#D2D2D2'}"
-          >
-            {{ scope.row.stateName }}
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="年费/滞纳金" show-tooltip-when-overflow align="center">
-        <template slot-scope="scope">{{ (scope.row.shijiyjje || '-')+'/'+(scope.row.forfeit || '-') }}</template>
-      </el-table-column>
       <el-table-column
-        v-if="$route.name === 'consoleAnnualQuery'|| $route.name === 'consoleBatchQuery'"
-        label="年费提醒"
-      >
+        label="申请日期"
+        sortable
+        property="sqri"
+        min-width="150"
+        show-tooltip-when-overflow
+      />
+      <el-table-column
+        label="申请人(专利权人)"
+        property="sqren"
+        min-width="200"
+        show-tooltip-when-overflow
+      />
+      <el-table-column
+        label="授权日期"
+        sortable
+        property="shouquanri"
+        min-width="150"
+        show-tooltip-when-overflow
+      />
+      <!-- <el-table-column label="年费/滞纳金" show-tooltip-when-overflow align="center">
+        <template slot-scope="scope">{{ (scope.row.fee=='/'? '-' : scope.row.fee)+'/'+(scope.row.penalty=='/'? '-' : scope.row.penalty) }}</template>
+      </el-table-column> -->
+      <el-table-column
+        label="法律状态"
+        property="flzt"
+        min-width="150"
+        show-tooltip-when-overflow
+      />
+      <el-table-column label="详情" show-tooltip-when-overflow>
         <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.attention"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            :active-value="1"
-            :inactive-value="0"
-            @change="handleSwitchChange(scope.row.zlNo, scope.row.attention)"
-          />
+          <router-link
+            tag="a"
+            style="color: #409EFF"
+            :to="{name: 'patentDetail', query: {zlh: scope.row.zlh}}"
+          >查看详情
+          </router-link>
         </template>
       </el-table-column>
-      <template v-if="$route.name === 'consoleAnnualMonitor'">
-        <el-table-column label="详情" show-tooltip-when-overflow>
-          <template slot-scope="scope">
-            <router-link
-              target="_blank"
-              tag="a"
-              style="color: #409EFF"
-              :to="{name: 'consoleFeeDetail', query: {zlNo: scope.row.zlNo}}"
-            >费用信息
-            </router-link>
-          </template>
-        </el-table-column>
-      </template>
     </el-table>
     <!-- 分页 -->
     <el-pagination
@@ -113,7 +83,7 @@
 
 <script>
 export default {
-  props: ['listLoading', 'tableData', 'searchData', 'page', 'size', 'total'],
+  props: ['tableLoading', 'tableData', 'searchData', 'page', 'size', 'total'],
   data() {
     return {
       userSelect: false

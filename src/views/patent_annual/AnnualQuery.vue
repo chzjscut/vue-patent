@@ -1,7 +1,7 @@
 <template>
   <div class="annual-query">
     <el-button type="primary" size="small" @click="dialogShow">多专利查询</el-button>
-    <el-dropdown trigger="click" @command="queryChoose">
+    <el-dropdown v-if="false" trigger="click" @command="queryChoose">
       <el-button type="primary" size="small" style="width: 92px;height: 32px;">
         表格查询<i class="el-icon-arrow-down el-icon--right" />
       </el-button>
@@ -10,7 +10,7 @@
         <el-dropdown-item command="2">模板下载</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <el-button type="primary" size="small" @click="handleAttentionAll">一键提醒</el-button>
+    <el-button v-if="false" type="primary" size="small" @click="handleAttentionAll">一键提醒</el-button>
 
     <!-- <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".xlsx, .xls" @change="handleClick"> -->
     <!-- 全局搜索 -->
@@ -98,14 +98,14 @@
 
     <!-- 专利查询弹窗 -->
     <el-dialog title="专利批量查询" :visible.sync="isDialogVisible">
-      <el-form label-position="top">
-        <el-form-item label="专利号:" label-width="100px">
-          <el-input v-model="patentStr" type="textarea" :rows="5" placeholder="请输入专利号，多个专利号之间用逗号隔开" auto-complete="off" />
+      <el-form ref="searchParams" :model="searchParams" :rules="rules" label-position="top">
+        <el-form-item label="专利号:" prop="zlh" label-width="100px">
+          <el-input v-model="searchParams.zlh" type="textarea" :rows="5" placeholder="请输入专利号，多个专利号之间用逗号隔开" auto-complete="off" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="doBatchSearch();isDialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="doBatchSearch('searchParams');isDialogVisible = false">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -119,8 +119,13 @@ export default {
   components: { TableCom },
   data() {
     return {
-      searchParam: {
-        zlh: "{'2016201445312'}"
+      searchParams: { // {'2016201445312','201620144531.2','201720095923.9'}
+        zlh: ''
+      },
+      rules: {
+        zlh: [
+          { required: true, message: '专利号不能为空', trigger: 'blur' }
+        ]
       },
       isDialogVisible: false, // 控制弹窗显示
       patentStr: '', // 多个专利号的字符串，用于专利批量查询
@@ -154,7 +159,7 @@ export default {
 
   methods: {
     async init() {
-      this.doSearch_feeinfo()
+      // this.doSearch_feeinfo()
       // await this.initGlobalKey()
       // this.getSearchList()
       /* if (this.searchConditionKey) {
@@ -191,8 +196,13 @@ export default {
 
     // 根据专利号查询专利年费信息
     async doSearch_feeinfo() {
-      doSearch_feeinfo(this.searchParam).then(res => {
-
+      doSearch_feeinfo(this.searchParams).then(res => {
+        this.searchParams.zlh = ''
+        if (res.status === 1000) {
+          this.tableData = res.data
+        } else {
+          this.$message({ type: 'error', message: res.data.msg, customClass: 'el-message-custom' })
+        }
       }).catch(({ msg }) => {
 
       })
@@ -234,19 +244,33 @@ export default {
     },
 
     cancel() {
-      this.patentStr = ''
+      this.searchParams.zlh = ''
       this.isDialogVisible = false
     },
 
     // 根据输入的专利号进行批量查询
-    doBatchSearch() {
-      console.log(this.patentStr)
-      if (this.patentStr) {
-        this.resetPagination()
-        this.importZlIds = this.patentStr.split(',')
-        this.patentStr = ''
-        this.fetchImportList()
-      }
+    doBatchSearch(formName) {
+      // console.log(this.searchParams)
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.resetPagination()
+          this.searchParams.zlh = this.serialize(this.searchParams.zlh)
+          this.doSearch_feeinfo()
+        } else {
+          this.searchParams.zlh = ''
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    serialize(zlhStr) {
+      const zlhArr = zlhStr.split(',')
+      let str = '{'
+      zlhArr.forEach(function(item, index) {
+        str += (index === 0 ? "'" : ",'") + item + "'"
+      })
+      str += '}'
+      return str
     },
 
     // 列表查询

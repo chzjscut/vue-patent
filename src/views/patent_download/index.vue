@@ -17,20 +17,33 @@
     <!-- 内容展示区域 -->
     <div class="content">
       <!-- 列表模式 -->
-      <table-display v-if="displayType===0" />
+      <table-display
+        v-if="displayType===0"
+        :table-loading="listLoading"
+        :table-data="tableData"
+      />
       <!-- 图文模式 -->
-      <list-display v-else />
+      <list-display
+        v-else
+        :list-data="tableData"
+        :list-loading="listLoading"
+      />
     </div>
   </div>
 </template>
 <script>
 import tableDisplay from './table'
 import listDisplay from './list'
+import { doSearch_patent } from '@/api/console'
 
 export default {
   components: { tableDisplay, listDisplay },
   data() {
     return {
+      searchParams: {
+        keywords: '电',
+        page: '1'
+      },
       isSelectBoxVisible: false, // 列表模式下拉框是否显示
       displayType: 0, // 内容展示方式：0 - 列表模式 ，1 - 图文模式
       displayList: [{
@@ -39,10 +52,30 @@ export default {
       }, {
         iconClass: 'type_s',
         label: '图文模式'
-      }]
+      }],
+      listLoading: false,
+      tableData: [],
+      listData: []
     }
   },
+  created() {
+    this.init()
+  },
   methods: {
+    init() {
+      this.doSearchPatent()
+    },
+    // 根据关键字查询专利
+    async doSearchPatent() {
+      this.listLoading = true
+      var res = await doSearch_patent(this.searchParams)
+      this.listLoading = false
+      if (res.status === 1000) {
+        this.tableData = res.data
+      } else {
+        this.$message({ type: 'error', message: res.data.msg, customClass: 'el-message-custom' })
+      }
+    },
     selectDisplayType(index) {
       this.displayType = index
       this.isSelectBoxVisible = false

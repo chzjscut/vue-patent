@@ -25,7 +25,7 @@ export function logout() {
 // 密码登录
 export function PASSWORD_LOGIN(data) {
   return request.post({
-    url: '/user/login',
+    url: '/login/',
     data
   })
 }
@@ -41,7 +41,7 @@ export function VERIFY_LOGIN(data) {
 // 注册
 export function REGISTER(data) {
   return request.post({
-    url: '/user/register',
+    url: '/register/',
     data
   })
 }
@@ -49,7 +49,7 @@ export function REGISTER(data) {
 // 获取验证码
 export function VERIFY_CODE(data) {
   return request.post({
-    url: '/user/verifyCode',
+    url: '/sendcode/',
     data
   })
 }
@@ -85,4 +85,3 @@ export function UPDATE_USER_INFO(data) {
     data
   })
 }
-

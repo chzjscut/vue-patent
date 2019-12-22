@@ -23,12 +23,12 @@
             :model="formPassword"
           >
             <el-form-item
-              prop="account"
+              prop="mobile"
               :rules="[{required :true , message: '手机号为必填项', trigger: 'blur' },
                        { pattern: /^1[34578]\d{9}$/, message: '手机格式有误', trigger: 'blur' }]"
             >
               <el-input
-                v-model="formPassword.account"
+                v-model="formPassword.mobile"
                 prefix-icon="el-icon-mobile-phone"
                 placeholder="请输入手机号码"
               />
@@ -52,12 +52,12 @@
             :model="formVerification"
           >
             <el-form-item
-              prop="account"
+              prop="mobile"
               :rules="[{required :true , message: '手机号为必填项', trigger: 'blur' },
                        { pattern: /^1[34578]\d{9}$/, message: '手机格式有误', trigger: 'blur' }]"
             >
               <el-input
-                v-model="formVerification.account"
+                v-model="formVerification.mobile"
                 prefix-icon="el-icon-mobile-phone"
                 placeholder="请输入手机号码"
               />
@@ -122,7 +122,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import { PASSWORD_LOGIN, VERIFY_LOGIN, VERIFY_CODE } from '@/api/user'
-import { setToken, setSalt } from '@/utils/auth'
+import { setToken, setUserName } from '@/utils/auth'
 
 export default {
   data() {
@@ -141,12 +141,12 @@ export default {
 
       // 验证码登录表格
       formVerification: {
-        account: '',
+        mobile: '',
         verifyCode: ''
       },
       // 密码登录表格
       formPassword: {
-        account: '',
+        mobile: '',
         password: ''
       },
 
@@ -185,7 +185,11 @@ export default {
     async loginWithPassword() {
       await PASSWORD_LOGIN(this.formPassword).then(res => {
         console.log(res)
-        this.handleLoginSuccess(res.data)
+        if (res.status === 1000) {
+          this.handleLoginSuccess(res.data)
+        } else {
+          this.$message({ type: 'error', message: res.data ? res.data.msg : res.error, customClass: 'el-message-custom' })
+        }
       })
     },
 
@@ -197,7 +201,7 @@ export default {
       // this.$store.commit('user/SET_ROLES', ['admin'])
       localStorage.setItem('userInfo', JSON.stringify(userInfo))
       setToken(userInfo.token)
-      setSalt(userInfo.salt)
+      setUserName(userInfo.username)
       this.$message({
         type: 'success',
         message: '登录成功',
@@ -209,7 +213,7 @@ export default {
 
     // 获取验证码
     async handleGetVerification() {
-      this.$refs.formVerification.validateField('account', msg => {
+      this.$refs.formVerification.validateField('mobile', msg => {
         if (!msg) { this.fetchVerification() }
       })
     },
@@ -217,7 +221,7 @@ export default {
     // 获取验证码接口
     async fetchVerification() {
       this.verificationInterval()
-      VERIFY_CODE({ phone: this.formVerification.account })
+      VERIFY_CODE({ phone: this.formVerification.mobile })
         .then(() => {
           this.$message({
             type: 'success',

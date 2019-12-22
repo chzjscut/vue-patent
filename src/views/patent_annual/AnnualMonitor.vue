@@ -1,4 +1,3 @@
-<!--suppress ALL -->
 <template>
   <div class="annual-monitor">
     <!--查询条件-->
@@ -68,13 +67,8 @@
         placeholder="请选择缴费结束日期"
       />
       <el-input
-        v-model="searchFilter.zlh"
+        v-model="zlh"
         placeholder="请输入专利号"
-        size="small"
-      />
-      <el-input
-        v-model="searchFilter.applyPersonName"
-        placeholder="请输入申请人全称"
         size="small"
       />
       <div class="table-button-group" style="display:inline-block;">
@@ -98,13 +92,22 @@
 </template>
 <script>
 import TableCom from './table'
-import { ATTENTION_LIST } from '@/api/console'
+import { getUserName } from '@/utils/auth'
+import { doExport_monitor, doSearch_monitor } from '@/api/console'
 // import { download } from '../../plugins/axios.download'
 
 export default {
   components: { TableCom },
   data() {
     return {
+      zlh: '',
+      queryObj: { // "{'201620144531.2','201720095923.9'}"
+        zlh: '',
+        username: 'liudong' // getUserName()
+      },
+      exportParams: {
+        zlh: ''
+      },
       searchFilter: {
         zlh: '',
         zlType: '',
@@ -158,6 +161,7 @@ export default {
 
   mounted() {
     // this.fetchList()
+    // this.exportExcel()
   },
 
   methods: {
@@ -170,22 +174,34 @@ export default {
     // 查询表格列表
     async fetchList() {
       this.listLoading = true
-      const param = { ...this.searchFilter, pageNo: this.page, pageSize: this.size }
-
-      ATTENTION_LIST(param)
-        .then(res => {
+      // this.queryObj.zlh = this.zlh;
+      // const param = { ...this.searchFilter, pageNo: this.page, pageSize: this.size }
+      this.queryObj.zlh = this.serialize(this.zlh)
+      doSearch_monitor(this.queryObj).then(res => {
+        if (res.status === 1000) {
           this.tableData = res.data
-          this.total = res.total
+          // this.total = res.total
           this.listLoading = false
+        } else {
+          this.$message({ type: 'error', message: res.data.msg, customClass: 'el-message-custom' })
+        }
+      }).catch(({ msg }) => {
+        this.listLoading = false
+        this.$message({
+          type: 'error',
+          message: msg,
+          customClass: 'el-message-custom'
         })
-        .catch(({ msg }) => {
-          this.listLoading = false
-          this.$message({
-            type: 'error',
-            message: msg,
-            customClass: 'el-message-custom'
-          })
-        })
+      })
+    },
+    serialize(zlhStr) {
+      const zlhArr = zlhStr.split(',')
+      let str = '{'
+      zlhArr.forEach(function(item, index) {
+        str += (index === 0 ? "'" : ",'") + item + "'"
+      })
+      str += '}'
+      return str
     },
 
     // 删除
@@ -224,7 +240,10 @@ export default {
     },
 
     // 导出
-    exportExcel() {
+    async exportExcel() {
+      // this.queryObj.zlh = this.zlh;
+      this.exportParams.zlh = this.serialize(this.zlh)
+      var res = await doExport_monitor(this.exportParams)
       /* try {
         download('/export/excelExports', this.searchFilter, '年费监控')
       } catch ({ msg }) {

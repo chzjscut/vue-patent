@@ -2,16 +2,16 @@
   <div>
     <div class="Js_outerList">
       <div class="JS_ol_top">
-        <div class="u-list-div">
+        <div v-for="(item, index) in listData" :key="item.zlh" class="u-list-div">
           <div class="u-top Js_hl fn-clear">
             <div class="g-left g-left2">
               <el-checkbox v-model="checked" style="margin-right: 7px" />
               <!-- <input type="checkbox" style="vertical-align:middle;margin-right:8px"> -->
-              <span class="num">1</span>[中国实用新型]
+              <span class="num">{{ index+1 }}</span>[中国实用新型]
             </div>
             <div class="fn-left g-right newList-item">
-              <a href="" class="c-blue nl-an" target="_blank">CN201821572457.X</a>
-              <a href="" target="_blank" class="c-blue title nl-ti">一种空气净化装置</a>
+              <a href="" class="c-blue nl-an" target="_blank">{{ item.zlh }}</a>
+              <a href="" target="_blank" class="c-blue title nl-ti">{{ item.title }}</a>
             </div>
           </div>
           <div class="u-main fn-clear">
@@ -20,11 +20,11 @@
                 <div class="mleft">
                   <span class="mmove" style="display: none; left: 9px; top: 22px;" />
                   <span class="mmask" />
-                  <img alt="专利探索者" class="lazyload" src="https://cube.patexplorer.com/img/7e8943b282902704390a435871411dd3/120/180">
+                  <img class="lazyload" src="https://cube.patexplorer.com/img/7e8943b282902704390a435871411dd3/120/180">
                 </div>
               </div>
               <div class="mright" style="display: none; left: 152px; top: 63px;">
-                <img alt="专利探索者" src="https://cube.patexplorer.com/img/7e8943b282902704390a435871411dd3/960/0" style="left: -91.9565px; top: -178.292px;">
+                <img src="https://cube.patexplorer.com/img/7e8943b282902704390a435871411dd3/960/0" style="left: -91.9565px; top: -178.292px;">
               </div>
             </div>
             <div style="float:left;width:100%;">
@@ -32,35 +32,32 @@
                 <div>
                   <p>
                     <strong>公开（公告）号：</strong>
-                    <a href="" class="c-blue" target="_blank" title="公开号">
-                      CN208865325U
-                    </a>
+                    <a href="" class="c-blue" target="_blank" title="公开号">{{ item.gkh }}</a>
                   </p>
                   <p>
                     <strong>申请（专利权）人：</strong>
-                    <a href="" target="_blank">滑县恒琢信息科技有限公司</a>
-                    <span />
+                    <a href="" target="_blank">{{ item.sqren }}</a>
                   </p>
                 </div>
                 <div>
                   <p>
                     <strong>申请日：</strong>
-                    <a href="" target="_blank">20180926</a>
+                    <a href="" target="_blank">{{ item.sqri }}</a>
                   </p>
                   <p>
                     <strong>主分类号：</strong>
-                    <a class="main-ipc" href="" target="_blank">B01D46/00</a>
+                    <a class="main-ipc" href="" target="_blank">{{ item.zflh }}</a>
                   </p>
                 </div>
                 <div>
                   <p>
                     <strong>公开（公告）日：</strong>
-                    <a href="" target="_blank" title="公开日">20190517</a>
+                    <a href="" target="_blank" title="公开日">{{ item.gkr }}</a>
                   </p>
                 </div>
                 <div>
                   <strong>摘要：</strong>
-                  <span class="content">本实用新型属于<span class="c-highligth-default">环</span><span class="c-highligth-default">保</span><span class="c-highligth-default">设</span><span class="c-highligth-default">备</span>技术领域，尤其为一种空气净化装置，包括壳体，所述壳体的两侧分别设置有进气盒和排气盒，所述进气盒内设置有过滤组件，所述壳体内固定安装有空气泵，所述空气泵的进气口固定连接有进气管的一端，所述进气管的另一端与进气盒相连通，所述壳体的底部内壁上固定安装有水箱，所述水箱内设置有电热丝和多个紫外线灯，所述壳体内固定安装有雾化盒，所述雾化盒的底部固定连接有回流管的一端，所述回流管的另一端与水箱相连通。本实用新型实用性高，通过设置微型隔膜水泵和微雾喷头可有效将水箱内的水抽出并持续雾化，并在雾化盒内与过滤后的空气充分均匀混合，对空气的加湿效率高，效果更佳。</span>
+                  <span class="content">{{ item.zy }}<!-- <span class="c-highligth-default">环</span> --></span>
                 </div>
                 <div class="translatecontent" />
               </div>
@@ -73,6 +70,7 @@
 </template>
 <script>
 export default {
+  props: ['listLoading', 'listData', 'page', 'size', 'total'],
   data() {
     return {
       checked: false

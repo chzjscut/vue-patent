@@ -17,16 +17,16 @@
         >
           <el-form-item
             label="用户名："
-            prop="account"
+            prop="username"
             :rules="[{ required: true, message: '用户名为必填项', trigger: 'blur' },
                      {pattern: /^[a-zA-Z\u4E00-\u9FA5][a-zA-Z0-9_\u4E00-\u9FA5]{2,19}$/, message: '格式错误', trigger: 'blur'}]"
           >
             <el-input
-              v-model="formBaseData.account"
+              v-model="formBaseData.username"
               placeholder="3-20位，中文、字母、数字、下划线的组合，以中文或字母开头"
             />
           </el-form-item>
-          <el-form-item
+          <!-- <el-form-item
             label="邮箱："
             prop="email"
             :rules="[{ required: true, message: '邮箱为必填项', trigger: 'blur' },
@@ -36,15 +36,15 @@
               v-model="formBaseData.email"
               placeholder="请输入邮箱"
             />
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item
             label="手机号："
-            prop="phone"
+            prop="mobile"
             :rules="[{ required: true, message: '手机号为必填项', trigger: 'blur' },
                      { pattern: /^1[34578]\d{9}$/, message: '手机格式有误', trigger: 'blur'}]"
           >
             <el-input
-              v-model="formBaseData.phone"
+              v-model="formBaseData.mobile"
               placeholder="请填写11位有效的手机号码"
             />
           </el-form-item>
@@ -67,14 +67,14 @@
               placeholder="请再输入一遍上面的密码"
             />
           </el-form-item>
-          <el-form-item
+          <!-- <el-form-item
             label=""
             prop="agree"
             :rules="[{ required: true, message: '请先同意协议', trigger: 'change' }]"
           >
             <el-checkbox v-model="formBaseData.agree" name="agree" />
             <el-button type="text">我已阅读并同意条款</el-button>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="">
             <el-button
               type="primary"
@@ -89,10 +89,10 @@
         <div class="alert alert-info">短信已发送至您手机，请输入短信中的验证码，确保您的手机号真实有效。</div>
         <el-form ref="formVerification" :model="formBaseData" label-width="100px" style="width: 80%">
           <el-form-item label="手机号：">
-            <el-button type="text">{{ formBaseData.phone }}</el-button>
+            <el-button type="text">{{ formBaseData.mobile }}</el-button>
           </el-form-item>
           <el-form-item
-            prop="verifyCode"
+            prop="code"
             label="验证码："
             :rules="[{required :true , message: '验证码为必填项', trigger: 'blur' },
                      { pattern: /^\d{6}$/, message: '格式错误，6位验证码', trigger: 'blur' }]"
@@ -100,7 +100,7 @@
             <el-row>
               <el-col :span="14">
                 <el-input
-                  v-model="formBaseData.verifyCode"
+                  v-model="formBaseData.code"
                   placeholder="请输入验证码"
                 />
               </el-col>
@@ -137,6 +137,7 @@
   </div>
 </template>
 <script>
+import { REGISTER, VERIFY_CODE } from '@/api/user'
 export default {
   data() {
     const passwordConfirm = (rule, value, callback) => {
@@ -171,14 +172,14 @@ export default {
     handleValidatorBaseInfo() {
       this.$refs.formBase.validate(valid => {
         if (valid) {
-          if (!this.formBaseData.agree) {
+          /* if (!this.formBaseData.agree) {
             this.$message({
               type: 'error',
               message: '请先勾选协议',
               customClass: 'el-message-custom'
             })
             return
-          }
+          } */
           this.activeStep = 1
           this.fetchVerification()
         } else {
@@ -189,8 +190,12 @@ export default {
 
     handleRegister() {
       this.$refs.formVerification.validate(async valid => {
-        valid && this.$api.REGISTER({ data: this.formBaseData }).then(res => {
-          this.handleRegisterSuccess(res.data)
+        valid && REGISTER(this.formBaseData).then(res => {
+          if (res.status === '1000') {
+            this.handleRegisterSuccess(res.data)
+          } else {
+            this.$message({ type: 'error', message: res.data.msg, customClass: 'el-message-custom' })
+          }
         })
       })
     },
@@ -198,9 +203,9 @@ export default {
     // 注册成功处理
     handleRegisterSuccess(userInfo) {
       console.log(userInfo)
-      this.$store.commit('SET_USER_INFO', JSON.stringify(userInfo))
+      // this.$store.commit('SET_USER_INFO', JSON.stringify(userInfo))
       // this.SET_USER_INFO(JSON.stringify(userInfo))
-      localStorage.setItem('userInfo', JSON.stringify(userInfo))
+      // localStorage.setItem('userInfo', JSON.stringify(userInfo))
       this.$message({
         type: 'success',
         message: '注册成功',
@@ -223,13 +228,18 @@ export default {
     // 获取验证码接口
     async fetchVerification() {
       this.verificationInterval()
-      this.$api.VERIFY_CODE({ data: { phone: this.formBaseData.phone }, returnError: true })
-        .then(() => {
-          this.$message({
-            type: 'success',
-            message: '验证码发送成功',
-            customClass: 'el-message-custom'
-          })
+      VERIFY_CODE({ mobile: this.formBaseData.mobile })
+        .then((res) => {
+          if (res.status === '1000') {
+            this.$message({
+              type: 'success',
+              message: '验证码发送成功',
+              customClass: 'el-message-custom'
+            })
+          } else {
+            this.verificationClearInterval()
+            this.$message({ type: 'error', message: res.data.msg, customClass: 'el-message-custom' })
+          }
         })
         .catch(({ msg }) => {
           this.verificationClearInterval()

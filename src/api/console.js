@@ -38,7 +38,7 @@ export function ATTENTION_PATENT(data) {
 // @zlNo 专利号
 export function FEE_INFO(data) {
   return request.post({
-    url: '/pull/baseInfo/feeInfo',
+    url: '/feeInfo/',
     data
   })
 }
@@ -79,9 +79,33 @@ export function PATENT_ANALYSIS_EXPIRE(data) {
 
 // 根据专利号查询专利年费相关信息
 export function doSearch_feeinfo(data) {
-  console.log(data)
   return request.post({
     url: '/feeinfo/',
+    data
+  })
+}
+
+// 根据关键字查询专利
+export function doSearch_patent(data) {
+  return request.post({
+    url: '/search/',
+    data
+  })
+}
+
+// 年费监控导出Excel
+export function doExport_monitor(data) {
+  return request.post({
+    url: '/export/',
+    data,
+    responseType: 'arraybuffer'
+  })
+}
+
+// 年费监控查询
+export function doSearch_monitor(data) {
+  return request.post({
+    url: '/monitor/',
     data
   })
 }

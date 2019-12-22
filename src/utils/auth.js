@@ -13,15 +13,15 @@ export function removeToken() {
   return Cookies.remove(TokenKey)
 }
 
-// salt缓存设置
-export function getSalt() {
-  return Cookies.get('salt')
+// username缓存设置
+export function getUserName() {
+  return Cookies.get('username')
 }
 
-export function setSalt(salt) {
-  return Cookies.set('salt', salt)
+export function setUserName(username) {
+  return Cookies.set('username', username)
 }
 
-export function removeSalt() {
-  return Cookies.remove(salt)
+export function removeUserName() {
+  return Cookies.remove('username')
 }

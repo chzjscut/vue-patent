@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { /* MessageBox, */Message } from 'element-ui'
 import store from '@/store'
-import { getToken, getSalt } from '@/utils/auth'
+import { getToken } from '@/utils/auth'
 import { SERVER_BASE_URL } from '@/utils/const'
 
 // create an axios instance
@@ -13,9 +13,9 @@ const service = axios.create({
     'Content-Type': 'application/json;charset=UTF-8'
     // 'Content-Type': 'application/x-www-form-urlencoded'
     // 'token': getToken(),
-    // 'fr-Agent': getSalt()
-  },
-  timeout: 5000 // request timeout
+    // 'username': getUserName()
+  }
+  // timeout: 5000 // request timeout
 })
 
 // request interceptor
@@ -79,7 +79,7 @@ service.interceptors.response.use(
       return res
     }*/
 
-    if (res && res.success) {
+    if (res) {
       return res
     } else {
       console.log(res)
