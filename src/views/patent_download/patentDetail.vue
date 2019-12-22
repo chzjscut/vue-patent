@@ -101,7 +101,27 @@
   </div>
 </template>
 <script>
+import { doGetPatentInfo } from '@/api/console'
 
+export default {
+  data() {
+    return {
+      zlh: this.$route.query.zlh
+    }
+  },
+  created() {
+    console.log(this.zlh)
+    this.doGetPatentInfo()
+  },
+  methods: {
+    async doGetPatentInfo() {
+      var param = {
+        zlh: this.zlh
+      }
+      var res = await doGetPatentInfo(param)
+    }
+  }
+}
 </script>
 <style scoped>
   button, p, label, div, span, input, a {

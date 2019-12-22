@@ -93,6 +93,14 @@ export function doSearch_patent(data) {
   })
 }
 
+// 根据zlh查询专利详情
+export function doGetPatentInfo(data) {
+  return request.post({
+    url: '/patinfo/',
+    data
+  })
+}
+
 // 年费监控导出Excel
 export function doExport_monitor(data) {
   return request.post({
@@ -109,3 +117,4 @@ export function doSearch_monitor(data) {
     data
   })
 }
+
