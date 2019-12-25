@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="listLoading" style="height: 100%;">
     <div class="Js_outerList">
       <div class="JS_ol_top">
         <div v-for="(item, index) in listData" :key="item.zlh" class="u-list-div">

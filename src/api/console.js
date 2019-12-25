@@ -117,4 +117,3 @@ export function doSearch_monitor(data) {
     data
   })
 }
-

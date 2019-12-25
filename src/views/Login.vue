@@ -123,7 +123,7 @@
 import { mapMutations } from 'vuex'
 import { PASSWORD_LOGIN, VERIFY_LOGIN, VERIFY_CODE } from '@/api/user'
 import { setToken, setUserName } from '@/utils/auth'
-
+import { test } from '@/api/console'
 export default {
   data() {
     return {
@@ -157,7 +157,7 @@ export default {
   },
 
   mounted() {
-
+    test({ name: 'xm' })
   },
 
   methods: {

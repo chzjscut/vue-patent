@@ -1,5 +1,23 @@
 <template>
   <div class="main">
+    <!-- 全局搜索 -->
+    <div class="search-global">
+      <i class="el-icon-info" style="margin-right: 10px" />
+      <el-input
+        v-model="searchParams.keywords"
+        size="large"
+        placeholder="试试你想找的一切东西？"
+        prefix-icon="el-icon-search"
+        @keyup.enter.native="doSearchPatent"
+      />
+      <el-button
+        type="primary"
+        icon="el-icon-search"
+        style="margin-left: 10px"
+        @click="doSearchPatent"
+      >搜索
+      </el-button>
+    </div>
     <!-- 头部操作行 -->
     <div class="operations-list">
       <a class="switch_on" :class="[displayList[displayType].iconClass]" @click="isSelectBoxVisible=!isSelectBoxVisible">
@@ -9,13 +27,13 @@
         <a v-for="(item, index) in displayList" :key="index" class="Js_type type_l" :class="[item.iconClass, {active: displayType===index}]" @click="selectDisplayType(index)"><span class="barIcon" />{{ item.label }}</a>
       </div>
 
-      <a class="Js_export"><span class="barIcon" />著录项导出</a>
+      <!-- <a class="Js_export"><span class="barIcon" />著录项导出</a>
       <a class="Js_multi_export"><span class="barIcon" />批量下载</a>
-      <a id="Js_patentFee_dropdown" class="Js_patentFee" style="position: relative;"><span class="barIcon" />专利年费</a>
+      <a id="Js_patentFee_dropdown" class="Js_patentFee" style="position: relative;"><span class="barIcon" />专利年费</a> -->
     </div>
 
     <!-- 内容展示区域 -->
-    <div class="content">
+    <div class="content" style="height: 100%;">
       <!-- 列表模式 -->
       <table-display
         v-if="displayType===0"
@@ -41,7 +59,7 @@ export default {
   data() {
     return {
       searchParams: {
-        keywords: '电',
+        keywords: '',
         page: '1'
       },
       isSelectBoxVisible: false, // 列表模式下拉框是否显示
@@ -63,7 +81,7 @@ export default {
   },
   methods: {
     init() {
-      this.doSearchPatent()
+      // this.doSearchPatent()
     },
     // 根据关键字查询专利
     async doSearchPatent() {
@@ -84,9 +102,24 @@ export default {
 }
 </script>
 <style scoped>
+  .main{
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .search-global {
+    font-size: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted #ddd;
+  }
+
+  .search-global .el-input {
+    width: 50%;
+  }
 	.operations-list{
-		height: 40px;
+		height: 45px;
 		position: relative;
+    border-bottom: 1px solid #1976d2;
 	}
 	.operations-list>a{
 		padding: 0 4px;
@@ -138,7 +171,7 @@ export default {
 	    position: absolute;
 	    top: 38px;
 	    left: 20px;
-	    z-index: 100;
+	    z-index: 2001;
 	    border: 1px solid #ccc;
 	    box-sizing: content-box;
 	}

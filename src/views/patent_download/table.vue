@@ -69,6 +69,11 @@
     </el-table>
     <!-- 分页 -->
     <el-pagination
+      background
+      class="page-center"
+      layout="prev, pager, next"
+    />
+    <!-- <el-pagination
       :page-size="size"
       :page-sizes="[10]"
       :current-page="page"
@@ -77,7 +82,7 @@
       layout="total, sizes, prev, pager, next, jumper"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-    />
+    /> -->
   </div>
 </template>
 
@@ -124,7 +129,9 @@ export default {
   .zl-info {
     font-size: 12px;
   }
-
+  >>>.el-table__body-wrapper{
+    min-height: 400px;
+  }
   span[data-type] {
     padding: 2px;
     color: #fff;

@@ -127,6 +127,21 @@ export const constantRoutes = [
   // 专利批量下载
   {
     path: '/patentDownload',
+    name: 'patentDownload',
+    meta: { title: '专利批量下载', icon: 'documentation' },
+    component: () => import('@/views/patent_download/index'),
+    hidden: true
+  },
+  // 专利详情
+  {
+    path: '/patentDetail',
+    name: 'patentDetail',
+    meta: { title: '专利批量下载', icon: 'documentation' },
+    component: () => import('@/views/patent_download/patentDetail.vue'),
+    hidden: true
+  },
+  /* {
+    path: '/patentDownload',
     component: Layout,
     children: [
       {
@@ -144,7 +159,7 @@ export const constantRoutes = [
         hidden: true
       }
     ]
-  },
+  }, */
   // 著目录导出
   {
     path: '/catalogExport',
