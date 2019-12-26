@@ -16,12 +16,7 @@
       </div>
       <div class="tab_container">
         <div class="u-tab ui-switchable-nav">
-          <a class="Js_patent_view_tab ui-switchable-trigger ui-switchable-active">专利公开详情</a>
-          <a class="Js_patent_view_tab ui-switchable-trigger">法律信息</a>
-          <a class="Js_patent_view_tab ui-switchable-trigger">同族专利</a>
-          <a class="Js_patent_view_tab ui-switchable-trigger">引证文献</a>
-          <a class="Js_patent_view_tab ui-switchable-trigger">专利价值度</a>
-          <a class="Js_patent_view_tab ui-switchable-trigger">相关专利</a>
+          <a v-for="(tab, index) in tabs" :key="index" :class="{'ui-switchable-active': true}">{{ tab }}</a>
         </div>
       </div>
     </div>
@@ -31,13 +26,7 @@
           <div class="g-info-l">
             <div class="g-info-l-in">
               <div>
-                <div class="u-subtab fn-clear ui-switchable-nav">
-                  <a class="Js_patent_view_subtab ui-switchable-trigger ui-switchable-active">著录项信息</a>
-                  <a class="Js_patent_view_subtab ui-switchable-trigger">权利要求</a>
-                  <a class="Js_patent_view_subtab ui-switchable-trigger">说明书</a>
-                  <a class="Js_patent_view_subtab ui-switchable-trigger">PDF全文</a>
-                </div>
-                <div class="Js_patent_view_content ui-switchable-content">
+                <div class="ui-switchable-content">
                   <div class="item fn-hide Js_hl ui-switchable-panel" style="display: block;">
                     <div class="">
                       <h5 class="u-info-title">著录项</h5>
@@ -106,7 +95,9 @@ import { doGetPatentInfo } from '@/api/console'
 export default {
   data() {
     return {
-      zlh: this.$route.query.zlh
+      zlh: this.$route.query.zlh,
+      tabs: ['著录项信息', '权利要求', '说明书', 'PDF全文', '法律信息'],
+      patentInfo: {}
     }
   },
   created() {
@@ -119,6 +110,11 @@ export default {
         zlh: this.zlh
       }
       var res = await doGetPatentInfo(param)
+      if (res.status === 1000) {
+        this.patentInfo = res.data
+      } else {
+        this.$message({ type: 'error', message: res.data.msg, customClass: 'el-message-custom' })
+      }
     }
   }
 }
