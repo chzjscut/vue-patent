@@ -1,5 +1,6 @@
 <template>
-  <div v-loading="listLoading" style="height: 100%;">
+  <div id="listContainer" style="height: 100%;position: relative;">
+    <loading-com v-show="listLoading" />
     <div class="Js_outerList">
       <div class="JS_ol_top">
         <div v-for="(item, index) in listData" :key="item.zlh" class="u-list-div">
@@ -10,8 +11,12 @@
               <span class="num">{{ index+1 }}</span>[中国实用新型]
             </div>
             <div class="fn-left g-right newList-item">
-              <a href="" class="c-blue nl-an" target="_blank">{{ item.zlh }}</a>
-              <a href="" target="_blank" class="c-blue title nl-ti">{{ item.title }}</a>
+              <router-link :to="{name: 'patentDetail', query: {zlh: item.zlh}}">
+                <a class="c-blue nl-an">{{ item.zlh }}</a>
+              </router-link>
+              <router-link :to="{name: 'patentDetail', query: {zlh: item.zlh}}">
+                <a class="c-blue title nl-ti" style="font-weight: bold;">{{ item.title }}</a>
+              </router-link>
             </div>
           </div>
           <div class="u-main fn-clear">
@@ -32,7 +37,9 @@
                 <div>
                   <p>
                     <strong>公开（公告）号：</strong>
-                    <a href="" class="c-blue" target="_blank" title="公开号">{{ item.gkh }}</a>
+                    <router-link :to="{name: 'patentDetail', query: {zlh: item.zlh}}">
+                      <a class="c-blue" title="公开号">{{ item.gkh }}</a>
+                    </router-link>
                   </p>
                   <p>
                     <strong>申请（专利权）人：</strong>
@@ -69,12 +76,19 @@
   </div>
 </template>
 <script>
+import LoadingCom from '@/components/loading.vue'
 export default {
+  components: { LoadingCom },
   props: ['listLoading', 'listData', 'page', 'size', 'total'],
   data() {
     return {
       checked: false
     }
+  },
+  mounted() {
+    var listHeight = $(document.body).height() - 131
+    console.log(listHeight)
+    $('#listContainer').height(listHeight)
   }
 }
 </script>

@@ -1,61 +1,65 @@
 <template>
-  <div class="main">
-    <!-- 全局搜索 -->
-    <div class="search-global">
-      <i class="el-icon-info" style="margin-right: 10px" />
-      <el-input
-        v-model="searchParams.keywords"
-        size="large"
-        placeholder="试试你想找的一切东西？"
-        prefix-icon="el-icon-search"
-        @keyup.enter.native="doSearchPatent"
-      />
-      <el-button
-        type="primary"
-        icon="el-icon-search"
-        style="margin-left: 10px"
-        @click="doSearchPatent"
-      >搜索
-      </el-button>
-    </div>
-    <!-- 头部操作行 -->
-    <div class="operations-list">
-      <a class="switch_on" :class="[displayList[displayType].iconClass]" @click="isSelectBoxVisible=!isSelectBoxVisible">
-        <span class="barIcon" />{{ displayList[displayType].label }}<i class="iconfont el-icon-caret-bottom" style="font-size: 12px;" />
-      </a>
-      <div v-show="isSelectBoxVisible" class="type_switch">
-        <a v-for="(item, index) in displayList" :key="index" class="Js_type type_l" :class="[item.iconClass, {active: displayType===index}]" @click="selectDisplayType(index)"><span class="barIcon" />{{ item.label }}</a>
+  <div>
+    <header-com />
+    <div class="main">
+      <!-- 全局搜索 -->
+      <div class="search-global">
+        <i class="el-icon-info" style="margin-right: 10px" />
+        <el-input
+          v-model="searchParams.keywords"
+          size="large"
+          placeholder="试试你想找的一切东西？"
+          prefix-icon="el-icon-search"
+          @keyup.enter.native="doSearchPatent"
+        />
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          style="margin-left: 10px"
+          @click="doSearchPatent"
+        >搜索
+        </el-button>
+      </div>
+      <!-- 头部操作行 -->
+      <div class="operations-list">
+        <a class="switch_on" :class="[displayList[displayType].iconClass]" @click="isSelectBoxVisible=!isSelectBoxVisible">
+          <span class="barIcon" />{{ displayList[displayType].label }}<i class="iconfont el-icon-caret-bottom" style="font-size: 12px;" />
+        </a>
+        <div v-show="isSelectBoxVisible" class="type_switch">
+          <a v-for="(item, index) in displayList" :key="index" class="Js_type type_l" :class="[item.iconClass, {active: displayType===index}]" @click="selectDisplayType(index)"><span class="barIcon" />{{ item.label }}</a>
+        </div>
+
+        <!-- <a class="Js_export"><span class="barIcon" />著录项导出</a>
+        <a class="Js_multi_export"><span class="barIcon" />批量下载</a>
+        <a id="Js_patentFee_dropdown" class="Js_patentFee" style="position: relative;"><span class="barIcon" />专利年费</a> -->
       </div>
 
-      <!-- <a class="Js_export"><span class="barIcon" />著录项导出</a>
-      <a class="Js_multi_export"><span class="barIcon" />批量下载</a>
-      <a id="Js_patentFee_dropdown" class="Js_patentFee" style="position: relative;"><span class="barIcon" />专利年费</a> -->
-    </div>
-
-    <!-- 内容展示区域 -->
-    <div class="content" style="height: 100%;">
-      <!-- 列表模式 -->
-      <table-display
-        v-if="displayType===0"
-        :table-loading="listLoading"
-        :table-data="tableData"
-      />
-      <!-- 图文模式 -->
-      <list-display
-        v-else
-        :list-data="tableData"
-        :list-loading="listLoading"
-      />
+      <!-- 内容展示区域 -->
+      <div class="content" style="height: 100%;">
+        <!-- 列表模式 -->
+        <table-display
+          v-if="displayType===0"
+          :table-loading="listLoading"
+          :table-data="tableData"
+        />
+        <!-- 图文模式 -->
+        <list-display
+          v-else
+          :list-data="tableData"
+          :list-loading="listLoading"
+        />
+      </div>
     </div>
   </div>
 </template>
 <script>
+import HeaderCom from '@/components/header.vue'
 import tableDisplay from './table'
 import listDisplay from './list'
 import { doSearch_patent } from '@/api/console'
 
 export default {
-  components: { tableDisplay, listDisplay },
+  components: { HeaderCom, tableDisplay, listDisplay },
   data() {
     return {
       searchParams: {
@@ -81,7 +85,11 @@ export default {
   },
   methods: {
     init() {
-      // this.doSearchPatent()
+      // console.log(this.$route.query.keywords)
+      if (this.$route.query.keywords) {
+        this.searchParams.keywords = this.$route.query.keywords
+        this.doSearchPatent()
+      }
     },
     // 根据关键字查询专利
     async doSearchPatent() {
@@ -104,7 +112,7 @@ export default {
 <style scoped>
   .main{
     height: 100%;
-    padding: 20px;
+    padding: 80px 20px 20px;
     box-sizing: border-box;
   }
   .search-global {

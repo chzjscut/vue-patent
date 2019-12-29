@@ -149,7 +149,9 @@ export default {
     }
     return {
       activeStep: 0,
-      formBaseData: {},
+      formBaseData: {
+        mobile: ''
+      },
       timeGoToHome: 5,
       timerGoToHome: null,
       formBaseRules: {
@@ -165,7 +167,7 @@ export default {
   },
 
   mounted() {
-
+    this.formBaseData.mobile = this.$route.query.phone
   },
 
   methods: {

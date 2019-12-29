@@ -1,33 +1,7 @@
 <template>
   <div id="frame" class="frame">
     <!-- header -->
-    <div class="header">
-      <div class="clear" style="height:60px;line-height:60px;">
-        <img class="logo" height="35px" src="~@/assets/images/logo_1.png">
-        <div id="topSearch" class="top-search">
-          <input id="top-input" type="text" placeholder="请输入专利号码或任意文字搜索专利..." name="">
-          <i class="search-icon el-icon-search" />
-        </div>
-        <i class="switch el-icon-close" />
-        <svg-icon class="switch" icon-class="list" />
-        <div class="nav-wrap fr clear">
-          <ul class="nav-menu clear">
-            <li class="nav-li nav_a li_o">
-              <a href="index.html">首页</a>
-            </li>
-            <li class="nav-li nav_a li_o">
-              <a href="product.html">产品</a>
-            </li>
-            <li class="nav-li"><a href="solution.html">控制台</a></li>
-            <li class="nav-li">
-              <a href="article.html">企业VIP</a>
-            </li>
-          </ul>
-          <a href="#mytext" class="header-btn btn-trial">试用</a>
-          <a target="_blank" class="header-btn btn-login" href="https://www.patentics.com/searchcn.htm">登录</a>
-        </div>
-      </div>
-    </div>
+    <header-com />
 
     <!-- banner -->
     <div id="banner" class="banner">
@@ -43,9 +17,15 @@
         </div>
         <div id="searchBox" class="search-box">
           <i class="search-logo fa el-icon-search" />
-          <input id="textarea" placeholder="请输入关键词,公开号或者一段话..." type="text" name="">
-          <i id="textclear" class="clear-icon fa el-icon-circle-close" />
-          <div id="search-btn" class="search_btn">Search</div>
+          <input
+            id="textarea"
+            v-model.trim="searchKey"
+            placeholder="请输入关键词,公开号或者一段话..."
+            type="text"
+            @keyup.enter="doSearch"
+          >
+          <i v-show="searchKey" id="textclear" class="clear-icon fa el-icon-circle-close" @click="searchKey=''" />
+          <div id="search-btn" class="search_btn" @click="doSearch">Search</div>
         </div>
       </div>
       <div id="tip-bottom" class="tip-bottom">
@@ -53,12 +33,12 @@
       </div>
 
       <div id="tototo" class="godown-wrap">
-        <img id="downimg" class="godown" src="~@/assets/images/godown.png" alt="">
+        <img id="downimg" class="godown" src="~@/assets/images/godown.png" @click="godown">
       </div>
     </div>
 
     <!-- 内容主体 -->
-    <div class="main">
+    <div id="main" class="main">
       <div class="transfer">
         <div class="container">
           <div class="ibox ibox-hover clearfix">
@@ -71,7 +51,7 @@
                 文件传输速度数倍提升，跨国协作亦如面对面<br>
                 断点续传，差量传输，传输效率与质量齐头并进</p>
               <div class="row-btngroup  wow fadeInUp  animated" data-wow-delay="0.3s" data-wow-duration="2s" style="visibility: visible; animation-duration: 2s; animation-delay: 0.3s; animation-name: fadeInUp;">
-                <a id="link-15" class=" btn btn-getmore" alt="link-all" href="solution/07.html"><span>了解更多</span></a>
+                <a id="link-15" class=" btn btn-getmore"><span>了解更多</span></a>
               </div>
               <div class="row-icon  wow fadeInUp  animated" data-wow-delay="0.3s" data-wow-duration="2.2s" style="visibility: visible; animation-duration: 2.2s; animation-delay: 0.3s; animation-name: fadeInUp;">
                 <div class="row-icon-1">
@@ -104,7 +84,7 @@
               <p class="row-info-item wow fadeInUp animated" data-wow-duration="1.5s" style="visibility: visible; animation-duration: 1.5s; animation-name: fadeInUp;">跨部门多团队文件共享，灵活权限管控，高效团队协作<br>全终端覆盖，移动办公，即时消息通知，简单易用
               </p>
               <div class="row-btngroup wow fadeInUp animated" data-wow-duration="2s" style="visibility: visible; animation-duration: 2s; animation-name: fadeInUp;">
-                <a id="link-1" class="btn btn-getmore btn-getmore-blue" alt="link-all" href="/product/public.html"><span>了解更多</span></a>
+                <a id="link-1" class="btn btn-getmore btn-getmore-blue"><span>了解更多</span></a>
               </div>
               <div class="row-icon  wow fadeInUp  animated" data-wow-delay="0.3s" data-wow-duration="2.2s" style="visibility: visible; animation-duration: 2.2s; animation-delay: 0.3s; animation-name: fadeInUp;">
                 <div class="row-icon-4">
@@ -136,7 +116,7 @@
                 多种格式在线预览，本地云端文件自动同步备份，安全稳定<br>
               </p>
               <div class="row-btngroup wow fadeInUp animated" data-wow-duration="2s" style="visibility: visible; animation-duration: 2s; animation-name: fadeInUp;">
-                <a id="link-4" class="btn btn-getmore" alt="link-all" href="/product/lenovo-docs.html"><span>了解更多</span></a>
+                <a id="link-4" class="btn btn-getmore" alt="link-all"><span>了解更多</span></a>
               </div>
               <div class="row-icon  wow fadeInUp  animated" data-wow-delay="0.3s" data-wow-duration="2.2s" style="visibility: visible; animation-duration: 2.2s; animation-delay: 0.3s; animation-name: fadeInUp;">
                 <div class="row-icon-7">
@@ -161,7 +141,7 @@
       <div class="scheme">
         <h1 class="row-tit wow fadeInUp animated" data-wow-duration="0.8s" style="visibility: visible; animation-duration: 0.8s; animation-name: fadeInUp;">丰富灵活的产品方案，满足不同的用户需求</h1>
         <div class="scheme-list">
-          <a href="/product/public.html" class="scheme-list-1  wow fadeInUp animated" data-wow-delay="0.5s" data-wow-duration="1.2s" style="visibility: visible; animation-duration: 1.2s; animation-delay: 0.5s; animation-name: fadeInUp;">
+          <a class="scheme-list-1 wow fadeInUp animated" data-wow-delay="0.5s" data-wow-duration="1.2s" style="visibility: visible; animation-duration: 1.2s; animation-delay: 0.5s; animation-name: fadeInUp;">
             <img src="~@/assets/images/commonality-yun-1.png" alt="">
             <h2 class="scheme-list-h2-1">公有云</h2>
             <div class="scheme-list-div-1">
@@ -178,7 +158,7 @@
               <span>了解详情</span>
             </span>
           </a>
-          <a href="/product/hybrid.html" class="scheme-list-2 wow fadeInUp animated" data-wow-delay="0.3s" data-wow-duration="1.2s" style="visibility: visible; animation-duration: 1.2s; animation-delay: 0.3s; animation-name: fadeInUp;">
+          <a class="scheme-list-2 wow fadeInUp animated" data-wow-delay="0.3s" data-wow-duration="1.2s" style="visibility: visible; animation-duration: 1.2s; animation-delay: 0.3s; animation-name: fadeInUp;">
             <img src="~@/assets/images/blend-yun-2.png" alt="">
             <h2 class="scheme-list-h2-2">融合云</h2>
             <div class="scheme-list-div-2">
@@ -195,7 +175,7 @@
               <span>了解详情</span>
             </span>
           </a>
-          <a href="/product/on-premise.html" class="scheme-list-3 wow fadeInUp animated" data-wow-delay="0.5s" data-wow-duration="1.2s" style="visibility: visible; animation-duration: 1.2s; animation-delay: 0.5s; animation-name: fadeInUp;">
+          <a class="scheme-list-3 wow fadeInUp animated" data-wow-delay="0.5s" data-wow-duration="1.2s" style="visibility: visible; animation-duration: 1.2s; animation-delay: 0.5s; animation-name: fadeInUp;">
             <img src="~@/assets/images/privately-yun-1.png" alt="">
             <h2 class="scheme-list-h2-3">私有云</h2>
             <div class="scheme-list-div-3">
@@ -239,12 +219,14 @@
 
             <form class="reg-form">
               <div class="form-group">
-                <input id="transfer_signup_ph" class="form-control" type="text" placeholder="手机号">
+                <input id="transfer_signup_ph" v-model="phone" class="form-control" type="text" placeholder="手机号">
               </div>
-              <p class="help-block">点击注册即表明您同意本<a class="agree-link" href="/agreement.html" target="_blank">服务条款</a>和<a class="agree-link" href="http://appserver.lenovo.com.cn/Public/public_bottom/privacy.shtml" target="_blank">隐私条款</a>。</p>
+              <p class="help-block">点击注册即表明您同意本<a class="agree-link" href="javascript:void(0)">服务条款</a>和<a class="agree-link" href="javascript:void(0)">隐私条款</a>。</p>
 
               <div class="form-group">
-                <a id="transfer_signup" class="btn btn-regsubmit" type="submit" href="https://console.box.lenovo.com/user/reg?fr=banner1&amp;sts_from=index"><span>立即注册</span></a>
+                <router-link :to="'./register?phone=' + phone">
+                  <a id="transfer_signup" class="btn btn-regsubmit" type="submit"><span>立即注册</span></a>
+                </router-link>
               </div>
             </form>
           </div>
@@ -258,13 +240,14 @@
 </template>
 
 <script>
+import HeaderCom from '@/components/header.vue'
 import FooterCom from '@/components/Footer.vue'
+
 export default {
-  components: { FooterCom },
+  components: { HeaderCom, FooterCom },
   data() {
     return {
-      clientHeight: 0, // 浏览器可视区域高度
-      isVisible: false, // 导航栏移动端布局显示
+      phone: '',
       searchKey: ''
     }
   },
@@ -273,7 +256,7 @@ export default {
   },
   mounted() {
     this.scrollCtrl()
-    this.bannerResponsive()
+    this.resizeCtrl()
     const hash = this.$route.query.hash
     hash && this.$nextTick(() => {
       window.location.hash = hash
@@ -283,21 +266,24 @@ export default {
     // banner响应式控制
     scrollCtrl() {
       $(window).scroll(function() {
-        var criticalValue = $('#searchBox').offset().top + 60
-        if (criticalValue - $(window).scrollTop() <= 0) {
-          $('#topSearch').fadeIn()
-        } else {
-          $('#topSearch').fadeOut()
+        if ($('#searchBox').length > 0) {
+          var criticalValue = $('#searchBox').offset().top + 60
+          if (criticalValue - $(window).scrollTop() <= 0) {
+            $('#topSearch').fadeIn()
+          } else {
+            $('#topSearch').fadeOut()
+          }
         }
       })
     },
-    bannerResponsive() {
+    resizeCtrl() {
+      var that = this
       // banner
       var banner = document.getElementById('banner')
       banner.style.height = document.body.clientHeight + 'px'
 
       var ibox = document.getElementsByClassName('ibox')
-      console.log(this.clientHeight)
+      // console.log(this.clientHeight)
       window.addEventListener('resize', function() {
         banner.style.height = document.body.clientHeight + 'px'
 
@@ -314,9 +300,18 @@ export default {
         }
       })
     },
-    handleSearch() {
+
+    godown() {
+      var scrollHeight = $('#main').offset().top // 得到pos这个div层的offset，包含两个值，top和left
+      console.log(scrollHeight)
+      $('body,html').animate({
+        scrollTop: scrollHeight // 让body的scrollTop等于pos的top，就实现了滚动
+      }, 600)
+    },
+
+    doSearch() {
       if (this.searchKey) {
-        this.$router.push({ name: 'consoleAnnualQuery', query: { kw: this.searchKey }})
+        this.$router.push({ path: './patentDownload', query: { keywords: this.searchKey }})
       } else {
         this.$message({
           type: 'warning',
@@ -329,7 +324,6 @@ export default {
 }
 </script>
 <style scoped>
-  /* 来自方融信息科技有限公司 */
   img, input {
       border: 0;
       display: inline-block;
@@ -346,150 +340,11 @@ a {
   body {
     background: #fff;
   }
+
   .frame{
     min-width: 1200px;
     overflow-x: auto;
     box-sizing: border-box;
-  }
-  .fr {
-    float: right;
-    position: relative;
-  }
-  .header{
-    position: fixed;
-    left: 0;
-    top: 0px;
-    height: 60px;
-    line-height: 60px;
-    background-color: rgba(0,0,0,.7);
-    min-width: 1200px;
-    width: 100%;
-    z-index: 10;
-  }
-  .header .logo{
-    float:left;
-    margin-top:9px;
-    margin-left:9.5%;
-    cursor:pointer;
-  }
-  .top-search{
-    position: relative;
-    height: 30px;
-    line-height: 30px;
-    margin-top: 15px;
-    padding-left: 8px;
-    padding-right: 35px;
-    background-color: white;
-    float: left;
-    margin-left: 50px;
-    border-radius: 4px;
-    min-width: 310px;
-    max-width: 1000px;
-    display: none;
-  }
-  .top-search input{
-    height:30px;
-    line-height:30px;
-    width:100%;
-    font-family:"Microsoft Yahei";
-  }
-  .top-search .search-icon{
-    position: absolute;
-    right: 8px;
-    top: 6px;
-    color:#ccc;
-    font-size:18px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  .header .switch{
-    float: right;
-    width: 18px;
-    height: 18px;
-    margin: 16px 5.3% 0 0;
-    color: #fff;
-    font-size: 18px;
-    cursor: pointer;
-    display: none;
-  }
-  .header .switch.el-icon-close{
-    font-size: 28px;
-    width: 28px;
-    height: 28px;
-    margin-top: 11px;
-  }
-  .nav-wrap a.header-btn{
-    display: block;
-    float: right;
-    width:60px;
-    height:30px;
-    line-height:30px;
-    margin-top: 15px;
-    padding:0;
-    background-color:#fff;
-    text-align: center;
-    border-radius:15px;
-    margin-right:4px;
-  }
-  .nav-wrap a.header-btn:hover {
-    filter: alpha(opacity=90);
-    -moz-opacity: 0.9;
-    opacity: 0.9;
-  }
-  .nav-wrap a.btn-trial{
-    margin-right: 1.5%;
-  }
-  .nav-wrap a.btn-login{
-    color:white;
-    background-color: #15af40;
-  }
-  .clear:after{
-    visibility: hidden;
-    display: block;
-    font-size: 0;
-    content: " ";
-    clear: both;
-    height: 0;
-    zoom: 1;
-  }
-  .header .nav-wrap{
-    min-width: 620px;
-    height:60px;
-    line-height:60px;
-    float:right;
-  }
-  .nav-menu{
-    float: left;
-    margin-right: 48px;
-    height:60px;
-    line-height:60px;
-  }
-  .nav-menu .nav-li{
-    font-size: 14px;
-    float: left;
-    margin: 0 5px;
-    position: relative;
-    height:30px;
-    line-height:30px;
-    width:95px;
-    text-align:center;
-    background-color:;
-    margin-top:15px;
-    border-radius:15px;
-    list-style: none;
-  }
-  .nav-li a{
-    display: block;
-    height:30px;
-    line-height:30px;
-    color: #fff;
-    text-decoration: none;
-  }
-  .nav-li a:hover{
-    color:rgb(0, 255 ,51);
-  }
-  .nav-li a.active{
-    color:rgb(0, 255 ,51);
   }
 
   /* banner */
@@ -594,7 +449,6 @@ a {
     color:#7c7c7c;
     font-size:20px;
     cursor:pointer;
-    display: none;
   }
   .search_btn{
     position: absolute;
@@ -1083,82 +937,11 @@ a {
     background: transparent;
     transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
 }
-@media screen and (max-width: 1199px) {
-    .main .container{
 
-    }
-    .header{
-      min-width: 768px;
-    }
-    .header .logo{
-      margin-left: 15px;
-    }
-    .header .nav-wrap{
-      min-width: 500px;
-    }
-    .nav-menu{
-      margin-right: 10px;
-    }
-    .nav-menu .nav-li{
-      width: 75px;
-    }
-}
 @media screen and (max-width: 999px) {
   .frame{
     width: 100%;
     min-width: 768px;
-  }
-  .header .nav-wrap{
-    display: none;
-    width: 100%;
-    float: none;
-    position: fixed;
-    z-index: 999;
-    top: 50px;
-    left: 0;
-    padding-top: 15px;
-    padding-bottom: 32px;
-    margin: 0;
-    height: auto;
-    background: #0D1C3C;
-    opacity: 1;
-  }
-  .nav-menu{
-    width: 89%;
-    float: none;
-    margin: 0 auto;
-    background: #0D1C3C;
-    padding: 0 20px;
-    height: auto;
-  }
-  .nav-menu .nav-li{
-    position: relative;
-    float: none;
-    width: 100%;
-    margin: 0;
-    height: 38px;
-    text-align: left;
-    line-height: 38px;
-    font-size: 14px;
-    border-bottom: 1px solid #2F4981;
-    border-radius: 0;
-  }
-  .nav-wrap a.header-btn{
-    display: block;
-    float: none;
-    width: 89%;
-    height: 43px;
-    margin: 30px auto 15px;
-    text-align: center;
-    background: #3C8EFF;
-    line-height: 43px;
-    color: #FFF;
-    border-radius: 0;
-  }
-  .nav-wrap a.btn-login{
-    margin: 0 auto;
-    background: 0 0;
-    border: 1px solid #3C8EFF;
   }
   /*.register{
     min-width: 768px;

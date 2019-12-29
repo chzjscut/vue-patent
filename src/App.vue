@@ -11,7 +11,12 @@ export default {
 }
 </script>
 <style>
-	/* 马鞍山方融信息科技有限公司制作 */
+  /* ::-webkit-scrollbar{
+    width: 17px;
+  }
+  ::-webkit-scrollbar-thumb{
+    background-color: #ccc;
+  } */
   * {
     margin: 0;
     border: 0;
@@ -85,7 +90,19 @@ export default {
   .p-b-60 {
     padding-bottom: 60px;
   }
-
+.fr {
+    float: right;
+    position: relative;
+  }
+  .clear:after{
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+    zoom: 1;
+  }
   textarea, input, button {
     -webkit-appearance: none;
     appearance: none;
@@ -134,74 +151,6 @@ export default {
   }
 
   /*头部*/
-  .header {
-    background: #090b1a;
-    min-width: 1200px;
-  }
-
-  .header h1 {
-    float: left;
-    margin-left: 20px;
-    height: 60px;
-  }
-
-  .header h1 img {
-    height: 60px;
-    vertical-align: middle;
-  }
-
-  .header .nav {
-    margin-left: 20px;
-    text-align: right;
-    width: 1200px;
-  }
-
-  .header .nav li {
-    display: inline-block;
-    *display: inline;
-    zoom: 1;
-    margin: 0 -2px;
-    position: relative;
-    z-index: 100;
-    height: 60px;
-    line-height: 60px;
-    padding: 0 20px;
-    font-size: 16px;
-    color: #ddd;
-    cursor: pointer;
-    text-decoration: none;
-  }
-
-  .header .nav li:hover {
-    color: #fff;
-    background: #12152c;
-  }
-
-  .header .nav .vip {
-    display: inline-block;
-  }
-
-  .header-tel {
-    height: 60px;
-    line-height: 60px;
-    margin-right: 20px;
-    margin-left: 20px;
-  }
-
-  .header-tel span.phone {
-    padding-left: 32px;
-    background: url(./assets/images/header-tel.png) no-repeat left center;
-    font-size: 18px;
-    color: #ddd;
-    margin-left: 10px;
-  }
-
-  .header-tel p.welcome {
-    color: red;
-    font-size: 16px;
-    margin-right: 10px;
-    display: inline-block;
-  }
 
   .fixed {
     width: 328px;

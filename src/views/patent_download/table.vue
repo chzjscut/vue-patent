@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="table-wrap">
+    <loading-com v-show="tableLoading" />
     <!-- 表格展示 -->
     <el-table
-      v-loading="tableLoading"
       :data="tableData"
       size="small"
       :max-height="681"
@@ -71,7 +71,9 @@
     <el-pagination
       background
       class="page-center"
+      :total="190"
       layout="prev, pager, next"
+      @current-change="handleCurrentChange"
     />
     <!-- <el-pagination
       :page-size="size"
@@ -87,7 +89,9 @@
 </template>
 
 <script>
+import LoadingCom from '@/components/loading.vue'
 export default {
+  components: { LoadingCom },
   props: ['tableLoading', 'tableData', 'searchData', 'page', 'size', 'total'],
   data() {
     return {
@@ -113,6 +117,7 @@ export default {
     },
     // 当前页码变化
     handleCurrentChange(val) {
+      console.log(11)
       this.$emit('currPageChange', val)
     },
     // 是否登录成功
@@ -126,6 +131,9 @@ export default {
 </script>
 
 <style scoped>
+  .table-wrap{
+    position: relative;
+  }
   .zl-info {
     font-size: 12px;
   }

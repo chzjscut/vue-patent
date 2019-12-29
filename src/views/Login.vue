@@ -7,6 +7,8 @@
         </div>
       </div>
 
+      <div class="login-form" />
+
       <div class="log_content">
         <div class="right_form">
           <div class="right_form_tab">
@@ -86,7 +88,6 @@
               </el-row>
             </el-form-item>
           </el-form>
-          <!--手机动态码登录结束-->
 
           <el-button
             type="primary"
@@ -104,7 +105,6 @@
           </p>
 
           <img style="margin-bottom: 20px" src="@/assets/images/login_line.png" alt="">
-          <!--注册开始-->
           <p class="no-account">还没账号？</p>
           <el-button
             style="width: 100%"
@@ -113,7 +113,6 @@
             @click="handleGoToRegister"
           >立即注册
           </el-button>
-          <!--注册结束-->
         </div>
       </div>
     </div>
@@ -123,7 +122,6 @@
 import { mapMutations } from 'vuex'
 import { PASSWORD_LOGIN, VERIFY_LOGIN, VERIFY_CODE } from '@/api/user'
 import { setToken, setUserName } from '@/utils/auth'
-import { test } from '@/api/console'
 export default {
   data() {
     return {
@@ -157,7 +155,7 @@ export default {
   },
 
   mounted() {
-    test({ name: 'xm' })
+    // test({ name: 'xm' })
   },
 
   methods: {
@@ -207,8 +205,11 @@ export default {
         message: '登录成功',
         customClass: 'el-message-custom'
       })
-      // location.reload()
-      this.$router.push('/patentAnnual')
+      if (this.$route.query.redirect) {
+        this.$router.push(this.$route.query.redirect)
+      } else {
+        this.$router.push('./home')
+      }
     },
 
     // 获取验证码
@@ -287,6 +288,18 @@ export default {
 
   .ban_imgbanner-img a {
     cursor: default;
+  }
+  .login-form{
+    width: 380px;
+    display: inline-block;
+    float: right;
+    margin-top: 80px;
+    background-color: #fff;
+    color: #C1C1C1;
+    font-size: 14px;
+    border-color: rgba(228,228,228,1);
+    border-radius: 0;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,.1);
   }
 
   .log_content {

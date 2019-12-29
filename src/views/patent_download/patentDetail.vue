@@ -1,86 +1,143 @@
 <template>
-  <div id="Js_patentview_main" class="g-mn1c m-list">
-    <div class="detail_fix" style="right: 20px;">
-      <div class="u-detail-toolbar fn-clear u-detail-toolbar-bg">
-        <a class="Js_pat_export"><i class="iconfont el-icon-download" />著录项导出</a>
-        <a class="Js_qw_download"><i class="iconfont el-icon-download" />全文下载</a>
-        <a class="Js_dbl"><svg-icon class="iconfont" icon-class="education" style="font-size: 12px" />双屏查看</a>
-        <el-button type="primary" size="mini" style="float: right">返回列表</el-button>
-      </div>
-      <div class="u-detail-info-top fn-clear u-detail-info-top-bg">
-        <span class="title Js_hl">
-          [中国实用新型]
-          CN201821572457.X
-          <span class="Js_h1_name" title="一种空气净化装置">一种空气净化装置</span>
-        </span>
-      </div>
-      <div class="tab_container">
-        <div class="u-tab ui-switchable-nav">
-          <a v-for="(tab, index) in tabs" :key="index" :class="{'ui-switchable-active': true}">{{ tab }}</a>
+  <div>
+    <header-com />
+    <div id="Js_patentview_main" class="g-mn1c m-list">
+      <div class="detail_fix" style="right: 20px;">
+        <div class="u-detail-toolbar fn-clear u-detail-toolbar-bg">
+          <a class="Js_pat_export"><i class="iconfont el-icon-download" />著录项导出</a>
+          <a class="Js_qw_download"><i class="iconfont el-icon-download" />全文下载</a>
+          <a class="Js_dbl"><svg-icon class="iconfont" icon-class="education" style="font-size: 12px" />双屏查看</a>
+          <el-button type="primary" size="mini" style="float: right" @click="goBack">返回列表</el-button>
+        </div>
+        <div class="u-detail-info-top fn-clear u-detail-info-top-bg">
+          <span class="title">
+            {{ patentInfo.zlh }}
+            <span class="Js_h1_name">{{ patentInfo.title }}</span>
+          </span>
+        </div>
+        <div class="tab_container">
+          <div class="u-tab ui-switchable-nav">
+            <a v-for="(tab, index) in tabs" :key="index" :class="{'ui-switchable-active': currentTab===index}" @click="tabChange(index)">{{ tab }}</a>
+          </div>
         </div>
       </div>
-    </div>
-    <div id="Js_patent_view_container" class="m-info m-info-bg m-info-bg-fix ui-switchable">
-      <div class="ui-switchable-content">
-        <div class="fn-clear Js_patent_view_item ui-switchable-panel" style="display: block;">
-          <div class="g-info-l">
-            <div class="g-info-l-in">
-              <div>
-                <div class="ui-switchable-content">
-                  <div class="item fn-hide Js_hl ui-switchable-panel" style="display: block;">
-                    <div class="">
-                      <h5 class="u-info-title">著录项</h5>
-                      <ul class="abst-info fn-clear">
-                        <li><label>申请号</label> CN201821572457.X</li>
-                        <li class="even"><label>申请日</label> <a href="" target="_blank">20180926</a></li>
-                        <li><label>公开号</label> CN208865325U</li>
-                        <li class="even">
-                          <label>授权公告日</label> <a href="" target="_blank">20190517</a>
-                        </li>
-                        <li>
-                          <label>申请（专利权）人</label>
-                          <a href="" target="_blank">滑县恒琢信息科技有限公司</a>
-                        </li>
-                        <li class="even">
-                          <label>发明人</label>
-                          <a href="" target="_blank">张晓芬</a>
-                        </li>
-                        <li>
-                          <label>主分类号</label>
-                          <a class="main-ipc" href="" target="_blank">B01D46/00</a>
-                        </li>
-                        <li class="even">
-                          <label>分类号</label>
-                          <p>
-                            <a class="main-ipc" href="" target="_blank">B01D46/00</a>
-                            <a class="main-ipc" href="" target="_blank">B01D50/00</a>
-                            <a class="main-ipc" href="" target="_blank">B01D53/18</a>
-                            <a class="main-ipc" href="" target="_blank">C02F1/32</a>
-                            <a class="main-ipc" href="" target="_blank">F24F1/02</a>
-                            <a class="main-ipc" href="" target="_blank">F24F3/16</a>
-                            <a class="main-ipc" href="" target="_blank">F24F13/28</a>
-                          </p>
-                        </li>
-                        <li>
-                          <label>地址</label>
-                          <a href="" target="_blank">河南省安阳市滑县沿河路英民花园10幢2单元302</a>
-                        </li>
-                        <li class="even">
-                          <label>国省代码</label> 河南(41)
-                        </li>
-                      </ul>
-                      <h5 class="u-info-title abst_title">摘要</h5>
-                      <div class="abstract contenttext">
-                        本实用新型属于环保设备技术领域，尤其为一种空气净化装置，包括壳体，所述壳体的两侧分别设置有进气盒和排气盒，所述进气盒内设置有过滤组件，所述壳体内固定安装有空气泵，所述空气泵的进气口固定连接有进气管的一端，所述进气管的另一端与进气盒相连通，所述壳体的底部内壁上固定安装有水箱，所述水箱内设置有电热丝和多个紫外线灯，所述壳体内固定安装有雾化盒，所述雾化盒的底部固定连接有回流管的一端，所述回流管的另一端与水箱相连通。本实用新型实用性高，通过设置微型隔膜水泵和微雾喷头可有效将水箱内的水抽出并持续雾化，并在雾化盒内与过滤后的空气充分均匀混合，对空气的加湿效率高，效果更佳。
-                      </div>
-                      <p type="text" class="fn-hide contenttext_search_input" />
-                      <h5 class="u-info-title">信息查询</h5>
-                      <div class="abstract-web abstract-web-info">
-                        <a target="_blank" href="">官网查询地址</a>
+      <div id="Js_patent_view_container" class="m-info m-info-bg m-info-bg-fix ui-switchable">
+        <div class="ui-switchable-content">
+          <div class="fn-clear Js_patent_view_item ui-switchable-panel">
+            <div class="g-info-l">
+              <div v-show="currentTab===0" class="g-info-l-in">
+                <div>
+                  <div class="ui-switchable-content">
+                    <div class="item fn-hide ui-switchable-panel" style="display: block;">
+                      <div>
+                        <h5 class="u-info-title">著录项</h5>
+                        <ul class="abst-info fn-clear">
+                          <li>
+                            <label>申请号</label>
+                            <a>{{ patentInfo.zlh }}</a>
+                          </li>
+                          <li>
+                            <label>申请日</label>
+                            <a>{{ patentInfo.sqri }}</a>
+                          </li>
+                          <li>
+                            <label>公开号</label>
+                            <a>{{ patentInfo.gkh }}</a>
+                          </li>
+                          <li>
+                            <label>公开日</label>
+                            <a>{{ patentInfo.gkr }}</a>
+                          </li>
+                          <li>
+                            <label>申请（专利权）人</label>
+                            <a>{{ patentInfo.sqren }}</a>
+                          </li>
+                          <li>
+                            <label>发明人</label>
+                            <a>{{ patentInfo.fmr }}</a>
+                          </li>
+                          <!-- <li>
+                            <label>主分类号</label>
+                            <a>{{patentInfo.zflh}}</a>
+                          </li> -->
+                          <li>
+                            <label>代理机构</label>
+                            <a>{{ patentInfo.dljg }}</a>
+                          </li>
+                          <li>
+                            <label>代理人</label>
+                            <a>{{ patentInfo.dlr }}</a>
+                          </li>
+                        </ul>
+                        <h5 class="u-info-title abst_title">摘要</h5>
+                        <div class="abstract contenttext">{{ patentInfo.zy }}</div>
+                        <!-- <p type="text" class="fn-hide" />
+                        <h5 class="u-info-title">信息查询</h5> -->
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
+              <div v-show="currentTab===1">
+                <ul class="abst-info width-spread fn-clear">
+                  <li>
+                    <label>权利要求</label>
+                    <div class="paragraph">{{ patentInfo.qlyq }}</div>
+                  </li>
+                </ul>
+              </div>
+              <div v-show="currentTab===2">
+                <ul class="abst-info width-spread fn-clear">
+                  <li>
+                    <label>说明书</label>
+                    <div class="paragraph">{{ patentInfo.sms }}</div>
+                  </li>
+                </ul>
+              </div>
+              <div v-show="currentTab===3">
+                <ul class="abst-info width-spread fn-clear">
+                  <li>
+                    <label>PDF全文</label>
+                    <div class="paragraph">{{ patentInfo.pdfpath }}</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div v-show="currentTab===0" class="g-info-r">
+              <div class="m-picture Js_preLoad">
+                <div>
+                  <div class="u-title">附图</div>
+                  <div class="u-part-pictures">
+                    <img class="Js_ft_shows Js_loaded" :src="patentInfo.abstractpath">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-show="currentTab===4" class="Js_patent_view_item ui-switchable-panel">
+            <div class="clearfix"><a class="law-title">法律状态</a></div>
+            <div class="Js_patent_view_content m-legal Js_hl ui-switchable-content">
+              <div class="item ui-switchable-panel">
+                <div class="law-status">
+                  当前法律状态：
+                  <p class="law-active">有权-审定授权</p>
+                </div>
+                <table v-for="(law, index) in patentInfo.flzt" :key="index" class="u-zlxk-table">
+                  <tbody>
+                    <tr>
+                      <td>法律状态公告日</td>
+                      <td>{{ law.ggr }}</td>
+                    </tr>
+                    <tr>
+                      <td>法律状态</td>
+                      <td>{{ law.zt }}</td>
+                    </tr>
+                    <tr>
+                      <td>法律状态信息</td>
+                      <td>{{ law.ztxx }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -90,21 +147,25 @@
   </div>
 </template>
 <script>
+import HeaderCom from '@/components/header.vue'
 import { doGetPatentInfo } from '@/api/console'
 
 export default {
+  components: { HeaderCom },
   data() {
     return {
       zlh: this.$route.query.zlh,
       tabs: ['著录项信息', '权利要求', '说明书', 'PDF全文', '法律信息'],
+      currentTab: 0,
       patentInfo: {}
     }
   },
   created() {
-    console.log(this.zlh)
+    // console.log(this.zlh)
     this.doGetPatentInfo()
   },
   methods: {
+    // 根据专利号查询专利详细信息
     async doGetPatentInfo() {
       var param = {
         zlh: this.zlh
@@ -115,6 +176,12 @@ export default {
       } else {
         this.$message({ type: 'error', message: res.data.msg, customClass: 'el-message-custom' })
       }
+    },
+    tabChange(index) {
+      this.currentTab = index
+    },
+    goBack() {
+      this.$router.push({ path: './patentDownload' })
     }
   }
 }
@@ -123,7 +190,51 @@ export default {
   button, p, label, div, span, input, a {
       font-family: "微软雅黑 Regular", 微软雅黑;
   }
+  .law-title {
+      line-height: 33px;
+      background-color: #D9DEE4;
+      padding: 0 15px;
+      cursor: pointer;
+      background-color: #546478;
+      color: #fff;
+      display: block;
+      float: left;
+  }
+  .law-status {
+      padding-left: 80px;
+      margin-top: 20px;
+  }
+  .law-active {
+      background-color: #4CAF50!important;
+      color: #fff;
+      border-radius: 2px;
+      padding: 0 10px;
+      line-height: 24px;
+      display: inline-block;
+  }
+  .law-status p {
+      display: inline-block;
+      padding: 0 3px;
+      line-height: 20px;
+  }
+  .u-zlxk-table {
+      width: 80%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      border-top: 3px solid #464646;
+  }
+  .u-zlxk-table td {
+      border-bottom: 1px solid #E4E4E4;
+      line-height: 40px;
+      padding-left: 80px;
+  }
+  .u-zlxk-table td:first-child {
+      border-right: 1px solid #E4E4E4;
+      width: 300px;
+      font-weight: bold;
+  }
 	.m-list{
+    padding-top: 80px;
 		min-height: 100%;
     box-sizing: border-box;
 		background-color: #f4f7fa;
@@ -281,6 +392,10 @@ export default {
     box-sizing: border-box;
     position: relative;
 }
+.abst-info.width-spread li{
+  width: 100%;
+  padding-right: 30px;
+}
 .abst-info li label {
     width: 105px;
     display: inline-block;
@@ -298,15 +413,54 @@ export default {
     word-wrap: break-word;
 }
 .abst-info li a {
+    line-height: 1.5;
+    display: block;
+    padding: 5px 0;
     color: #666;
 }
 .abst-info li a:hover {
     color: #0066FF;
     text-decoration: underline;
 }
+.abst-info li .paragraph{
+  line-height: 1.8;
+}
 .contenttext {
 	line-height: 24px;
     position: relative;
     padding-left: 10px;
+}
+.g-info-r {
+  position: absolute;
+  right: 30px;
+  width: 240px;
+}
+.g-info-r .m-picture {
+    border: 1px solid #E4E4E4;
+    margin-top: 12px;
+    font-size: 12px;
+    background-color: #ffffff;
+    max-height: 710px;
+    overflow-y: auto;
+    height: 770px;
+}
+.m-picture .u-title {
+    border-bottom: 1px solid #E4E4E4;
+    font-weight: bold;
+    padding: 0 20px;
+    line-height: 40px;
+    background-color: #f4f7fa;
+}
+.m-picture .u-part-pictures {
+    padding: 10px 20px 0;
+    text-align: center;
+    position: relative;
+}
+.m-picture .u-part-pictures img {
+    margin-bottom: 20px;
+    cursor: pointer;
+    width: 100%;
+    height: auto;
+    border: 1px solid #E4E4E4;
 }
 </style>
