@@ -98,7 +98,7 @@
                 <ul class="abst-info width-spread fn-clear">
                   <li>
                     <label>PDF全文</label>
-                    <div class="paragraph">{{ patentInfo.pdfpath }}</div>
+                    <div class="paragraph"><a style="color: #0066FF;text-decoration: underline;" :href="patentInfo.pdfpath" target="_blank">点击查看</a></div><!-- {{ patentInfo.pdfpath }} -->
                   </li>
                 </ul>
               </div>

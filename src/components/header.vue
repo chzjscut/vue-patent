@@ -32,7 +32,18 @@
         <router-link to="./home"><a v-if="!userName" class="header-btn btn-trial">试用</a></router-link>
         <router-link to="./login"><a v-if="!userName" class="header-btn btn-login">登录</a></router-link>
         <!-- <div class="user-info">{{userName}}</div> -->
-        <el-dropdown v-if="userName" class="avatar-container right-menu-item hover-effect" trigger="click">
+        <template v-if="userName && !isMobileModel">
+          <p class="welcome">欢迎 {{ userName }}</p>
+          <el-button
+            style="margin-right: 1.5%;"
+            type="danger"
+            size="small"
+            round
+            @click="logout"
+          >退出
+          </el-button>
+        </template>
+        <!-- <el-dropdown v-if="userName" class="avatar-container right-menu-item hover-effect" trigger="click">
           <div class="avatar-wrapper">
             {{ userName }}
             <i class="el-icon-caret-bottom" />
@@ -42,7 +53,7 @@
               <span style="display:block;" @click="logout">退出</span>
             </el-dropdown-item>
           </el-dropdown-menu>
-        </el-dropdown>
+        </el-dropdown> -->
       </div>
     </div>
 
@@ -131,6 +142,12 @@ export default {
 </script>
 
 <style scoped>
+  .welcome{
+    color: red;
+    font-size: 14px;
+    margin-right: 10px;
+    display: inline-block;
+  }
   .scroll-test{
     width:50px;
     height: 50px;
@@ -260,7 +277,7 @@ export default {
   }
   .nav-menu{
     float: left;
-    margin-right: 48px;
+    margin-right: 28px;
     height:60px;
     line-height:60px;
   }
@@ -305,7 +322,7 @@ export default {
         margin-right: 10px;
       }
       .nav-menu .nav-li{
-        width: 75px;
+        width: 70px;
       }
   }
   @media screen and (max-width: 999px) {
