@@ -25,8 +25,8 @@
         <div class="ui-switchable-content">
           <div class="fn-clear Js_patent_view_item ui-switchable-panel">
             <div class="g-info-l">
-              <div v-show="currentTab===0" class="g-info-l-in">
-                <div>
+              <div class="g-info-l-in">
+                <div v-show="currentTab===0">
                   <div class="ui-switchable-content">
                     <div class="item fn-hide ui-switchable-panel" style="display: block;">
                       <div>
@@ -77,33 +77,38 @@
                     </div>
                   </div>
                 </div>
-              </div>
-              <div v-show="currentTab===1">
-                <ul class="abst-info width-spread fn-clear">
-                  <li>
-                    <label>权利要求</label>
-                    <div class="paragraph">{{ patentInfo.qlyq }}</div>
-                  </li>
-                </ul>
-              </div>
-              <div v-show="currentTab===2">
-                <ul class="abst-info width-spread fn-clear">
-                  <li>
-                    <label>说明书</label>
-                    <div class="paragraph">{{ patentInfo.sms }}</div>
-                  </li>
-                </ul>
-              </div>
-              <div v-show="currentTab===3">
-                <ul class="abst-info width-spread fn-clear">
-                  <li>
-                    <label>PDF全文</label>
-                    <div class="paragraph"><a style="color: #0066FF;text-decoration: underline;" :href="patentInfo.pdfpath" target="_blank">点击查看</a></div><!-- {{ patentInfo.pdfpath }} -->
-                  </li>
-                </ul>
+                <div v-show="currentTab===1">
+                  <ul class="abst-info width-spread fn-clear">
+                    <li>
+                      <label>权利要求</label>
+                      <div class="paragraph" v-html="patentInfo.qlyq" />
+                      <!-- <div class="paragraph">{{ patentInfo.qlyq }}</div> -->
+                    </li>
+                  </ul>
+                </div>
+                <div v-show="currentTab===2">
+                  <ul class="abst-info width-spread fn-clear">
+                    <li>
+                      <label>说明书</label>
+                      <div class="paragraph" v-html="patentInfo.sms" />
+                      <!-- <div class="paragraph">{{ patentInfo.sms }}</div> -->
+                    </li>
+                  </ul>
+                </div>
+                <div v-show="currentTab===3">
+                  <ul class="abst-info width-spread fn-clear">
+                    <li>
+                      <label>PDF全文</label>
+                      <pdf-template :url="patentInfo.pdfpath" />
+                      <div v-if="false" class="paragraph">
+                        <a style="color: #0066FF;text-decoration: underline;" :href="patentInfo.pdfpath" target="_blank">点击查看</a>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-            <div v-show="currentTab===0" class="g-info-r">
+            <div class="g-info-r">
               <div class="m-picture Js_preLoad">
                 <div>
                   <div class="u-title">附图</div>
@@ -148,10 +153,11 @@
 </template>
 <script>
 import HeaderCom from '@/components/header.vue'
+import PdfTemplate from '@/components/pdfTemplate.vue'
 import { doGetPatentInfo } from '@/api/console'
 
 export default {
-  components: { HeaderCom },
+  components: { HeaderCom, PdfTemplate },
   data() {
     return {
       zlh: this.$route.query.zlh,
@@ -189,6 +195,9 @@ export default {
 <style scoped>
   button, p, label, div, span, input, a {
       font-family: "微软雅黑 Regular", 微软雅黑;
+  }
+  .paragraph >>> #p0001{
+    font-weight: bold;
   }
   .law-title {
       line-height: 33px;

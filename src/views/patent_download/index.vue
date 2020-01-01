@@ -16,7 +16,7 @@
           type="primary"
           icon="el-icon-search"
           style="margin-left: 10px"
-          @click="doSearchPatent"
+          @click="searchParams.page=1;doSearchPatent()"
         >搜索
         </el-button>
       </div>
@@ -41,13 +41,21 @@
           v-if="displayType===0"
           :table-loading="listLoading"
           :table-data="tableData"
+          :total="totalpage"
+          :page="searchParams.page"
+          @currPageChange="pageChange"
         />
         <!-- 图文模式 -->
         <list-display
           v-else
           :list-data="tableData"
           :list-loading="listLoading"
+          :total="totalpage"
+          :page="searchParams.page"
+          @currPageChange="pageChange"
         />
+
+        <el-button type="primary" size="mini" icon="el-icon-download" class="download-btn">下载</el-button>
       </div>
     </div>
   </div>
@@ -64,7 +72,7 @@ export default {
     return {
       searchParams: {
         keywords: '',
-        page: '1'
+        page: 1
       },
       isSelectBoxVisible: false, // 列表模式下拉框是否显示
       displayType: 0, // 内容展示方式：0 - 列表模式 ，1 - 图文模式
@@ -77,7 +85,7 @@ export default {
       }],
       listLoading: false,
       tableData: [],
-      listData: []
+      totalpage: 0
     }
   },
   created() {
@@ -93,11 +101,39 @@ export default {
     },
     // 根据关键字查询专利
     async doSearchPatent() {
+      // console.log(this.searchParams.page)
+      var that = this
       this.listLoading = true
       var res = await doSearch_patent(this.searchParams)
       this.listLoading = false
       if (res.status === 1000) {
+        this.totalpage = parseInt(res.totalpage)
         this.tableData = res.data
+        this.$nextTick(function() {
+          // console.log($('.content .el-table__row'))
+          if (that.displayType === 0) {
+            $('.content .el-table__row').hover(function(e) {
+              $('.download-btn').css({
+                'display': 'block',
+                'top': e.pageY + 'px'
+              })
+              // console.log($('.content .el-table__row').offset().top, e)
+            }, function() {
+              $('.download-btn').css({
+                'display': 'none'
+              })
+              $('.download-btn').hover(function() {
+                $('.download-btn').css({
+                  'display': 'block'
+                })
+              }, function() {
+                $('.download-btn').css({
+                  'display': 'none'
+                })
+              })
+            })
+          }
+        })
       } else {
         this.$message({ type: 'error', message: res.data.msg, customClass: 'el-message-custom' })
       }
@@ -105,11 +141,22 @@ export default {
     selectDisplayType(index) {
       this.displayType = index
       this.isSelectBoxVisible = false
+    },
+    pageChange(index) {
+      this.searchParams.page = index
+      this.doSearchPatent()
     }
   }
 }
 </script>
 <style scoped>
+  .download-btn{
+    position: absolute;
+    left: 50%;
+    margin-left: -36px;
+    z-index: 9;
+    display: none;
+  }
   .main{
     height: 100%;
     padding: 80px 20px 20px;

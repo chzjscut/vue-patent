@@ -70,8 +70,24 @@
               </div>
             </div>
           </div>
+          <el-button
+            type="primary"
+            size="mini"
+            icon="el-icon-download"
+            class="download-list-btn"
+            @click="download(item)"
+          >下载</el-button>
         </div>
       </div>
+
+      <el-pagination
+        background
+        class="page-center"
+        :total="total"
+        :current-page="page"
+        layout="prev, pager, next"
+        @current-change="handleCurrentChange"
+      />
     </div>
   </div>
 </template>
@@ -79,7 +95,7 @@
 import LoadingCom from '@/components/loading.vue'
 export default {
   components: { LoadingCom },
-  props: ['listLoading', 'listData', 'page', 'size', 'total'],
+  props: ['listLoading', 'listData', 'page', 'total'],
   data() {
     return {
       checked: false
@@ -89,6 +105,15 @@ export default {
     var listHeight = $(document.body).height() - 131
     console.log(listHeight)
     $('#listContainer').height(listHeight)
+  },
+  methods: {
+    download(patent) {
+      console.log(patent)
+    },
+    // 当前页码变化
+    handleCurrentChange(val) {
+      this.$emit('currPageChange', val)
+    }
   }
 }
 </script>
@@ -107,9 +132,20 @@ export default {
 	    position: relative;
 	    padding-left: 20px;
 	}
+  .u-list-div .download-list-btn{
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    margin-left: -36px;
+    z-index: 9;
+    display: none;
+  }
 	.u-list-div:hover {
 	    background-color: #f0faff;
 	}
+  .u-list-div:hover .download-list-btn{
+    display: block;
+  }
 	.u-list-div .u-top {
 	    font-size: 12px;
 	    padding-top: 10px;

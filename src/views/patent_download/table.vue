@@ -1,90 +1,85 @@
 <template>
-  <div class="table-wrap">
-    <loading-com v-show="tableLoading" />
-    <!-- 表格展示 -->
-    <el-table
-      :data="tableData"
-      size="small"
-      :max-height="681"
-      style="margin-top: 20px;"
-      :style="{userSelect: userSelect?'select': 'none'}"
-      border
-      :stripe="true"
-      highlight-current-row
-      :header-row-style="{backgroundColor: '#f6f6f6'}"
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" width="55" fixed />
-      <el-table-column
-        label="专利号"
-        property="zlh"
-        min-width="150"
-        show-tooltip-when-overflow
-      />
-      <el-table-column
-        label="专利名称"
-        property="title"
-        min-width="150"
-        show-tooltip-when-overflow
-      />
-      <el-table-column
-        label="申请日期"
-        sortable
-        property="sqri"
-        min-width="150"
-        show-tooltip-when-overflow
-      />
-      <el-table-column
-        label="申请人(专利权人)"
-        property="sqren"
-        min-width="200"
-        show-tooltip-when-overflow
-      />
-      <el-table-column
-        label="授权日期"
-        sortable
-        property="shouquanri"
-        min-width="150"
-        show-tooltip-when-overflow
-      />
-      <!-- <el-table-column label="年费/滞纳金" show-tooltip-when-overflow align="center">
-        <template slot-scope="scope">{{ (scope.row.fee=='/'? '-' : scope.row.fee)+'/'+(scope.row.penalty=='/'? '-' : scope.row.penalty) }}</template>
-      </el-table-column> -->
-      <el-table-column
-        label="法律状态"
-        property="flzt"
-        min-width="150"
-        show-tooltip-when-overflow
-      />
-      <el-table-column label="详情" show-tooltip-when-overflow>
-        <template slot-scope="scope">
-          <router-link
-            tag="a"
-            style="color: #409EFF"
-            :to="{name: 'patentDetail', query: {zlh: scope.row.zlh}}"
-          >查看详情
-          </router-link>
-        </template>
-      </el-table-column>
-    </el-table>
+  <div>
+    <div class="table-wrap">
+      <loading-com v-show="tableLoading" />
+      <!-- 表格展示 -->
+      <el-table
+        class="mytable"
+        :data="tableData"
+        size="small"
+        :max-height="681"
+        style="margin-top: 20px;"
+        :style="{userSelect: userSelect?'select': 'none'}"
+        border
+        :stripe="true"
+        highlight-current-row
+        :header-row-style="{backgroundColor: '#f6f6f6'}"
+        @selection-change="handleSelectionChange"
+      >
+        <!-- <el-table-column type="selection" width="55" fixed /> -->
+        <el-table-column
+          label="专利号"
+          property="zlh"
+          min-width="150"
+          show-tooltip-when-overflow
+        />
+        <el-table-column
+          label="专利名称"
+          property="title"
+          min-width="150"
+          show-tooltip-when-overflow
+        />
+        <el-table-column
+          label="申请日期"
+          sortable
+          property="sqri"
+          min-width="150"
+          show-tooltip-when-overflow
+        />
+        <el-table-column
+          label="申请人(专利权人)"
+          property="sqren"
+          min-width="200"
+          show-tooltip-when-overflow
+        />
+        <el-table-column
+          label="授权日期"
+          sortable
+          property="shouquanri"
+          min-width="150"
+          show-tooltip-when-overflow
+        />
+        <!-- <el-table-column label="年费/滞纳金" show-tooltip-when-overflow align="center">
+          <template slot-scope="scope">{{ (scope.row.fee=='/'? '-' : scope.row.fee)+'/'+(scope.row.penalty=='/'? '-' : scope.row.penalty) }}</template>
+        </el-table-column> -->
+        <el-table-column
+          label="法律状态"
+          property="flzt"
+          min-width="150"
+          show-tooltip-when-overflow
+        />
+        <el-table-column label="详情" show-tooltip-when-overflow>
+          <template slot-scope="scope">
+            <router-link
+              tag="a"
+              style="color: #409EFF"
+              :to="{name: 'patentDetail', query: {zlh: scope.row.zlh}}"
+            >查看详情
+            </router-link>
+          </template>
+        </el-table-column>
+      </el-table>
+
+    </div>
     <!-- 分页 -->
     <el-pagination
       background
       class="page-center"
-      :total="190"
+      :total="total"
+      :current-page="page"
       layout="prev, pager, next"
       @current-change="handleCurrentChange"
     />
-    <!-- <el-pagination
-      :page-size="size"
-      :page-sizes="[10]"
-      :current-page="page"
-      class="page-center"
-      :total="total"
-      layout="total, sizes, prev, pager, next, jumper"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    /> -->
   </div>
 </template>
 
@@ -101,6 +96,9 @@ export default {
 
   mounted() {
     this.userSelect = this.canUserSelect()
+    /* $('.mytable .el-table__row').bind('click', function(){
+      console.log(1)
+    }) */
   },
 
   methods: {
@@ -117,7 +115,6 @@ export default {
     },
     // 当前页码变化
     handleCurrentChange(val) {
-      console.log(11)
       this.$emit('currPageChange', val)
     },
     // 是否登录成功
@@ -137,6 +134,10 @@ export default {
   .zl-info {
     font-size: 12px;
   }
+  .mytable >>> .el-table__row {
+    position: relative;
+  }
+  .mytable >>> .el-table__row:hover{}
   >>>.el-table__body-wrapper{
     min-height: 400px;
   }
