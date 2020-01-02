@@ -8,7 +8,7 @@ const request = {
     return new Promise((resolve, reject) => {
       const reqConfigs = {
         headers: {
-          // 'token': getToken(),
+          'token': getToken()
           // 'username': getUserName()
         }
       }
@@ -33,9 +33,10 @@ const request = {
 
   post(options) {
     return new Promise((resolve, reject) => {
+      console.log(getToken)
       const reqConfigs = {
         headers: {
-          // 'token': getToken(),
+          'token': getToken()
           // 'username': getUserName()
         }
       }
