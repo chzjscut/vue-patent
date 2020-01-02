@@ -29,14 +29,15 @@ export default {
       src: '',
       numPages: 0,
       // num: 1,
-      pages: [1, 2, 3],
-      pdfUrl: 'http://120.26.72.249/201810066395.3.pdf'
+      pages: [1, 2, 3]
+      // pdfUrl: 'http://120.26.72.249/201810066395.3.pdf'
     }
   },
   mounted() {
     var that = this
+    console.log(this.url)
     this.src = pdf.createLoadingTask({
-      url: 'http://120.26.72.249/201810066395.3.pdf'
+      url: this.url
     })
     this.src.then(pdf => {
       that.numPages = pdf.numPages
