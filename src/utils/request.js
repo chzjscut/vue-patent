@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { /* MessageBox, */Message } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import { getToken, removeToken, removeUserName } from '@/utils/auth'
 import { SERVER_BASE_URL } from '@/utils/const'
 
 // create an axios instance
@@ -79,18 +79,18 @@ service.interceptors.response.use(
       return res
     }*/
 
-    if (res) {
+    if (res && res.code !== '1003') {
       return res
     } else {
       console.log(res)
-      /* if (res.code === '50000') {
+      if (res.code === '1003') {
+        removeToken()
+        removeUserName()
         Message({ type: 'error', message: '登录状态失效或未登录，请先登录', center: true, customClass: 'el-message-custom' })
         setTimeout(() => {
           location.replace('/login')
         }, 500)
-      } else {
-        Message({ type: 'error', message: res.msg, center: true, customClass: 'el-message-custom' })
-      }*/
+      }
     }
   },
   error => {

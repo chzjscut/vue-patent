@@ -135,7 +135,7 @@ export default {
       this.userName = ''
       removeToken()
       removeUserName()
-      window.reload()
+      window.location.reload()
     }
   }
 }
