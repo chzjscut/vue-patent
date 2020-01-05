@@ -8,7 +8,7 @@ const request = {
     return new Promise((resolve, reject) => {
       const reqConfigs = {
         headers: {
-          // 'token': getToken(),
+          'token': getToken()
           // 'username': getUserName()
         }
       }
@@ -35,7 +35,7 @@ const request = {
     return new Promise((resolve, reject) => {
       const reqConfigs = {
         headers: {
-          // 'token': getToken(),
+          'token': getToken()
           // 'username': getUserName()
         }
       }
