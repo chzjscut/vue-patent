@@ -99,7 +99,7 @@
                   <ul class="abst-info width-spread fn-clear">
                     <li>
                       <label>PDF全文</label>
-                      <pdf-template :url="patentInfo.pdfpath" />
+                      <pdf-template v-if="patentInfo.pdfpath" :url="patentInfo.pdfpath" />
                       <div v-if="false" class="paragraph">
                         <a style="color: #0066FF;text-decoration: underline;" :href="patentInfo.pdfpath" target="_blank">点击查看</a>
                       </div>

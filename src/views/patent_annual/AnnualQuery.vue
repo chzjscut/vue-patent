@@ -201,7 +201,7 @@ export default {
         if (res.status === 1000) {
           this.tableData = res.data
         } else {
-          this.$message({ type: 'error', message: res.data.msg, customClass: 'el-message-custom' })
+          this.$message({ type: 'error', message: res.data ? res.data.msg : '出错了，请稍后再试！', customClass: 'el-message-custom' })
         }
       }).catch(({ msg }) => {
 
