@@ -2,25 +2,25 @@
 <template>
   <div class="detail">
     <el-row type="flex" justify="center" class="title">
-      <span style="color: #333333;font-size: 18px;">[&nbsp;{{ detailData. zlType }}&nbsp;]</span>
-      <span style="color: #006BD4;font-size: 18px;">{{ detailData.zlNo }}</span>
-      <span style="color: #006BD4;font-weight: 900;font-size: 20px;">{{ detailData.inventName }}</span>
+      <span style="color: #333333;font-size: 18px;">[&nbsp;{{ detailData.zllx }}&nbsp;]</span>
+      <span style="color: #006BD4;font-size: 18px;">{{ detailData.zlh }}</span>
+      <span style="color: #006BD4;font-weight: 900;font-size: 20px;">{{ detailData.title }}</span>
     </el-row>
     <hr>
     <h3>应缴费信息</h3>
     <el-table
-      :data="detailData.yingjiaoList"
+      :data="detailData.yingjiaof_data"
       border
       :script="true"
       :header-row-style="{backgroundColor: '#f6f6f6'}"
     >
-      <el-table-column label="费用种类" property="yingjiaofydm" show-tooltip-when-overflow />
+      <el-table-column label="费用种类" property="fyzl" show-tooltip-when-overflow />
       <el-table-column label="应缴金额" property="shijiyjje" show-tooltip-when-overflow />
       <el-table-column label="缴费截止日" property="jiaofeijzr" show-tooltip-when-overflow />
     </el-table>
     <h3>已缴费信息</h3>
     <el-table
-      :data="detailData.yijiaoList"
+      :data="detailData.yijiaof_data"
       border
       :script="true"
       :header-row-style="{backgroundColor: '#f6f6f6'}"
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { FEE_INFO } from '@/api/console'
+import { doSearch_feedetail } from '@/api/console'
 
 export default {
   data() {
@@ -48,9 +48,16 @@ export default {
 
   methods: {
     async fetchDetail() {
-      const queryZlNo = this.$route.query.zlNo || '2015305324252'
-      FEE_INFO({ zlNo: queryZlNo }).then(res => {
-        this.detailData = res.data
+      const zlh = this.$route.query.zlh || '2015305324252'
+      doSearch_feedetail({ zlh: zlh }).then(res => {
+        console.log(res)
+        if (res.status === 1000) {
+          this.detailData = res.data
+        } else {
+          this.$message({ type: 'error', message: res.data ? res.data.msg : '出错了，请稍后再试！', customClass: 'el-message-custom' })
+        }
+      }).catch(({ msg }) => {
+        console.log(msg)
       })
     }
   }
@@ -61,7 +68,8 @@ export default {
   .detail {
     padding: 60px 15px;
     margin: 0 auto;
-    width: 1200px;
+    width: 100%;
+    overflow-x: auto;
   }
 
   .title {

@@ -1,13 +1,14 @@
 <template>
-  <div class="annual-monitor">
+  <div class="content">
     <!--查询条件-->
-    <div class="table-filter">
+    <div class="table-filter search-wrap">
+      <label class="label ml0">专利类型</label>
       <el-select
-        v-model="searchFilter.zlType"
+        v-model="queryObj.type"
         clearable
         filterable
         size="small"
-        style="margin-right: 10px;width: 150px"
+        style="width: 150px"
         placeholder="请选择专利类型"
       >
         <el-option
@@ -17,8 +18,9 @@
           :value="item.value"
         />
       </el-select>
+      <label class="label">年费状态</label>
       <el-select
-        v-model="searchFilter.stateName"
+        v-model="queryObj.stateName"
         clearable
         filterable
         size="small"
@@ -32,42 +34,33 @@
           :value="item.value"
         />
       </el-select>
+      <label class="label">申请日期</label>
       <el-date-picker
-        v-model="searchFilter.applyDateStart"
-        format="yyyy-MM-dd"
-        value-format="yyyy-MM-dd"
-        type="date"
+        v-model="sqrDate"
+        class="daterange"
+        type="daterange"
+        range-separator="~"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
         size="small"
-        placeholder="请选择申请开始日期"
+        value-format="yyyy-MM-dd"
+        @change="handleSqrDate"
       />
-      <span style="margin-left: 10px">-</span>
+      <label class="label">缴费日期</label>
       <el-date-picker
-        v-model="searchFilter.applyDateEnd"
-        format="yyyy-MM-dd"
-        value-format="yyyy-MM-dd"
-        type="date"
+        v-model="jfrDate"
+        class="daterange"
+        type="daterange"
+        range-separator="~"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
         size="small"
-        placeholder="请选择申请结束日期"
-      />
-      <el-date-picker
-        v-model="searchFilter.paymentDateStart"
-        format="yyyy-MM-dd"
         value-format="yyyy-MM-dd"
-        type="date"
-        size="small"
-        placeholder="请选择缴费开始日期"
+        @change="handleJfrDate"
       />
-      <span style="margin-left: 10px">-</span>
-      <el-date-picker
-        v-model="searchFilter.paymentDateStart"
-        format="yyyy-MM-dd"
-        value-format="yyyy-MM-dd"
-        type="date"
-        size="small"
-        placeholder="请选择缴费结束日期"
-      />
+      <label class="label">专利号</label>
       <el-input
-        v-model="zlh"
+        v-model.trim="zlh"
         placeholder="请输入专利号"
         size="small"
       />
@@ -93,7 +86,7 @@
 <script>
 import TableCom from './table'
 import { getUserName } from '@/utils/auth'
-import { doExport_monitor, doSearch_monitor } from '@/api/console'
+import { doExport_monitor, doSearch_monitor, delpat } from '@/api/console'
 // import { download } from '../../plugins/axios.download'
 
 export default {
@@ -101,22 +94,20 @@ export default {
   data() {
     return {
       zlh: '',
+      sqrDate: '',
+      jfrDate: '',
       queryObj: { // "{'201620144531.2','201720095923.9'}"
         zlh: '',
-        username: 'liudong' // getUserName()
+        type: '',
+        sqri_startDate: '',
+        sqri_endDate: '',
+        jyzr_startDate: '',
+        jyzr_endDate: ''
+        // username: getUserName()
       },
       exportParams: {
-        zlh: ''
-      },
-      searchFilter: {
         zlh: '',
-        zlType: '',
-        stateName: '',
-        applyPersonName: '',
-        applyDateStart: '',
-        applyDateEnd: '',
-        paymentDateStart: '',
-        paymentDateEnd: ''
+        username: getUserName()
       },
       tableData: [],
       zlTypeOptions: [
@@ -175,8 +166,8 @@ export default {
     async fetchList() {
       this.listLoading = true
       // this.queryObj.zlh = this.zlh;
-      // const param = { ...this.searchFilter, pageNo: this.page, pageSize: this.size }
-      this.queryObj.zlh = this.serialize(this.zlh)
+      // const param = { ...this.queryObj, pageNo: this.page, pageSize: this.size }
+      // this.queryObj.zlh = this.serialize(this.zlh)
       doSearch_monitor(this.queryObj).then(res => {
         if (res.status === 1000) {
           this.tableData = res.data
@@ -195,6 +186,9 @@ export default {
       })
     },
     serialize(zlhStr) {
+      if (zlhStr === '') {
+        return ''
+      }
       const zlhArr = zlhStr.split(',')
       let str = '{'
       zlhArr.forEach(function(item, index) {
@@ -204,6 +198,25 @@ export default {
       return str
     },
 
+    handleSqrDate() {
+      console.log(this.sqrDate)
+      if (this.sqrDate && this.sqrDate.length > 0) {
+        this.queryObj.sqri_startDate = this.sqrDate[0]
+        this.queryObj.sqri_endDate = this.sqrDate[1]
+      } else {
+        this.queryObj.sqri_startDate = ''
+        this.queryObj.sqri_endDate = ''
+      }
+    },
+    handleJfrDate() {
+      if (this.jfrDate && this.jfrDate.length > 0) {
+        this.queryObj.jyzr_startDate = this.jfrDate[0]
+        this.queryObj.jyzr_endDate = this.jfrDate[1]
+      } else {
+        this.queryObj.jyzr_startDate = ''
+        this.queryObj.jyzr_endDate = ''
+      }
+    },
     // 删除
     async handleDelete() {
       const SEL_LEN = this.multipleSelection.length
@@ -245,7 +258,7 @@ export default {
       this.exportParams.zlh = this.serialize(this.zlh)
       var res = await doExport_monitor(this.exportParams)
       /* try {
-        download('/export/excelExports', this.searchFilter, '年费监控')
+        download('/export/excelExports', this.queryObj, '年费监控')
       } catch ({ msg }) {
         this.$message({
           type: 'error',
@@ -263,6 +276,7 @@ export default {
 
     // 多选变化
     handleMultipleSelectChange(sel) {
+      console.log(sel)
       this.multipleSelection = sel
     },
     handlePageSizeChange(val) {
@@ -277,7 +291,32 @@ export default {
 }
 </script>
 <style scoped>
+  .content{
+    padding: 15px;
+    box-sizing: border-box;
+  }
+  .search-wrap .label{
+    font-weight: normal;
+    font-size: 12px;
+    /* margin-right: 5px; */
+    margin-left: 20px;
+  }
+  .search-wrap .label.ml0{
+    margin-left: 0;
+  }
+  .search-wrap .el-input{
+    margin-left: 0;
+  }
   .el-input {
     width: 150px !important;
+  }
+  .table-button-group .el-button{
+    margin-right: 0;
+  }
+  .table-button-group .el-button+.el-button{
+    margin-right: 0;
+  }
+  .daterange {
+    width: 260px;
   }
 </style>

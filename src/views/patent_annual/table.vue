@@ -15,7 +15,7 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55" fixed />
-      <el-table-column
+      <!-- <el-table-column
         label="专利号"
         property="zlh"
         min-width="120"
@@ -33,8 +33,8 @@
         property="type"
         min-width="100"
         show-tooltip-when-overflow
-      />
-      <!-- <el-table-column show-tooltip-when-overflow label="专利名称" min-width="180">
+      /> -->
+      <el-table-column show-tooltip-when-overflow label="专利名称" min-width="180">
         <template slot-scope="scope">
           <div class="zl-info">
             <span
@@ -42,11 +42,12 @@
                 ?'zl':scope.row.type === '实用新型'?'xx'
                   :scope.row.type === '外观设计'?'wg':''"
             >{{ scope.row.type }}</span>
-            <span class="number">{{ scope.row.zlNo }}</span>
+            <span class="number">{{ scope.row.zlh }}</span>
+            <div>{{ scope.row.title }}</div>
           </div>
           <div class="zl-info">{{ scope.row.inventName }}</div>
         </template>
-      </el-table-column> -->
+      </el-table-column>
       <el-table-column
         label="申请日期"
         sortable
@@ -60,14 +61,14 @@
         min-width="150"
         show-tooltip-when-overflow
       />
-      <el-table-column
+      <!-- <el-table-column
         v-if="$route.name === 'consoleAnnualMonitor'"
         label="发明人"
         property="fmr"
         min-width="150"
         show-tooltip-when-overflow
       />
-      <!-- <el-table-column
+      <el-table-column
         label="代理机构"
         property="dailijgmc"
         min-width="200"
@@ -88,53 +89,53 @@
         min-width="100"
         show-tooltip-when-overflow
       />
-      <el-table-column
+      <!-- <el-table-column
         label="年费状态"
-        property="fystatus"
         show-tooltip-when-overflow
       >
-        <!-- <template slot-scope="scope">
+        <template slot-scope="scope">
           <div
-            :style="{color: scope.row.stateName === '正常'? '#008400'
-              :scope.row.stateName === '紧急'?'#FF6600'
-                :scope.row.stateName === '滞纳'?'#FF6600': '#D2D2D2'}"
+            :style="{color: scope.row.fystatus === '正常'? '#008400'
+              :scope.row.fystatus === '紧急'?'#FF6600'
+                :scope.row.fystatus === '滞纳'?'#FF6600': '#D2D2D2'}"
           >
             {{ scope.row.fystatus }}
           </div>
-        </template> -->
-      </el-table-column>
-      <el-table-column label="年费/滞纳金" show-tooltip-when-overflow align="center">
-        <template slot-scope="scope">{{ (scope.row.fee=='/'? '-' : scope.row.fee)+'/'+(scope.row.penalty=='/'? '-' : scope.row.penalty) }}</template>
-      </el-table-column>
-      <!-- <el-table-column
+        </template>
+      </el-table-column> -->
+      <el-table-column
         label="年费状态"
         property="fystatus"
         min-width="150"
-        show-tooltip-when-overflow>
-      </el-table-column> -->
-      <!-- <el-table-column
-        v-if="$route.name === 'consoleAnnualQuery'|| $route.name === 'consoleBatchQuery'"
+        show-tooltip-when-overflow
+      />
+      <el-table-column label="年费/滞纳金" show-tooltip-when-overflow align="center">
+        <template slot-scope="scope">{{ (scope.row.fee=='/'? '-' : scope.row.fee)+'/'+(scope.row.penalty=='/'? '-' : scope.row.penalty) }}</template>
+      </el-table-column>
+
+      <el-table-column
+        v-if="$route.name === 'consoleAnnualQuery'"
         label="年费提醒"
       >
         <template slot-scope="scope">
           <el-switch
-            v-model="scope.row.attention"
+            v-model="scope.row.useratt"
             active-color="#13ce66"
             inactive-color="#ff4949"
             :active-value="1"
             :inactive-value="0"
-            @change="handleSwitchChange(scope.row.zlNo, scope.row.attention)"
+            @change="handleSwitchChange(scope.row.zlh, scope.row.useratt)"
           />
         </template>
-      </el-table-column> -->
-      <template><!--  v-if="$route.name === 'consoleAnnualMonitor'" -->
+      </el-table-column>
+      <template v-if="$route.name === 'consoleAnnualMonitor'">
         <el-table-column label="详情" show-tooltip-when-overflow>
           <template slot-scope="scope">
             <router-link
               target="_blank"
               tag="a"
               style="color: #409EFF"
-              :to="{name: 'annualDetail', query: {zlNo: scope.row.zlNo}}"
+              :to="{name: 'annualDetail', query: {zlh: scope.row.zlh}}"
             >费用信息
             </router-link>
           </template>
@@ -143,6 +144,15 @@
     </el-table>
     <!-- 分页 -->
     <el-pagination
+      background
+      class="page-center"
+      :total="total"
+      :current-page="page"
+      layout="prev, pager, next"
+      :hide-on-single-page="true"
+      @current-change="handleCurrentChange"
+    />
+    <!-- <el-pagination
       :page-size="size"
       :page-sizes="[10]"
       :current-page="page"
@@ -151,7 +161,7 @@
       layout="total, sizes, prev, pager, next, jumper"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-    />
+    /> -->
   </div>
 </template>
 
@@ -170,7 +180,7 @@ export default {
 
   methods: {
     handleSwitchChange(zlh, attentionState) {
-      this.$emit('switchChange', { selectedIds: zlh, attentionState })
+      this.$emit('switchChange', { zlh: zlh, attentionState })
     },
     // 多选变化
     handleSelectionChange(val) {

@@ -1,5 +1,5 @@
 <template>
-  <div class="annual-query">
+  <div class="content">
     <el-button type="primary" size="small" @click="dialogShow">多专利查询</el-button>
     <el-dropdown v-if="false" trigger="click" @command="queryChoose">
       <el-button type="primary" size="small" style="width: 92px;height: 32px;">
@@ -60,7 +60,7 @@
           </el-upload>
           <a :href="excelTemplate" download="专利批量导入Excel模板.xlsx" class="download-template">专利批量导入Excel模板下载</a>
         </template>
-        <el-button type="primary" size="small" @click="handleAttentionAll">一键提醒</el-button>
+
       </div>
     </div> -->
     <el-upload
@@ -83,7 +83,7 @@
       </el-button>
     </el-upload>
     <a id="downloadTmpl" ref="downloadTmpl" :href="excelTemplate" download="专利批量导入Excel模板.xlsx" class="download-template" style="display: none;">专利批量导入Excel模板下载</a>
-
+    <el-button type="primary" size="small" @click="handleAttentionAll">一键提醒</el-button>
     <table-com
       :list-loading="listLoading"
       :page="page"
@@ -112,8 +112,9 @@
 </template>
 <script>
 import TableCom from './table'
+import { getUserName } from '@/utils/auth'
 import { EXCEL_TEMPLATE, FETCH_HEADERS, UPLOAD_ACTION } from '@/utils/const'
-import { GLOBAL_SEARCH, BASE_LIST, ATTENTION_PATENT, doSearch_feeinfo } from '@/api/console'
+import { GLOBAL_SEARCH, BASE_LIST, monitor, doSearch_feeinfo } from '@/api/console'
 
 export default {
   components: { TableCom },
@@ -263,6 +264,7 @@ export default {
         }
       })
     },
+
     serialize(zlhStr) {
       const zlhArr = zlhStr.split(',')
       let str = '{'
@@ -326,18 +328,24 @@ export default {
 
     // 单个关注
     async handleSwitchChange(val) {
-      this.listLoading = true
-      ATTENTION_PATENT(val)
+      console.log(val)
+      const params = {
+        username: getUserName(),
+        zlh: this.serialize(val.zlh),
+        attentionState: val.attentionState
+      }
+      // this.listLoading = true
+      monitor(params)
         .then(() => {
-          this.getSearchList()
+          // this.doSearch_feeinfo()
           this.$message({
             type: 'success',
             customClass: 'el-message-custom',
-            message: !Number(val.attentionState) ? '取消提醒成功' : '提醒成功'
+            message: !Number(params.attentionState) ? '取消提醒成功' : '提醒成功'
           })
         })
         .catch(({ msg }) => {
-          this.getSearchList()
+          // this.doSearch_feeinfo()
           this.$message({
             type: 'error',
             message: msg,
@@ -350,14 +358,18 @@ export default {
     async handleAttentionAll() {
       const SEL_LEN = this.multipleSelection.length
       if (SEL_LEN) {
-        this.listLoading = true
-        const selectedIds = this.multipleSelection.map(item => {
-          return item.zlNo
-        }).join()
+        // this.listLoading = true
+        const selectedzlhs = this.multipleSelection.map(item => {
+          return item.zlh
+        }).join(',')
+        const params = {
+          zlh: this.serialize(selectedzlhs),
+          username: getUserName()
+        }
 
-        ATTENTION_PATENT({ selectedIds, attentionState: 1 })
+        monitor(params)
           .then(() => {
-            this.getSearchList()
+            // this.getSearchList()
             this.$message({
               type: 'success',
               customClass: 'el-message-custom',
@@ -365,7 +377,7 @@ export default {
             })
           })
           .catch(({ msg }) => {
-            this.getSearchList()
+            // this.getSearchList()
             this.$message({
               type: 'error',
               message: msg,
@@ -420,6 +432,7 @@ export default {
     },
 
     handleMultipleSelectChange(sel) {
+      console.log(sel)
       this.multipleSelection = sel
     },
 
@@ -435,6 +448,10 @@ export default {
 }
 </script>
 <style scoped>
+  .content{
+    padding: 15px;
+    box-sizing: border-box;
+  }
   .search-global {
     font-size: 20px;
     margin-left: 10px;

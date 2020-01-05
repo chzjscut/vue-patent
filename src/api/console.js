@@ -93,6 +93,22 @@ export function doSearch_patent(data) {
   })
 }
 
+// 一键提醒
+export function monitor(data) {
+  return request.post({
+    url: '/monitor/',
+    data
+  })
+}
+
+// 单个关注
+export function delpat(data) {
+  return request.post({
+    url: '/delpat/',
+    data
+  })
+}
+
 // 根据zlh查询专利详情
 export function doGetPatentInfo(data) {
   return request.post({
@@ -113,7 +129,15 @@ export function doExport_monitor(data) {
 // 年费监控查询
 export function doSearch_monitor(data) {
   return request.post({
-    url: '/monitor/',
+    url: '/feemonitor/',
+    data
+  })
+}
+
+// 年费详情
+export function doSearch_feedetail(data) {
+  return request.post({
+    url: '/feedetail/',
     data
   })
 }
