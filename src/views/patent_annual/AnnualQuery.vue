@@ -70,9 +70,9 @@
       :on-success="handleUploadSuccess"
       :before-upload="handleBeforeUpload"
       accept=".xlsx, .xls"
-      :headers="uploadHeaders"
+      :data="uploadFile"
       style="display: none;margin: 0 10px"
-    >
+    ><!-- :headers="uploadHeaders" -->
       <el-button
         id="uploadExcel"
         ref="excelUpload"
@@ -131,7 +131,7 @@ export default {
       },
       isDialogVisible: false, // 控制弹窗显示
       patentStr: '', // 多个专利号的字符串，用于专利批量查询
-      batchInsertAction: UPLOAD_ACTION,
+      batchInsertAction: 'http://120.26.72.249:8000/upload/',
       batchImportBtnTxt: '专利批量导入',
       batchImportDisabled: false,
       uploadHeaders: FETCH_HEADERS,
@@ -145,7 +145,10 @@ export default {
       tableData: [],
       listLoading: false,
       multipleSelection: [],
-
+      uploadFile: { // 上传文件传参
+        // file: '',
+        username: getUserName()
+      },
       // 导入zlIds列表
       importZlIds: [],
       // 页码
@@ -396,7 +399,8 @@ export default {
     },
 
     // 批量导入状态处理
-    handleBeforeUpload() {
+    handleBeforeUpload(file) {
+      console.log(file)
       this.batchImportDisabled = true
       this.batchImportBtnTxt = '批量导入中...'
     },

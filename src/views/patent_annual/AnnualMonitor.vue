@@ -161,15 +161,6 @@ export default {
       this.resetPagination()
       this.fetchList()
     },
-
-    /* async doSearch_fee(){
-      let res = await doSearch_fee({
-        username: getUserName(),
-        page: this.page
-      });
-      this.tableData = res.data
-      this.total = res.totalpage
-    }, */
     // 查询表格列表
     async fetchList() {
       this.queryObj.page = this.page
@@ -178,13 +169,16 @@ export default {
       // const param = { ...this.queryObj, pageNo: this.page, pageSize: this.size }
       // this.queryObj.zlh = this.serialize(this.zlh)
       doSearch_monitor(this.queryObj).then(res => {
-        if (res.status === 1000) {
+        this.tableData = res.data
+        this.total = res.totalpage
+        this.listLoading = false
+        /* if (res.status === 1000) {
           this.tableData = res.data
-          // this.total = res.total
+          this.total = res.totalpage
           this.listLoading = false
         } else {
           this.$message({ type: 'error', message: res.data.msg, customClass: 'el-message-custom' })
-        }
+        } */
       }).catch(({ msg }) => {
         this.listLoading = false
         this.$message({
