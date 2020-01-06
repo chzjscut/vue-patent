@@ -7,10 +7,8 @@
         </div>
       </div>
 
-      <div class="login-form" />
-
       <div class="log_content">
-        <div class="right_form">
+        <div v-if="false" class="right_form">
           <div class="right_form_tab">
             <span
               v-for="tab in tabs"
@@ -113,6 +111,43 @@
             @click="handleGoToRegister"
           >立即注册
           </el-button>
+        </div>
+
+        <div class="login-form">
+          <div class="loginTypeDiv">
+            <span class="loginTypeNoSelected">账号登录</span>
+          </div>
+
+          <div style="min-height: 32px" />
+
+          <div class="personalDiv loginFormDiv">
+            <div class="inputField">
+              <span id="personalAccountInputId" class="tiny-textbox-container" style="width: 320px; height: 36px;">
+                <input type="text" class="tiny-input-text" placeholder="账号名/邮箱">
+              </span>
+            </div>
+
+            <div class="inputField">
+              <span id="personalPasswordInputId" class="tiny-textbox-container" style="width: 320px; height: 36px;">
+                <input type="password" autocomplete="off" class="tiny-input-text" validator="true" placeholder="密码">
+              </span>
+              <svg-icon class="pwdShowimg icon-cloud-action-state-Invisible" icon-class="eye" />
+            </div>
+          </div>
+
+          <div class="toDoDiv">
+            <div class="typeSwitchDiv" ng-show="!model.isCompany">
+              <span id="typeSwitchBtn">手机号登录</span>
+            </div>
+          </div>
+
+          <div class="buttonAreaDiv">
+            <div>
+              <div id="loginBtn" class="loginBtn">
+                <span id="btn_submit">登录</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -290,9 +325,10 @@ export default {
     cursor: default;
   }
   .login-form{
+    position: absolute;
+    right: 0;
     width: 380px;
     display: inline-block;
-    float: right;
     margin-top: 80px;
     background-color: #fff;
     color: #C1C1C1;
@@ -301,6 +337,87 @@ export default {
     border-radius: 0;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,.1);
   }
+  .loginTypeDiv {
+    color: #666;
+    font-size: 14px;
+    font-style: normal;
+    padding: 24px 30px 10px;
+    text-align: center;
+}
+.loginTypeNoSelected {
+    display: inline-block;
+    width: 100%;
+    line-height: 18px;
+    font-size: 18px;
+    font-family: PingFangSC-Medium;
+    color: #252B3A;
+}
+.loginFormDiv {
+    padding: 0 30px;
+    width: 320px;
+    box-sizing: content-box;
+}
+.inputField {
+    margin-bottom: 16px!important;
+    font-size: 14px!important;
+    border-bottom: 1px solid #DFE1E6;
+    position: relative;
+}
+.inputField:last-child {
+    margin-bottom: 0!important;
+    font-size: 14px!important;
+}
+.inputField:hover {
+    border-bottom: 1px solid #8A8E99;
+}
+.tiny-textbox-container {
+    position: relative;
+    display: inline-block;
+    height: 26px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.tiny-input-text {
+    width: 100%;
+    height: 100%;
+    color: #333;
+    font-size: 14px;
+    background-color: #fff;
+    padding: 0 8px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: none;
+    vertical-align: middle;
+    line-height: 20px;
+    font-family: PingFangSC-Regular;
+}
+.pwdShowimg {
+    top: 10px;
+    right: 8px;
+    position: absolute;
+    width: 15px;
+    height: 15px;
+}
+.toDoDiv {
+    margin: 18px 38px 0;
+    width: 304px;
+}
+.typeSwitchDiv {
+    font-style: normal;
+    color: #252B3A;
+    max-width: 180px;
+    display: inline-block;
+    font-size: 12px;
+}
+.typeSwitchDiv>span{
+  cursor: pointer;
+}
+.typeSwitchDiv>span:hover{
+  text-decoration: underline;
+  color: #F66F6A;
+}
 
   .log_content {
     position: absolute;
