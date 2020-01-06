@@ -8,7 +8,7 @@
       </div>
 
       <div class="log_content">
-        <div v-if="false" class="right_form">
+        <div class="right_form">
           <div class="right_form_tab">
             <span
               v-for="tab in tabs"
@@ -113,7 +113,7 @@
           </el-button>
         </div>
 
-        <div class="login-form">
+        <div v-if="false" class="login-form">
           <div class="loginTypeDiv">
             <span class="loginTypeNoSelected">账号登录</span>
           </div>

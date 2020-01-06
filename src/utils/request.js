@@ -79,7 +79,7 @@ service.interceptors.response.use(
       return res
     }*/
 
-    if (res && res.code !== '1003') {
+    if (res) { /*  && res.code !== '1003' */
       return res
     } else {
       console.log(res)

@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <el-button type="primary" size="small" @click="dialogShow">多专利查询</el-button>
-    <el-dropdown v-if="false" trigger="click" @command="queryChoose">
+    <el-dropdown trigger="click" @command="queryChoose">
       <el-button type="primary" size="small" style="width: 92px;height: 32px;">
         表格查询<i class="el-icon-arrow-down el-icon--right" />
       </el-button>
@@ -114,14 +114,15 @@
 import TableCom from './table'
 import { getUserName } from '@/utils/auth'
 import { EXCEL_TEMPLATE, FETCH_HEADERS, UPLOAD_ACTION } from '@/utils/const'
-import { GLOBAL_SEARCH, BASE_LIST, monitor, doSearch_feeinfo } from '@/api/console'
+import { GLOBAL_SEARCH, BASE_LIST, monitor, chpat, doSearch_feeinfo } from '@/api/console'
 
 export default {
   components: { TableCom },
   data() {
     return {
       searchParams: { // {'2016201445312','201620144531.2','201720095923.9'}
-        zlh: ''
+        zlh: "{'2016201445312','201620144531.2','201720095923.9'}",
+        username: getUserName()
       },
       rules: {
         zlh: [
@@ -160,7 +161,7 @@ export default {
 
   methods: {
     async init() {
-      // this.doSearch_feeinfo()
+      this.doSearch_feeinfo()
       // await this.initGlobalKey()
       // this.getSearchList()
       /* if (this.searchConditionKey) {
@@ -200,6 +201,7 @@ export default {
       doSearch_feeinfo(this.searchParams).then(res => {
         this.searchParams.zlh = ''
         if (res.status === 1000) {
+          this.total = res.totalpage
           this.tableData = res.data
         } else {
           this.$message({ type: 'error', message: res.data ? res.data.msg : '出错了，请稍后再试！', customClass: 'el-message-custom' })
@@ -331,17 +333,17 @@ export default {
       console.log(val)
       const params = {
         username: getUserName(),
-        zlh: this.serialize(val.zlh),
-        attentionState: val.attentionState
+        zlh: val.zlh,
+        useratt: val.attentionState
       }
       // this.listLoading = true
-      monitor(params)
+      chpat(params)
         .then(() => {
           // this.doSearch_feeinfo()
           this.$message({
             type: 'success',
             customClass: 'el-message-custom',
-            message: !Number(params.attentionState) ? '取消提醒成功' : '提醒成功'
+            message: !Number(val.attentionState) ? '取消提醒成功' : '提醒成功'
           })
         })
         .catch(({ msg }) => {

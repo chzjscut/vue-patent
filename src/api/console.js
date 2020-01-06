@@ -85,6 +85,15 @@ export function doSearch_feeinfo(data) {
   })
 }
 
+// 年费Excel导入
+export function doUpload(data) {
+  return request.post({
+    url: '/upload/',
+    data,
+    responseType: 'arraybuffer'
+  })
+}
+
 // 根据关键字查询专利
 export function doSearch_patent(data) {
   return request.post({
@@ -102,9 +111,9 @@ export function monitor(data) {
 }
 
 // 单个关注
-export function delpat(data) {
+export function chpat(data) {
   return request.post({
-    url: '/delpat/',
+    url: '/chpat/',
     data
   })
 }
@@ -121,8 +130,16 @@ export function doGetPatentInfo(data) {
 export function doExport_monitor(data) {
   return request.post({
     url: '/export/',
-    data,
-    responseType: 'arraybuffer'
+    data
+    // responseType: 'arraybuffer'
+  })
+}
+
+// 年费监控查询所有数据
+export function doSearch_fee(data) {
+  return request.post({
+    url: '/fee/',
+    data
   })
 }
 
@@ -130,6 +147,14 @@ export function doExport_monitor(data) {
 export function doSearch_monitor(data) {
   return request.post({
     url: '/feemonitor/',
+    data
+  })
+}
+
+// 年费监控删除
+export function delpat(data) {
+  return request.post({
+    url: '/delpat/',
     data
   })
 }

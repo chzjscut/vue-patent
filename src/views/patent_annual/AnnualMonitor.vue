@@ -102,13 +102,13 @@ export default {
         sqri_startDate: '',
         sqri_endDate: '',
         jyzr_startDate: '',
-        jyzr_endDate: ''
-        // username: getUserName()
-      },
-      exportParams: {
-        zlh: '',
+        jyzr_endDate: '',
         username: getUserName()
       },
+      /* exportParams: {
+        zlh: '',
+        username: getUserName()
+      }, */
       tableData: [],
       zlTypeOptions: [
         {
@@ -151,7 +151,7 @@ export default {
   },
 
   mounted() {
-    // this.fetchList()
+    this.fetchList()
     // this.exportExcel()
   },
 
@@ -162,8 +162,17 @@ export default {
       this.fetchList()
     },
 
+    /* async doSearch_fee(){
+      let res = await doSearch_fee({
+        username: getUserName(),
+        page: this.page
+      });
+      this.tableData = res.data
+      this.total = res.totalpage
+    }, */
     // 查询表格列表
     async fetchList() {
+      this.queryObj.page = this.page
       this.listLoading = true
       // this.queryObj.zlh = this.zlh;
       // const param = { ...this.queryObj, pageNo: this.page, pageSize: this.size }
@@ -222,11 +231,14 @@ export default {
       const SEL_LEN = this.multipleSelection.length
       if (SEL_LEN) {
         const selectedIds = this.multipleSelection.map(item => {
-          return item.zlNo
-        }).join()
+          return item.zlh
+        }).join(',')
+        const params = {
+          zlh: this.serialize(selectedIds),
+          username: getUserName()
+        }
 
-        this.listLoading = true
-        this.$api.BATCH_DELETE({ data: { selectedIds }, returnError: true })
+        delpat(params)
           .then(() => {
             this.fetchList()
             this.$message({
@@ -254,18 +266,30 @@ export default {
 
     // 导出
     async exportExcel() {
-      // this.queryObj.zlh = this.zlh;
-      this.exportParams.zlh = this.serialize(this.zlh)
-      var res = await doExport_monitor(this.exportParams)
-      /* try {
-        download('/export/excelExports', this.queryObj, '年费监控')
-      } catch ({ msg }) {
+      const SEL_LEN = this.multipleSelection.length
+      if (SEL_LEN) {
+        const selectedIds = this.multipleSelection.map(item => {
+          return item.zlh
+        }).join(',')
+        const params = {
+          zlh: this.serialize(selectedIds)
+        }
+        const res = await doExport_monitor(params)
+        if (res.status === 1000 && res.excellink) {
+          const link = document.createElement('a')
+          link.href = res.excellink
+          console.log(link)
+          link.download = '年费监控'
+          link.click()
+          link.remove()
+        }
+      } else {
         this.$message({
-          type: 'error',
-          message: msg,
+          type: 'warning',
+          message: '请先勾选删除项',
           customClass: 'el-message-custom'
         })
-      }*/
+      }
     },
 
     // 重置页码

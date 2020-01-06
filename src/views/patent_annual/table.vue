@@ -89,7 +89,7 @@
         min-width="100"
         show-tooltip-when-overflow
       />
-      <!-- <el-table-column
+      <el-table-column
         label="年费状态"
         show-tooltip-when-overflow
       >
@@ -102,13 +102,13 @@
             {{ scope.row.fystatus }}
           </div>
         </template>
-      </el-table-column> -->
-      <el-table-column
+      </el-table-column>
+      <!-- <el-table-column
         label="年费状态"
         property="fystatus"
         min-width="150"
         show-tooltip-when-overflow
-      />
+      /> -->
       <el-table-column label="年费/滞纳金" show-tooltip-when-overflow align="center">
         <template slot-scope="scope">{{ (scope.row.fee=='/'? '-' : scope.row.fee)+'/'+(scope.row.penalty=='/'? '-' : scope.row.penalty) }}</template>
       </el-table-column>
@@ -152,16 +152,6 @@
       :hide-on-single-page="true"
       @current-change="handleCurrentChange"
     />
-    <!-- <el-pagination
-      :page-size="size"
-      :page-sizes="[10]"
-      :current-page="page"
-      class="page-center"
-      :total="total"
-      layout="total, sizes, prev, pager, next, jumper"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    /> -->
   </div>
 </template>
 
