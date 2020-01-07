@@ -122,8 +122,8 @@
             v-model="scope.row.useratt"
             active-color="#13ce66"
             inactive-color="#ff4949"
-            :active-value="1"
-            :inactive-value="0"
+            :active-value="'1'"
+            :inactive-value="'0'"
             @change="handleSwitchChange(scope.row.zlh, scope.row.useratt)"
           />
         </template>
@@ -146,12 +146,12 @@
     <el-pagination
       background
       class="page-center"
-      :total="total"
+      :page-count="total"
       :current-page="page"
       layout="prev, pager, next"
       :hide-on-single-page="true"
       @current-change="handleCurrentChange"
-    />
+    /><!--:total="total" -->
   </div>
 </template>
 

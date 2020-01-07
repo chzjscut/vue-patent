@@ -70,6 +70,7 @@
       :on-success="handleUploadSuccess"
       :before-upload="handleBeforeUpload"
       accept=".xlsx, .xls"
+      :headers="uploadHeaders"
       :data="uploadFile"
       style="display: none;margin: 0 10px"
     ><!-- :headers="uploadHeaders" -->
@@ -112,16 +113,16 @@
 </template>
 <script>
 import TableCom from './table'
-import { getUserName } from '@/utils/auth'
+import { getUserName, getToken } from '@/utils/auth'
 import { EXCEL_TEMPLATE, FETCH_HEADERS, UPLOAD_ACTION } from '@/utils/const'
-import { GLOBAL_SEARCH, BASE_LIST, monitor, chpat, doSearch_feeinfo } from '@/api/console'
+import { GLOBAL_SEARCH, BASE_LIST, monitor, chpat, doSearch_feeinfo, uploadUrl, templateUrl } from '@/api/console'
 
 export default {
   components: { TableCom },
   data() {
     return {
       searchParams: { // {'2016201445312','201620144531.2','201720095923.9'}
-        zlh: "{'2016201445312','201620144531.2','201720095923.9'}",
+        zlh: '',
         username: getUserName()
       },
       rules: {
@@ -131,11 +132,11 @@ export default {
       },
       isDialogVisible: false, // 控制弹窗显示
       patentStr: '', // 多个专利号的字符串，用于专利批量查询
-      batchInsertAction: 'http://120.26.72.249:8000/upload/',
+      batchInsertAction: uploadUrl,
       batchImportBtnTxt: '专利批量导入',
       batchImportDisabled: false,
-      uploadHeaders: FETCH_HEADERS,
-      excelTemplate: EXCEL_TEMPLATE,
+      uploadHeaders: { token: getToken() },
+      excelTemplate: templateUrl,
       searchData: {
         zlNo: '',
         applyPersonName: ''
@@ -184,6 +185,7 @@ export default {
     },
 
     dialogShow() {
+      this.searchParams.zlh = ''
       this.isDialogVisible = true
     },
     // 初始化全局搜索关键词
@@ -202,7 +204,6 @@ export default {
     // 根据专利号查询专利年费信息
     async doSearch_feeinfo() {
       doSearch_feeinfo(this.searchParams).then(res => {
-        this.searchParams.zlh = ''
         if (res.status === 1000) {
           this.total = res.totalpage
           this.tableData = res.data
@@ -342,7 +343,7 @@ export default {
       // this.listLoading = true
       chpat(params)
         .then(() => {
-          // this.doSearch_feeinfo()
+          this.doSearch_feeinfo()
           this.$message({
             type: 'success',
             customClass: 'el-message-custom',
@@ -374,7 +375,7 @@ export default {
 
         monitor(params)
           .then(() => {
-            // this.getSearchList()
+            this.doSearch_feeinfo()
             this.$message({
               type: 'success',
               customClass: 'el-message-custom',
@@ -400,25 +401,26 @@ export default {
 
     // 批量导入状态处理
     handleBeforeUpload(file) {
-      console.log(file)
+      // console.log(file)
       this.batchImportDisabled = true
       this.batchImportBtnTxt = '批量导入中...'
     },
 
     // excel上传成功回调
     handleUploadSuccess(response) {
+      console.log(response)
       this.batchImportDisabled = false
       this.batchImportBtnTxt = '专利批量导入'
       this.$message({
-        message: response.success ? '导入成功' : '导入失败',
-        type: response.success ? 'success' : 'error',
+        message: response.status === 1000 ? '导入成功' : '导入失败',
+        type: response.status === 1000 ? 'success' : 'error',
         customClass: 'el-message-custom'
       })
-      if (response.success) {
+      if (response.status === 1000) {
         this.resetPagination()
-        this.total = response.data.length || 0
-        this.importZlIds = response.data
-        this.fetchImportList()
+        this.total = response.totalpage || 0
+        this.tableData = response.data
+        // this.fetchImportList()
       }
     },
     // 上传失败
@@ -448,7 +450,7 @@ export default {
     },
     handleCurrPageChange(val) {
       this.page = val
-      this.getSearchList()
+      this.doSearch_feeinfo()
     }
   }
 }

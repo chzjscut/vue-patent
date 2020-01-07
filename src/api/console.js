@@ -166,3 +166,6 @@ export function doSearch_feedetail(data) {
     data
   })
 }
+
+export const uploadUrl = 'http://120.26.72.249:8000/upload/'
+export const templateUrl = 'https://feepatent.oss-cn-hangzhou.aliyuncs.com/model/patentModel.xlsx'
